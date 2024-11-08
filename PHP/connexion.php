@@ -38,6 +38,7 @@ class Database {
 // Exemple d'utilisation (première connexion avec username et password)
 try {
     $db = Database::getInstance("u847486544_root", "Jesaplgrout123456789*")->getConnection();
+    echo "Connexion réussie";
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
 }
