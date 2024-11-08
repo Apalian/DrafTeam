@@ -39,5 +39,5 @@ class Database {
 try {
     $db = Database::getInstance("root", '#A/$Ir1cWla4')->getConnection();
 } catch (Exception $e) {
-    echo "Erreur : " . $e->getMessage();
+    echo "Erreurs : " . $e->getMessage();
 }
