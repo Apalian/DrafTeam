@@ -13,7 +13,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" type="text/css" href="css.css">
     <title>Authentification</title>
 </head>
 <body >
