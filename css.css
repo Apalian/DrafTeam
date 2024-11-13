@@ -23,11 +23,12 @@
 .login-form input[type="text"],
 .login-form input[type="password"] {
     width: 86%;
-    padding: 8px;
+    padding: 10px;
     margin-top: 5px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    display: block;
 }
 
 .login-form input[type="submit"] {
