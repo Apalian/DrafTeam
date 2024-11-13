@@ -1,5 +1,5 @@
 <?php
-class Database {
+class Connexion {
     private static $instance = null;
     private $pdo;
 
