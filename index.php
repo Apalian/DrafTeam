@@ -9,14 +9,14 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css.css">
     <title>Authentification</title>
 </head>
-<body class="login">
+<body>
 <!-- Affichage du formulaire -->
 <form class="login-form" action="PHP/login.php" method="post">
     <h2>Authentification</h2>
