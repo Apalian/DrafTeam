@@ -1,9 +1,8 @@
 <?php
-session_start(); // Démarre la session
+session_start();
 
 // Vérifie si l'utilisateur est connecté
-if (isset($_SESSION['user'])) {
-    // Redirige vers une autre page si l'utilisateur est déjà connecté
+if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     header("Location: dashboard.php");
     exit();
 }
@@ -18,10 +17,11 @@ if (isset($_SESSION['user'])) {
     <title>Authentification</title>
 </head>
 <body class="login">
+<!-- Affichage du formulaire -->
 <form class="login-form" action="PHP/login.php" method="post">
     <h2>Authentification</h2>
 
-    <!-- Section pour afficher les erreurs -->
+    <!-- Affichage des erreurs -->
     <?php
     if (isset($_GET['error']) && !empty($_GET['error'])): ?>
         <div class="error"><?php echo htmlspecialchars($_GET['error']); ?></div>

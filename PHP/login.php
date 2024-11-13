@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
             echo "Connexion réussie";
+            header("Location: ../index.php?error=" . urlencode($error));
+            exit();
         } catch (Exception $e) {
             echo "Erreur : " . $e->getMessage();
         }
