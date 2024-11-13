@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="css.css">
     <title>Authentification</title>
 </head>
-    <body class="login-form">
+    <body class="login">
     <form class="login-form" action="PHP/login.php" method="post">
         <h2>Authentification</h2>
 
         <!-- Section pour afficher les erreurs -->
-        <?php if (isset($error) && !empty($error)): ?>
+        <?php if (isset($error) && !empty($error)):
+            echo "ez"?>
+
         <div class="error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
 

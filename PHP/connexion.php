@@ -27,5 +27,4 @@ class Connexion {
     }
 
     private function __clone() {}
-    private function __wakeup() {}
 }
