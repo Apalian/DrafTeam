@@ -16,24 +16,27 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     <link rel="stylesheet" href="css.css">
     <title>Authentification</title>
 </head>
-<body class="login">
-<!-- Affichage du formulaire -->
-<form class="login-form" action="PHP/login.php" method="post">
-    <h2>Authentification</h2>
+<body >
+<main class="login">
+    <!-- Affichage du formulaire -->
+    <form class="login-form" action="PHP/login.php" method="post">
+        <h2>Authentification</h2>
 
-    <!-- Affichage des erreurs -->
-    <?php
-    if (isset($_GET['error']) && !empty($_GET['error'])): ?>
-        <div class="error"><?php echo htmlspecialchars($_GET['error']); ?></div>
-    <?php endif; ?>
+        <!-- Affichage des erreurs -->
+        <?php
+        if (isset($_GET['error']) && !empty($_GET['error'])): ?>
+            <div class="error"><?php echo htmlspecialchars($_GET['error']); ?></div>
+        <?php endif; ?>
 
-    <label for="username">Nom d'utilisateur</label>
-    <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
 
-    <label for="password">Mot de passe</label>
-    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
 
-    <input type="submit" value="Se connecter">
-</form>
+        <input type="submit" value="Se connecter">
+    </form>
+</main>
+
 </body>
 </html>
