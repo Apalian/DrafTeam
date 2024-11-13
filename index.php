@@ -17,7 +17,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     <title>Authentification</title>
 </head>
 <body >
-<main>
+<div class="container">
     <!-- Affichage du formulaire -->
     <form class="login-form" action="PHP/login.php" method="post">
         <h2>Authentification</h2>
@@ -36,7 +36,6 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 
         <input type="submit" value="Se connecter">
     </form>
-</main>
-
+</div>
 </body>
 </html>
