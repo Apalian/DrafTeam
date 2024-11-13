@@ -17,5 +17,4 @@ class Participation
         $this->evaluation = $evaluation;
         $this->poste = $poste;
     }
-    pub
 }
