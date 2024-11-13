@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === $user && $password === $pass) {
         // Instancie l'objet Database uniquement après la vérification
         try {
-            $_SESSION['db_instance'] = Connexion::getInstance("u847486544_root", "Jesaplgrout123456789*");
+            $_SESSION['username'] = $username;
+            $_SESSION['password'] = $password;
             echo "Connexion réussie";
         } catch (Exception $e) {
             echo "Erreur : " . $e->getMessage();
