@@ -1,11 +1,12 @@
-main{
-    font-family: Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
+main {
+    font-family: Arial, sans-serif !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100vh !important;
+    margin: 0 !important;
 }
+
 .login-form {
     padding: 20px;
     border: 1px solid #ccc;
