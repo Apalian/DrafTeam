@@ -122,107 +122,58 @@ body {
                       GESTION JOUEURS
 */
 /* Style de base */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-/* Boutons principaux */
-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #ddd;
-}
-
-button:focus {
-    outline: none;
-}
-
-/* Bouton principal (créer un nouveau joueur) */
-.container a button {
-    background-color: #007bff;
-    color: #fff;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.container a button:hover {
-    background-color: #0056b3;
-}
-
-/* Liste des joueurs */
-.joueurs-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Cartes de joueurs */
+/* Structure de la carte */
 .card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     background-color: #fff;
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
 }
 
-.card h2 {
-    margin: 0;
-    font-size: 20px;
-    color: #333;
+/* Partie gauche de la carte */
+.card-left {
+    flex: 1;
 }
 
-.card p {
-    margin: 5px 0;
-    color: #555;
+/* Partie droite de la carte */
+.card-right {
+    flex: 0 0 150px;
+    padding-left: 15px;
+    border-left: 1px solid #ddd; /* Trait de séparation */
 }
 
-.card strong {
-    color: #333;
+/* Style des boutons Modifier et Supprimer */
+.card-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-/* Boutons de modification et de suppression */
-.card a button {
+.card-buttons a button {
     padding: 8px 12px;
     font-size: 14px;
     border-radius: 5px;
 }
 
-.card a:first-child button {
+.card-buttons a:first-child button {
     background-color: #28a745;
     color: white;
 }
 
-.card a:first-child button:hover {
+.card-buttons a:first-child button:hover {
     background-color: #218838;
 }
 
-.card a:last-child button {
+.card-buttons a:last-child button {
     background-color: #dc3545;
     color: white;
 }
 
-.card a:last-child button:hover {
+.card-buttons a:last-child button:hover {
     background-color: #c82333;
 }
