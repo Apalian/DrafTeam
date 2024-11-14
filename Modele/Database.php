@@ -1,7 +1,9 @@
 <?php
 
 namespace Modele;
+use Exception;
 use PDO;
+use PDOException;
 
 class Database
 {
@@ -11,8 +13,6 @@ class Database
     private function __construct($username, $password)
     {
         try {
-            echo "$username";
-            echo "$password";
             $this->pdo = new PDO("mysql:host=localhost;dbname=u847486544_drafteam", $username, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
@@ -20,7 +20,7 @@ class Database
         }
     }
 
-    public static function getInstance($username = null, $password = null)
+    public static function getInstance($username = null, $password = null): ?Database
     {
         if (self::$instance === null) {
             if ($username === null || $password === null) {
@@ -31,7 +31,7 @@ class Database
         return self::$instance;
     }
 
-    public function getConnection()
+    public function getConnection(): PDO
     {
         return $this->pdo;
     }

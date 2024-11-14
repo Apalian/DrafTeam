@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === $user && $password === $pass) {
         $_SESSION['username'] = "u847486544_root";
         $_SESSION['password'] = "Jesaplgrout123456789*";
+
         header("Location: ../index.php");
         exit();
     } else {
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Authentification - DrafTeam</title>
 </head>
 <body>
-<div class="container">
+<div class="login">
     <form class="login-form" action="login.php" method="post">
         <h2>Authentification</h2>
 
