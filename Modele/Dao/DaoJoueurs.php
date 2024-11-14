@@ -1,6 +1,6 @@
 <?php
 
-use Modele\Dao;
+namespace Modele\Dao;
 use Modele\Joueurs;
 
 class DaoJoueurs extends Dao
