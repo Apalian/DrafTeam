@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass = "admin";
 
     if ($username === $user && $password === $pass) {
-        $_SESSION['username'] = $username;
-        $_SESSION['password'] = $password;
+        $_SESSION['username'] = "u847486544_root";
+        $_SESSION['password'] = "Jesaplgrout123456789*";
         header("Location: ../index.php");
         exit();
     } else {
