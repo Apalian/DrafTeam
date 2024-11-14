@@ -1,4 +1,10 @@
 <?php
+
+// Affichage des erreurs sur Hostinger
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 // Vérifie si l'utilisateur est connecté
@@ -35,7 +41,7 @@ if (isset($_GET['delete'])) {
 
 <div class="container">
     <h1>Gestion des Joueurs</h1>
-    <a href="ajouter_joueur.php"><button>Créer un Nouveau Joueur</button></a>
+    <a href="ajouterJoueur.php"><button>Créer un Nouveau Joueur</button></a>
 
     <div class="joueurs-list">
         <?php foreach ($joueurs as $joueur): ?>
