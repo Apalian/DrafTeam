@@ -1,6 +1,8 @@
 <?php
 
 namespace Modele;
+use PDO;
+
 class Database
 {
     private static $instance = null;
