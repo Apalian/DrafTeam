@@ -1,12 +1,16 @@
 <?php
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 session_start();
 require_once 'Connexion.php';
+
+// Vérifie si l'utilisateur est déjà connecté
+if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+    header("Location: index.php");
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
@@ -17,20 +21,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass = "admin";
 
     if ($username === $user && $password === $pass) {
-        // Instancie l'objet Database uniquement après la vérification
-        try {
-            $_SESSION['username'] = $username;
-            $_SESSION['password'] = $password;
-            echo "Connexion réussie";
-            header("Location: ../index.php?error=");
-            exit();
-        } catch (Exception $e) {
-            echo "Erreur : " . $e->getMessage();
-        }
+        $_SESSION['username'] = $username;
+        $_SESSION['password'] = $password;
+        header("Location: index.php");
+        exit();
     } else {
-        // Message d'erreur pour l'authentification échouée
-        $error = "Nom d'utilisateur ou mot de passe incorrect.";
-        header("Location: ../index.php?error=" . urlencode($error));
+        header("Location: login.php?error=Nom d'utilisateur ou mot de passe incorrect");
         exit();
     }
 }
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css.css">
+    <title>Authentification - DrafTeam</title>
+</head>
+<body>
+<div class="container">
+    <form class="login-form" action="login.php" method="post">
+        <h2>Authentification</h2>
+
+        <!-- Affichage des erreurs -->
+        <?php if (isset($_GET['error']) && !empty($_GET['error'])): ?>
+            <div class="error"><?php echo htmlspecialchars($_GET['error']); ?></div>
+        <?php endif; ?>
+
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+
+        <input type="submit" value="Se connecter">
+    </form>
+</div>
+</body>
+</html>
