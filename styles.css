@@ -61,30 +61,15 @@ body {
 /*
                       NAVBAR
 */
-/* Styles de base */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
 /* Bouton hamburger */
 .hamburger {
     font-size: 24px;
     cursor: pointer;
-    padding: 10px;
-    border: 2px solid #333;
-    border-radius: 50%; /* Bordure arrondie */
+    padding: 15px;
     position: fixed;
     top: 10px;
-    left: 10px; /* Place le bouton à gauche */
+    right: 10px;
     z-index: 2;
-    transition: transform 0.3s ease; /* Animation de rotation */
-}
-
-/* Transformation du bouton en croix quand le menu est ouvert */
-.hamburger.open {
-    transform: rotate(45deg);
 }
 
 /* Menu latéral */
