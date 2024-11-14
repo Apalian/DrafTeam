@@ -136,7 +136,7 @@ body {
     margin-bottom: 15px;
 }
 
-.card {
+.card-body {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
