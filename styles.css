@@ -115,6 +115,114 @@ body {
 }
 
 .content {
-    padding-top: 60px; /* Ajustez si nécessaire */
+    padding-top: 60px;
     text-align: center;
+}
+/*
+                      GESTION JOUEURS
+*/
+/* Style de base */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Boutons principaux */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Bouton principal (créer un nouveau joueur) */
+.container a button {
+    background-color: #007bff;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.container a button:hover {
+    background-color: #0056b3;
+}
+
+/* Liste des joueurs */
+.joueurs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Cartes de joueurs */
+.card {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.card strong {
+    color: #333;
+}
+
+/* Boutons de modification et de suppression */
+.card a button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.card a:first-child button {
+    background-color: #28a745;
+    color: white;
+}
+
+.card a:first-child button:hover {
+    background-color: #218838;
+}
+
+.card a:last-child button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.card a:last-child button:hover {
+    background-color: #c82333;
 }
