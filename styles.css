@@ -193,6 +193,11 @@ button:focus {
     justify-content: flex-start;
 }
 
+card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .card h2 {
     margin: 0;
