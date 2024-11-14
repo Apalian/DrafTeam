@@ -35,9 +35,10 @@ abstract class Dao
     /**
      * Deletes an element.
      *
+     * @param mixed ...$id
      * @return void
      */
-    public abstract function delete($elt);
+    public abstract function delete(...$id);
 
     /**
      * Finds an element by its ID(s).

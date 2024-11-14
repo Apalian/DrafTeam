@@ -14,7 +14,7 @@ class DaoJoueurs extends Dao
     public function create($elt)
     {
         if (!$elt instanceof Joueurs) {
-            throw new \InvalidArgumentException("L'élément doit être une instance de Joueur");
+            throw new \InvalidArgumentException("L'élément doit être une instance de Joueurs");
         }
 
         $sql = "INSERT INTO MATCHS (numLicense, nom, prenom, dateNaissance, commentaire, statut, taille, poids) 
@@ -55,14 +55,18 @@ class DaoJoueurs extends Dao
     }
 
     /**
-     * @param Joueurs $elt
+     * @param ...$id
      * @return void
      */
-    public function delete($elt)
+    public function delete(...$id)
     {
+        if (empty($id[0])) {
+            throw new \InvalidArgumentException("Un numéro de licence est requis.");
+        }
+        $numLicense = $id[0];
         $sql = "DELETE FROM JOUEURS WHERE numLicense = :numLicense";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute([':numLicense' => $elt->getNumLicense()]);
+        $statement->execute([':numLicense' => $numLicense]);
     }
 
     /**

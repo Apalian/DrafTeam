@@ -48,16 +48,21 @@ class DaoMatchs extends Dao
     }
 
     /**
-     * @param Matchs $elt
+     * @param ...$id
      * @return void
      */
-    public function delete($elt)
+    public function delete(...$id)
     {
+        if (empty($id[0]) && empty($id[1])) {
+            throw new \InvalidArgumentException("Une date et une heure sont requis");
+        }
+        $dateMatch = $id[0];
+        $heure = $id[1];
         $sql = "DELETE FROM MATCHS WHERE dateMatch = :dateMatch AND heure = :heure";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
-            ':dateMatch' => $elt->getDateMatch(),
-            ':heure' => $elt->getHeure()
+            ':dateMatch' => $dateMatch,
+            ':heure' => $heure
         ]);
     }
 
