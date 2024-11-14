@@ -18,10 +18,9 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
 <body>
 <!-- Barre de navigation -->
 <nav class="navbar">
-    <div class="navbar-logo"><a href="#" class="nav-link">DrafTeam</a></div>
+    <div class="navbar-logo"><a href="./index.php" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
-        Accueil</a>
-        <a href="#" class="nav-link">Profil</a>
+        <a href="./Vue/gestionJoueurs.php" class="nav-link">Joueurs</a>
         <a href="#" class="nav-link">Matchs</a>
         <a href="#" class="nav-link">Statistiques</a>
         <a href="#" class="nav-link">Équipes</a>
