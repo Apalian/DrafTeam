@@ -44,19 +44,20 @@ if (isset($_GET['delete'])) {
     <div class="joueurs-list">
         <?php foreach ($joueurs as $joueur): ?>
             <div class="card">
-                <div class="card-left">
-                    <h2><?php echo htmlspecialchars($joueur['nom']) . ' ' . htmlspecialchars($joueur['prenom']); ?></h2>
-                    <p><strong>Numéro de Licence:</strong> <?php echo htmlspecialchars($joueur['numLicense']); ?></p>
-                    <p><strong>Date de naissance:</strong> <?php echo htmlspecialchars($joueur['dateNaissance']); ?></p>
-                    <p><strong>Statut:</strong> <?php echo htmlspecialchars($joueur['statut']); ?></p>
-                    <p><strong>Commentaire:</strong> <?php echo htmlspecialchars($joueur['commentaire']); ?></p>
-                </div>
+                <div class="card-body">
+                    <div class="card-left">
+                        <h2><?php echo htmlspecialchars($joueur['nom']) . ' ' . htmlspecialchars($joueur['prenom']); ?></h2>
+                        <p><strong>Numéro de Licence:</strong> <?php echo htmlspecialchars($joueur['numLicense']); ?></p>
+                        <p><strong>Date de naissance:</strong> <?php echo htmlspecialchars($joueur['dateNaissance']); ?></p>
+                        <p><strong>Statut:</strong> <?php echo htmlspecialchars($joueur['statut']); ?></p>
+                        <p><strong>Commentaire:</strong> <?php echo htmlspecialchars($joueur['commentaire']); ?></p>
+                    </div>
 
-                <div class="card-right">
-                    <p><strong>Taille:</strong> <?php echo htmlspecialchars($joueur['taille']); ?> cm</p>
-                    <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur['poids']); ?> kg</p>
+                    <div class="card-right">
+                        <p><strong>Taille:</strong> <?php echo htmlspecialchars($joueur['taille']); ?></p>
+                        <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur['poids']); ?></p>
+                    </div>
                 </div>
-
                 <!-- Boutons Modifier et Supprimer -->
                 <div class="card-buttons">
                     <a href="modifier_joueur.php?numLicense=<?php echo $joueur['numLicense']; ?>"><button>Modifier</button></a>

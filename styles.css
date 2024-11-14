@@ -125,6 +125,7 @@ body {
 /* Structure de la carte */
 .card {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
     background-color: #fff;
@@ -133,6 +134,12 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 /* Partie gauche de la carte */
