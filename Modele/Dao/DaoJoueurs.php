@@ -2,6 +2,7 @@
 
 namespace Modele\Dao;
 use Modele\Joueurs;
+require_once __DIR__ . '/Dao.php';
 
 class DaoJoueurs extends Dao
 {
