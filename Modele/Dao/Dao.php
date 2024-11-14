@@ -1,7 +1,8 @@
 <?php
 
-namespace dao;
-use Connexion;
+namespace Modele\Dao;
+use Modele\Database;
+
 /**
  * @template T
  */
@@ -13,7 +14,7 @@ abstract class Dao
     public function __construct($username, $password)
     {
         // Obtenir la connexion PDO
-        $this->pdo = Connexion::getInstance($username, $password)->getConnection();
+        $this->pdo = Database::getInstance($username, $password)->getConnection();
     }
 
     /**

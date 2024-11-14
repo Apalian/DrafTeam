@@ -1,16 +1,45 @@
 <?php
 
+namespace Modele;
+
 class Matchs
 {
+    /**
+     * @var
+     */
     private $dateMatch;
+    /**
+     * @var
+     */
     private $heure;
+    /**
+     * @var
+     */
     private $nomEquipeAdverse;
+    /**
+     * @var
+     */
     private $lieuRencontre;
+    /**
+     * @var
+     */
     private $ScoreEquipeDomicile;
+    /**
+     * @var
+     */
     private $scoreEquipeExterne;
 
 
-    public function __construct($dateMatch,$heure,$nomEquipeAdverse,$lieuRencontre,$ScoreEquipeDomicile,$scoreEquipeExterne){
+    /**
+     * @param $dateMatch
+     * @param $heure
+     * @param $nomEquipeAdverse
+     * @param $lieuRencontre
+     * @param $ScoreEquipeDomicile
+     * @param $scoreEquipeExterne
+     */
+    public function __construct($dateMatch, $heure, $nomEquipeAdverse, $lieuRencontre, $ScoreEquipeDomicile, $scoreEquipeExterne)
+    {
         $this->dateMatch = $dateMatch;
         $this->heure = $heure;
         $this->nomEquipeAdverse = $nomEquipeAdverse;

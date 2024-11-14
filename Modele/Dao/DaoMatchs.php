@@ -1,7 +1,8 @@
 <?php
 
-namespace dao;
-use Matchs;
+namespace Modele\Dao;
+use Modele\Matchs;
+
 class DaoMatchs extends Dao
 {
 

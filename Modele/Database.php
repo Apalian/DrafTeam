@@ -1,9 +1,13 @@
 <?php
-class Connexion {
+
+namespace Modele;
+class Database
+{
     private static $instance = null;
     private $pdo;
 
-    private function __construct($username, $password) {
+    private function __construct($username, $password)
+    {
         try {
             $this->pdo = new PDO("mysql:host=localhost;dbname=u847486544_drafteam", $username, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -12,7 +16,8 @@ class Connexion {
         }
     }
 
-    public static function getInstance($username = null, $password = null) {
+    public static function getInstance($username = null, $password = null)
+    {
         if (self::$instance === null) {
             if ($username === null || $password === null) {
                 throw new Exception("Username et password requis pour la première connexion.");
@@ -22,9 +27,12 @@ class Connexion {
         return self::$instance;
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->pdo;
     }
 
-    private function __clone() {}
+    private function __clone()
+    {
+    }
 }

@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-require_once 'Connexion.php';
+require_once 'Database.php';
 
 // Vérifie si l'utilisateur est déjà connecté
 if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css.css">
+    <link rel="stylesheet" type="text/css" href="css.css">
     <title>Authentification - DrafTeam</title>
 </head>
 <body>

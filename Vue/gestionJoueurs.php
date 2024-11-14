@@ -5,10 +5,10 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])){
     header("Location: index.php");
 }else{
 
-    require_once './PHP/Connexion.php';
+    require_once './PHP/Database.php';
     require_once './PHP/Modele/Dao/DaoJoueurs.php';
 
-    $daoJoueurs = new dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
+    $daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
     $joueurs = $daoJoueurs->findAll();
 
     // Vérifier si un joueur a été supprimé

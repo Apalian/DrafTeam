@@ -1,16 +1,53 @@
 <?php
+
+namespace Modele;
 class Joueurs
 {
+    /**
+     * @var
+     */
     private $numLicense;
+    /**
+     * @var
+     */
     private $nom;
+    /**
+     * @var
+     */
     private $prenom;
+    /**
+     * @var
+     */
     private $dateNaissance;
+    /**
+     * @var
+     */
     private $commentaire;
+    /**
+     * @var
+     */
     private $statut;
+    /**
+     * @var
+     */
     private $taille;
+    /**
+     * @var
+     */
     private $poids;
 
-    public function __construct($numLicense,$nom,$prenom,$dateNaissance,$commentaire,$statut,$taille,$poids){
+    /**
+     * @param $numLicense
+     * @param $nom
+     * @param $prenom
+     * @param $dateNaissance
+     * @param $commentaire
+     * @param $statut
+     * @param $taille
+     * @param $poids
+     */
+    public function __construct($numLicense, $nom, $prenom, $dateNaissance, $commentaire, $statut, $taille, $poids)
+    {
         $this->numLicense = $numLicense;
         $this->nom = $nom;
         $this->prenom = $prenom;

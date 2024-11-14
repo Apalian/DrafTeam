@@ -1,7 +1,8 @@
 <?php
 
-namespace dao;
-use Participation;
+namespace Modele\Dao;
+use Modele\Participation;
+
 class DaoParticipation extends Dao
 {
 

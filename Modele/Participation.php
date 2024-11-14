@@ -1,15 +1,43 @@
 <?php
 
+namespace Modele;
 class Participation
 {
+    /**
+     * @var
+     */
     private $numLicense;
+    /**
+     * @var
+     */
     private $dateMatch;
+    /**
+     * @var
+     */
     private $heure;
+    /**
+     * @var
+     */
     private $estTitulaire;
+    /**
+     * @var
+     */
     private $evaluation;
+    /**
+     * @var
+     */
     private $poste;
 
-    public function __construct($numLicense,$dateMatch,$heure,$estTitulaire,$evaluation,$poste){
+    /**
+     * @param $numLicense
+     * @param $dateMatch
+     * @param $heure
+     * @param $estTitulaire
+     * @param $evaluation
+     * @param $poste
+     */
+    public function __construct($numLicense, $dateMatch, $heure, $estTitulaire, $evaluation, $poste)
+    {
         $this->numLicense = $numLicense;
         $this->dateMatch = $dateMatch;
         $this->heure = $heure;
