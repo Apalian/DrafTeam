@@ -13,7 +13,6 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./Images/favicon (2).ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="Vue/css.css">
     <title>Page d'accueil - DrafTeam</title>
 </head>
