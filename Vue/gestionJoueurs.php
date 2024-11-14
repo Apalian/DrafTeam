@@ -13,8 +13,8 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
     exit();
 }
 
-require_once './Modele/Database.php';
-require_once './Modele/Dao/DaoJoueurs.php';
+require_once '../Modele/Database.php';
+require_once '../Modele/Dao/DaoJoueurs.php';
 
 $daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
 $joueurs = $daoJoueurs->findAll();
