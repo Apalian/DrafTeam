@@ -61,52 +61,57 @@ body {
 /*
                       NAVBAR
 */
-/* Styles de base */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* Bouton hamburger */
-.hamburger {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    border: 2px solid #333;
-    border-radius: 8px; /* Légèrement arrondi */
+.navbar {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    z-index: 2;
-    background: transparent;
-}
-
-/* Barres du hamburger */
-.hamburger::before, .hamburger::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 2px;
+    padding: 10px 20px;
     background-color: #333;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Position des barres initiales */
-.hamburger::before {
-    transform: translateY(-6px);
-}
-.hamburger::after {
-    transform: translateY(6px);
+
+.navbar-logo {
+    font-size: 24px;
+    font-weight: bold;
 }
 
-/* Transformation en croix */
-.hamburger.open::before {
-    transform: rotate(45deg);
+
+.navbar-links {
+    display: flex;
+    gap: 15px;
 }
-.hamburger.open::after {
-    transform: rotate(-45deg);
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    transition: background 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #575757;
+    border-radius: 4px;
+}
+
+
+.logout {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+.content {
+    padding-top: 60px; /* Ajustez si nécessaire */
+    text-align: center;
 }
