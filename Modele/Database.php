@@ -11,6 +11,8 @@ class Database
     private function __construct($username, $password)
     {
         try {
+            echo "$username";
+            echo "$password";
             $this->pdo = new PDO("mysql:host=localhost;dbname=u847486544_drafteam", $username, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
