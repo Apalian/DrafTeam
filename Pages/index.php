@@ -13,13 +13,13 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css.css">
+    <link rel="stylesheet" type="text/css" href="../css.css">
     <title>Authentification - DrafTeam</title>
 </head>
 <body >
 <div class="container">
     <!-- Affichage du formulaire -->
-    <form class="login-form" action="PHP/login.php" method="post">
+    <form class="login-form" action="login.php" method="post">
         <h2>Authentification</h2>
 
         <!-- Affichage des erreurs -->
