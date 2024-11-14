@@ -8,7 +8,7 @@ session_start();
 
 // Vérifie si l'utilisateur est déjà connecté
 if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === $user && $password === $pass) {
         $_SESSION['username'] = $username;
         $_SESSION['password'] = $password;
-        header("Location: index.php");
+        header("Location: ../index.php");
         exit();
     } else {
         header("Location: login.php?error=Nom d'utilisateur ou mot de passe incorrect");
