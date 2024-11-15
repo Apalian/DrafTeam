@@ -42,22 +42,22 @@ if (isset($_GET['delete'])) {
             <div class="card">
                 <div class="card-body">
                     <div class="card-left">
-                        <h2><?php echo htmlspecialchars($joueur['nom']) . ' ' . htmlspecialchars($joueur['prenom']); ?></h2>
-                        <p><strong>Numéro de Licence:</strong> <?php echo htmlspecialchars($joueur['numLicense']); ?></p>
-                        <p><strong>Date de naissance:</strong> <?php echo htmlspecialchars($joueur['dateNaissance']); ?></p>
-                        <p><strong>Statut:</strong> <?php echo htmlspecialchars($joueur['statut']); ?></p>
-                        <p><strong>Commentaire:</strong> <?php echo htmlspecialchars($joueur['commentaire']); ?></p>
+                        <h2><?php echo htmlspecialchars($joueur->getNom()) . ' ' . htmlspecialchars($joueur->getPrenom()); ?></h2>
+                        <p><strong>Numéro de Licence:</strong> <?php echo htmlspecialchars($joueur->getNumLicense()); ?></p>
+                        <p><strong>Date de naissance:</strong> <?php echo htmlspecialchars($joueur->getDateNaissance()); ?></p>
+                        <p><strong>Statut:</strong> <?php echo htmlspecialchars($joueur->getStatut()); ?></p>
+                        <p><strong>Commentaire:</strong> <?php echo htmlspecialchars($joueur->getCommentaire()); ?></p>
                     </div>
 
                     <div class="card-right">
-                        <p><strong>Taille:</strong> <?php echo htmlspecialchars($joueur['taille']); ?></p>
-                        <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur['poids']); ?></p>
+                        <p><strong>Taille:</strong> <?php echo htmlspecialchars($joueur->getTaille()); ?></p>
+                        <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur->getPoids()); ?></p>
                     </div>
                 </div>
                 <!-- Boutons Modifier et Supprimer -->
                 <div class="card-buttons">
-                    <a href="modifierJoueur.php?numLicense=<?php echo $joueur['numLicense']; ?>"><button>Modifier</button></a>
-                    <a href="?delete=<?php echo $joueur['numLicense']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
+                    <a href="modifierJoueur.php?numLicense=<?php echo $joueur->getNumLicense(); ?>"><button>Modifier</button></a>
+                    <a href="?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
                 </div>
             </div>
 
