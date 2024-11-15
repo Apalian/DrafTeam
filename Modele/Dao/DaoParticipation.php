@@ -89,7 +89,13 @@ class DaoParticipation extends Dao
             ':dateMatch' => $dateMatch,
             ':heure' => $heure
         ]);
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+        $data = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            throw new \RuntimeException("Aucun participation trouvé pour ce joueur à cette date et heure");
+        }
+
+        return $this->creerInstance($data);
     }
 
     /**
@@ -102,7 +108,19 @@ class DaoParticipation extends Dao
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function creerInstance(...$elt){
-        return new Participation($elt[0],$elt[1],$elt[2],$elt[3],$elt[4],$elt[5]);
+    public function creerInstance($data): Participation
+    {
+        if (!$data) {
+            throw new \RuntimeException("Les données fournies pour créer une instance de Participation sont invalides.");
+        }
+
+        return new Participation(
+            $data['numLicense'],
+            $data['dateMatch'],
+            $data['heure'],
+            $data['estTitulaire'],
+            $data['evaluation'],
+            $data['poste']
+        );
     }
 }

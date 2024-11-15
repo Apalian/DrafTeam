@@ -56,7 +56,7 @@ if (isset($_GET['delete'])) {
                 </div>
                 <!-- Boutons Modifier et Supprimer -->
                 <div class="card-buttons">
-                    <a href="modifierJoueurs.php?numLicense=<?php echo $joueur['numLicense']; ?>"><button>Modifier</button></a>
+                    <a href="modifierJoueur.php?numLicense=<?php echo $joueur['numLicense']; ?>"><button>Modifier</button></a>
                     <a href="?delete=<?php echo $joueur['numLicense']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
                 </div>
             </div>
