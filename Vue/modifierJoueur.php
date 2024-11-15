@@ -48,7 +48,7 @@ $joueur = $daoJoueurs ->findById($numLicense);
         <!-- Boutons Modifier et Supprimer -->
         <div class="card-buttons">
             <a href="?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir modifer ce joueur ?');"><button>Valider</button></a>
-            <a href="modifierJoueur.php?numLicense=<?php echo $joueur->getNumLicense(); ?>"><button>Annuler</button></a>
+            <a href="gestionJoueurs.php"><button>Annuler</button></a>
 
         </div>
     </div>
