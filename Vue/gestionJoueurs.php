@@ -1,11 +1,7 @@
 <?php
-// Affichage des erreurs sur Hostinger
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 session_start();
 
-// Vérifie si l'utilisateur est connecté
+// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
     header("Location: ../Vue/login.php");
     exit();
@@ -21,7 +17,7 @@ $joueurs = $daoJoueurs->findAll();
 if (isset($_GET['delete'])) {
     $numLicense = $_GET['delete'];
     $daoJoueurs->delete($numLicense);
-    header("Location: gestion_joueurs.php");
+    header("Location: gestionJoueurs.php");
     exit;
 }
 
@@ -60,7 +56,7 @@ if (isset($_GET['delete'])) {
                 </div>
                 <!-- Boutons Modifier et Supprimer -->
                 <div class="card-buttons">
-                    <a href="modifier_joueur.php?numLicense=<?php echo $joueur['numLicense']; ?>"><button>Modifier</button></a>
+                    <a href="modifierJoueurs.php?numLicense=<?php echo $joueur['numLicense']; ?>"><button>Modifier</button></a>
                     <a href="?delete=<?php echo $joueur['numLicense']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
                 </div>
             </div>

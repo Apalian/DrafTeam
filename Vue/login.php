@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 session_start();
 
-// Vérifie si l'utilisateur est déjà connecté
+// Vérifier si l'utilisateur est déjà connecté
 if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     header("Location: ../index.php");
     exit();
