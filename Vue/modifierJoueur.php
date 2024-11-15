@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST">
         <div class="card">
             <div class="card-body">
-                <div>
+                <div class="form">
                     <label>Nom :</label>
                     <input type="text" name="nom" value="<?php echo htmlspecialchars($joueur->getNom()); ?>" required>
                     <label>Prénom :</label>

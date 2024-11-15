@@ -246,7 +246,7 @@ button:focus {
 /*
         MODIFICATION JOUEUR
  */
-form {
+.form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -254,14 +254,14 @@ form {
 }
 
 /* Champs du formulaire */
-form label {
+.form label {
     font-size: 14px;
     color: #555;
     margin-bottom: 5px;
 }
 
-form input,
-form textarea {
+.form input,
+.form textarea {
     width: 100%;
     padding: 10px;
     font-size: 14px;
@@ -273,38 +273,38 @@ form textarea {
 }
 
 /* Champs au focus */
-form input:focus,
-form textarea:focus {
+.form input:focus,
+.form textarea:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
 }
 
 /* Boutons du formulaire */
-form .card-buttons {
+.form .card-buttons {
     display: flex;
     gap: 10px;
     justify-content: flex-start;
 }
 
 /* Bouton Valider */
-form .card-buttons button[type="submit"] {
+.form .card-buttons button[type="submit"] {
     background-color: #28a745;
     color: #fff;
     transition: background-color 0.3s ease;
 }
 
-form .card-buttons button[type="submit"]:hover {
+.form .card-buttons button[type="submit"]:hover {
     background-color: #218838;
 }
 
 /* Bouton Annuler */
-form .card-buttons a button[type="button"] {
+.form .card-buttons a button[type="button"] {
     background-color: #dc3545;
     color: #fff;
     transition: background-color 0.3s ease;
 }
 
-form .card-buttons a button[type="button"]:hover {
+.form .card-buttons a button[type="button"]:hover {
     background-color: #c82333;
 }
