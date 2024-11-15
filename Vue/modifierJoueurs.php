@@ -10,7 +10,11 @@ if ((!isset($_SESSION['username']) || !isset($_SESSION['password'])) && !isset($
     header("Location: ../Vue/login.php");
     exit();
 }
-$daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
+
+require_once '../Modele/Database.php';
+require_once '../Modele/Dao/DaoJoueurs.php';
+
+$daoJoueurs = new DaoJoueurs($_SESSION['username'], $_SESSION['password']);
 $numLicense = $_GET['numLicense'];
 $joueur = $daoJoueurs ->findById($numLicense);
 
