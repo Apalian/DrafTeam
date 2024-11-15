@@ -54,4 +54,12 @@ abstract class Dao
      * @return iterable<T>
      */
     public abstract function findAll(): array;
+
+    /**
+     * Finds an element by its ID(s).
+     *
+     * @param mixed ...$elt
+     * @return T|null
+     */
+    public abstract function creerInstance(...$elt);
 }

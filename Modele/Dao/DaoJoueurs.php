@@ -82,7 +82,7 @@ class DaoJoueurs extends Dao
         $sql = "SELECT * FROM JOUEURS WHERE numLicense = :numLicense";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([':numLicense' => $numLicense]);
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+        return creerInstance($statement->fetch(\PDO::FETCH_ASSOC));
     }
 
     /**
@@ -93,5 +93,9 @@ class DaoJoueurs extends Dao
         $sql = "SELECT * FROM JOUEURS";
         $statement = $this->pdo->query($sql);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function creerInstance(...$elt){
+        return new Joueurs($elt[0],$elt[1],$elt[2],$elt[3],$elt[4],$elt[5],$elt[6],$elt[7]);
     }
 }

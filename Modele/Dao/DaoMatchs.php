@@ -95,4 +95,8 @@ class DaoMatchs extends Dao
         $statement = $this->pdo->query($sql);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function creerInstance(...$elt){
+        return new Matchs($elt[0],$elt[1],$elt[2],$elt[3],$elt[4],$elt[5]);
+    }
 }
