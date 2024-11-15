@@ -308,3 +308,10 @@ button:focus {
 .form .card-buttons a button[type="button"]:hover {
     background-color: #c82333;
 }
+
+.score-green { color: green; font-weight: bold }
+.score-red { color: red; font-weight: bold }
+.score-grey { color: grey; font-weight: bold}
+
+
+
