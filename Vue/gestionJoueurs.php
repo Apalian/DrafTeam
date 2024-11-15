@@ -50,8 +50,8 @@ if (isset($_GET['delete'])) {
                     </div>
 
                     <div class="card-right">
-                        <p><strong>Taille:</strong> <?php echo htmlspecialchars($joueur->getTaille()); ?></p>
-                        <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur->getPoids()); ?></p>
+                        <p><strong>Taille:</strong> <?php echo htmlspecialchars($joueur->getTaille()); ?>cm</p>
+                        <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur->getPoids()); ?>kg</p>
                     </div>
                 </div>
                 <!-- Boutons Modifier et Supprimer -->
