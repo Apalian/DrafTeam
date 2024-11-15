@@ -14,7 +14,7 @@ if ((!isset($_SESSION['username']) || !isset($_SESSION['password'])) && !isset($
 require_once '../Modele/Database.php';
 require_once '../Modele/Dao/DaoJoueurs.php';
 
-$daoJoueurs = new DaoJoueurs($_SESSION['username'], $_SESSION['password']);
+$daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
 $numLicense = $_GET['numLicense'];
 $joueur = $daoJoueurs ->findById($numLicense);
 
