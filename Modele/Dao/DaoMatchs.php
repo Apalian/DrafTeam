@@ -2,7 +2,7 @@
 
 namespace Modele\Dao;
 use Modele\Matchs;
-
+require_once __DIR__ . '/Dao.php';
 class DaoMatchs extends Dao
 {
 

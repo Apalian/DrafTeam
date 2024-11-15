@@ -2,7 +2,7 @@
 
 namespace Modele\Dao;
 use Modele\Participation;
-
+require_once __DIR__ . '/Dao.php';
 class DaoParticipation extends Dao
 {
 
