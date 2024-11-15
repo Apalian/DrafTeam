@@ -35,10 +35,7 @@ if (isset($_GET['dateMatch'])&&isset($_GET['heure'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles.css">
     <title>Gestion des Matchs</title>
-    <style>
-        .score-green { color: green; }
-        .score-red { color: red; }
-    </style>
+
 </head>
 <body>
 
@@ -56,13 +53,13 @@ if (isset($_GET['dateMatch'])&&isset($_GET['heure'])) {
                         <p><strong>Lieu de rencontre:</strong> <?php echo htmlspecialchars($match->getLieuRencontre()); ?></p>
                         <p>
                             <strong>Score de l'équipe domicile:</strong>
-                            <span class="<?php echo ($match->getScoreEquipeDomicile() > $match->getScoreEquipeExterne()) ? 'score-green' : 'score-red'; ?>">
+                            <span class="<?php echo ($match->getScoreEquipeExterne() == $match->getScoreEquipeDomicile()) ? 'score-gray' : (($match->getScoreEquipeDomicile() > $match->getScoreEquipeExterne()) ? 'score-green' : 'score-red'); ?>">
                                 <?php echo htmlspecialchars($match->getScoreEquipeDomicile()); ?>
                             </span>
                         </p>
                         <p>
                             <strong>Score de l'équipe adverse:</strong>
-                            <span class="<?php echo ($match->getScoreEquipeExterne() > $match->getScoreEquipeDomicile()) ? 'score-green' : 'score-red'; ?>">
+                            <span class="<?php echo ($match->getScoreEquipeExterne() == $match->getScoreEquipeDomicile()) ? 'score-gray' : (($match->getScoreEquipeDomicile() < $match->getScoreEquipeExterne()) ? 'score-green' : 'score-red'); ?>">
                                 <?php echo htmlspecialchars($match->getScoreEquipeExterne()); ?>
                             </span>
                         </p>
