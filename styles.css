@@ -241,3 +241,70 @@ button:focus {
 .card a:last-child button:hover {
     background-color: #c82333;
 }
+
+
+/*
+        MODIFICATION JOUEUR
+ */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Champs du formulaire */
+form label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+form input,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Champs au focus */
+form input:focus,
+form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Boutons du formulaire */
+form .card-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+/* Bouton Valider */
+form .card-buttons button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+form .card-buttons button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Bouton Annuler */
+form .card-buttons a button[type="button"] {
+    background-color: #dc3545;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+form .card-buttons a button[type="button"]:hover {
+    background-color: #c82333;
+}
