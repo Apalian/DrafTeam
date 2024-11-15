@@ -16,8 +16,24 @@ require_once '../Modele/Dao/DaoJoueurs.php';
 
 $daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
 $numLicense = $_GET['numLicense'];
-$joueur = $daoJoueurs ->findById($numLicense);
+$joueur = $daoJoueurs->findById($numLicense);
 
+// Vérifier si les modifications ont été soumises
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $joueur->setNom($_POST['nom']);
+    $joueur->setPrenom($_POST['prenom']);
+    $joueur->setDateNaissance($_POST['dateNaissance']);
+    $joueur->setStatut($_POST['statut']);
+    $joueur->setCommentaire($_POST['commentaire']);
+    $joueur->setTaille($_POST['taille']);
+    $joueur->setPoids($_POST['poids']);
+
+    // Mettre à jour le joueur
+    $daoJoueurs->update($joueur);
+
+    header("Location: gestionJoueurs.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,33 +42,40 @@ $joueur = $daoJoueurs ->findById($numLicense);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles.css">
-    <title>Gestion des Joueurs</title>
+    <title>Modifier Joueur</title>
 </head>
 <body>
 
 <div class="container">
-    <h1>Gestion des Joueurs</h1>
-    <a href="ajouterJoueur.php"><button>Créer un Nouveau Joueur</button></a>
-    <div class="card">
-        <div class="card-body">
-            <div>
-                <h2><?php echo htmlspecialchars($joueur->getNom()) . ' ' . htmlspecialchars($joueur->getPrenom()); ?></h2>
-                <p><strong>Numéro de Licence:</strong> <?php echo htmlspecialchars($joueur->getNumLicense()); ?></p>
-                <p><strong>Date de naissance:</strong> <?php echo htmlspecialchars($joueur->getDateNaissance()); ?></p>
-                <p><strong>Statut:</strong> <?php echo htmlspecialchars($joueur->getStatut()); ?></p>
-                <p><strong>Commentaire:</strong> <?php echo htmlspecialchars($joueur->getCommentaire()); ?></p>
-                <p><strong>Taille:</strong> <?php echo htmlspecialchars($joueur->getTaille()); ?></p>
-                <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur->getPoids()); ?></p>
+    <h1>Modifier le Joueur</h1>
+    <form method="POST">
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <label>Nom :</label>
+                    <input type="text" name="nom" value="<?php echo htmlspecialchars($joueur->getNom()); ?>" required>
+                    <label>Prénom :</label>
+                    <input type="text" name="prenom" value="<?php echo htmlspecialchars($joueur->getPrenom()); ?>" required>
+                    <label>Date de naissance :</label>
+                    <input type="date" name="dateNaissance" value="<?php echo htmlspecialchars($joueur->getDateNaissance()); ?>" required>
+                    <label>Statut :</label>
+                    <input type="text" name="statut" value="<?php echo htmlspecialchars($joueur->getStatut()); ?>" required>
+                    <label>Commentaire :</label>
+                    <textarea name="commentaire" required><?php echo htmlspecialchars($joueur->getCommentaire()); ?></textarea>
+                    <label>Taille (cm) :</label>
+                    <input type="number" name="taille" value="<?php echo htmlspecialchars($joueur->getTaille()); ?>" required>
+                    <label>Poids (kg) :</label>
+                    <input type="number" name="poids" value="<?php echo htmlspecialchars($joueur->getPoids()); ?>" required>
+                </div>
+            </div>
+            <!-- Boutons Valider et Annuler -->
+            <div class="card-buttons">
+                <button type="submit">Valider</button>
+                <a href="gestionJoueurs.php"><button type="button">Annuler</button></a>
             </div>
         </div>
-        <!-- Boutons Modifier et Supprimer -->
-        <div class="card-buttons">
-            <a href="?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir modifer ce joueur ?');"><button>Valider</button></a>
-            <a href="gestionJoueurs.php"><button>Annuler</button></a>
-
-        </div>
-    </div>
+    </form>
 </div>
+
 </body>
 </html>
-
