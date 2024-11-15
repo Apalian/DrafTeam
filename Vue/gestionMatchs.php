@@ -62,8 +62,8 @@ if (isset($_GET['dateMatch'])&&isset($_GET['heure'])) {
                         </p>
                         <p>
                             <strong>Score de l'équipe adverse:</strong>
-                            <span class="<?php echo ($match->getScoreEquipeExterne > $match->getScoreEquipeDomicile) ? 'score-green' : 'score-red'; ?>">
-                                <?php echo htmlspecialchars($match->getScoreEquipeExterne); ?>
+                            <span class="<?php echo ($match->getScoreEquipeExterne() > $match->getScoreEquipeDomicile()) ? 'score-green' : 'score-red'; ?>">
+                                <?php echo htmlspecialchars($match->getScoreEquipeExterne()); ?>
                             </span>
                         </p>
                     </div>
