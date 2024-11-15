@@ -43,35 +43,35 @@ if (isset($_GET['dateMatch'])&&isset($_GET['heure'])) {
 <body>
 
 <div class="container">
-    <h1>Gestion des Joueurs</h1>
-    <a href="ajouterJoueur.php"><button>Créer un Nouveau Match</button></a>
+    <h1>Gestion des Matchs</h1>
+    <a href="ajouterMatch.php"><button>Créer un Nouveau Match</button></a>
 
     <div class="joueurs-list">
         <?php foreach ($matchs as $match): ?>
             <div class="card">
                 <div class="card-body">
                     <div class="card-left">
-                        <h2><?php echo 'Match du '.htmlspecialchars($match['dateMatch']) . ' à ' . htmlspecialchars($match['heure']); ?></h2>
-                        <p><strong>Nom de l'équipe adverse:</strong> <?php echo htmlspecialchars($match['nomEquipeAdverse']); ?></p>
-                        <p><strong>Lieu de rencontre:</strong> <?php echo htmlspecialchars($match['lieuRencontre']); ?></p>
+                        <h2><?php echo 'Match du '.htmlspecialchars($match->getDateMatch()) . ' à ' . htmlspecialchars($match->getHeure()); ?></h2>
+                        <p><strong>Nom de l'équipe adverse:</strong> <?php echo htmlspecialchars($match->getNomEquipeAdverse()); ?></p>
+                        <p><strong>Lieu de rencontre:</strong> <?php echo htmlspecialchars($match->getLieuRencontre()); ?></p>
                         <p>
                             <strong>Score de l'équipe domicile:</strong>
-                            <span class="<?php echo ($match['scoreEquipeDomicile'] > $match['scoreEquipeAdverse']) ? 'score-green' : 'score-red'; ?>">
-                                <?php echo htmlspecialchars($match['scoreEquipeDomicile']); ?>
+                            <span class="<?php echo ($match->getScoreEquipeDomicile() > $match->getScoreEquipeExterne()) ? 'score-green' : 'score-red'; ?>">
+                                <?php echo htmlspecialchars($match->getScoreEquipeDomicile()); ?>
                             </span>
                         </p>
                         <p>
                             <strong>Score de l'équipe adverse:</strong>
-                            <span class="<?php echo ($match['scoreEquipeAdverse'] > $match['scoreEquipeDomicile']) ? 'score-green' : 'score-red'; ?>">
-                                <?php echo htmlspecialchars($match['scoreEquipeAdverse']); ?>
+                            <span class="<?php echo ($match->getScoreEquipeExterne > $match->getScoreEquipeDomicile) ? 'score-green' : 'score-red'; ?>">
+                                <?php echo htmlspecialchars($match->getScoreEquipeExterne); ?>
                             </span>
                         </p>
                     </div>
                 </div>
                 <!-- Boutons Modifier et Supprimer -->
                 <div class="card-buttons">
-                    <a href="modifierMatch.php?numLicense=<?php echo $match['dateMatch']; ?>"><button>Modifier</button></a>
-                    <a href="?date=<?php echo $match['dateMatch']; ?>&heure=<?php echo $match['heure']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
+                    <a href="modifierMatch.php?numLicense=<?php echo $match->getDateMatch(); ?>"><button>Modifier</button></a>
+                    <a href="?date=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
                 </div>
             </div>
 
