@@ -61,11 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Statut :</label>
                     <input type="text" name="statut" value="<?php echo htmlspecialchars($joueur->getStatut()); ?>" required>
                     <label>Commentaire :</label>
-                    <textarea name="commentaire" required><?php echo htmlspecialchars($joueur->getCommentaire()); ?></textarea>
+                    <textarea name="commentaire"><?php echo htmlspecialchars($joueur->getCommentaire()); ?></textarea>
                     <label>Taille (cm) :</label>
-                    <input type="number" name="taille" value="<?php echo htmlspecialchars($joueur->getTaille()); ?>" required>
+                    <input type="number" name="taille" value="<?php echo htmlspecialchars($joueur->getTaille()); ?>" >
                     <label>Poids (kg) :</label>
-                    <input type="number" name="poids" value="<?php echo htmlspecialchars($joueur->getPoids()); ?>" required>
+                    <input type="number" name="poids" value="<?php echo htmlspecialchars($joueur->getPoids()); ?>" >
                 </div>
             </div>
             <!-- Boutons Valider et Annuler -->
