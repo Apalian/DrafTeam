@@ -246,68 +246,91 @@ button:focus {
 /*
         MODIFICATION JOUEUR
  */
-.form {
+/* Titre du formulaire */
+.form-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Formulaire principal */
+.player-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Champs du formulaire */
-.form label {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 5px;
+/* Groupes de champs */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.form input,
-.form textarea {
+/* Champs d'entrée */
+.form-input,
+.form-textarea {
     width: 100%;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    box-sizing: border-box;
-    margin-bottom: 15px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Champs au focus */
-.form input:focus,
-.form textarea:focus {
+.form-input:focus,
+.form-textarea:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
 }
 
 /* Boutons du formulaire */
-.form .card-buttons {
+.form-buttons {
     display: flex;
     gap: 10px;
     justify-content: flex-start;
 }
 
 /* Bouton Valider */
-.form .card-buttons button[type="submit"] {
+.btn-submit {
+    padding: 10px 15px;
     background-color: #28a745;
     color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
-.form .card-buttons button[type="submit"]:hover {
+.btn-submit:hover {
     background-color: #218838;
 }
 
 /* Bouton Annuler */
-.form .card-buttons a button[type="button"] {
+.btn-cancel button {
+    padding: 10px 15px;
     background-color: #dc3545;
     color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.form .card-buttons a button[type="button"]:hover {
+.btn-cancel button:hover {
     background-color: #c82333;
 }
+
 
 .score-green { color: green; font-weight: bold }
 .score-red { color: red; font-weight: bold }
