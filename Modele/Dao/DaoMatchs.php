@@ -122,7 +122,7 @@ class DaoMatchs extends Dao
             $data['heure'],
             $data['nomEquipeAdverse'],
             $data['lieuRencontre'],
-            $data['ScoreEquipeDomicile'],
+            $data['scoreEquipeDomicile'],
             $data['scoreEquipeExterne']
         );
     }
