@@ -3,6 +3,7 @@
 namespace Modele\Dao;
 use Modele\Joueurs;
 require_once __DIR__ . '/Dao.php';
+require_once __DIR__ . '/../Joueurs.php';
 
 class DaoJoueurs extends Dao
 {
