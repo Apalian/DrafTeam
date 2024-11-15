@@ -58,8 +58,8 @@ abstract class Dao
     /**
      * Finds an element by its ID(s).
      *
-     * @param mixed ...$elt
+     * @param array $data
      * @return T|null
      */
-    public abstract function creerInstance(...$elt);
+    public abstract function creerInstance($data);
 }

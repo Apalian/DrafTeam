@@ -83,7 +83,13 @@ class DaoMatchs extends Dao
             ':dateMatch' => $dateMatch,
             ':heure' => $heure
         ]);
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+        $data = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            throw new \RuntimeException("Aucun matchs trouvé à cette date et heure");
+        }
+
+        return $this->creerInstance($data);
     }
 
     /**
@@ -96,7 +102,19 @@ class DaoMatchs extends Dao
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function creerInstance(...$elt){
-        return new Matchs($elt[0],$elt[1],$elt[2],$elt[3],$elt[4],$elt[5]);
+    public function creerInstance($data): Matchs
+    {
+        if (!$data) {
+            throw new \RuntimeException("Les données fournies pour créer une instance de Matchs sont invalides.");
+        }
+
+        return new Matchs(
+            $data['dateMatch'],
+            $data['heure'],
+            $data['nomEquipeAdverse'],
+            $data['lieuRencontre'],
+            $data['ScoreEquipeDomicile'],
+            $data['scoreEquipeExterne']
+        );
     }
 }

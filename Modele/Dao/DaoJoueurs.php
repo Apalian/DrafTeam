@@ -78,12 +78,21 @@ class DaoJoueurs extends Dao
         if (empty($id[0])) {
             throw new \InvalidArgumentException("Un numéro de licence est requis.");
         }
+
         $numLicense = $id[0];
         $sql = "SELECT * FROM JOUEURS WHERE numLicense = :numLicense";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([':numLicense' => $numLicense]);
-        return creerInstance($statement->fetch(\PDO::FETCH_ASSOC));
+
+        $data = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            throw new \RuntimeException("Aucun joueur trouvé avec ce numéro de licence.");
+        }
+
+        return $this->creerInstance($data);
     }
+
 
     /**
      * @return array
@@ -95,7 +104,22 @@ class DaoJoueurs extends Dao
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function creerInstance(...$elt){
-        return new Joueurs($elt[0],$elt[1],$elt[2],$elt[3],$elt[4],$elt[5],$elt[6],$elt[7]);
+    public function creerInstance($data): Joueurs
+    {
+        if (!$data) {
+            throw new \RuntimeException("Les données fournies pour créer une instance de Joueurs sont invalides.");
+        }
+
+        return new Joueurs(
+            $data['numLicense'],
+            $data['nom'],
+            $data['prenom'],
+            $data['dateNaissance'],
+            $data['commentaire'],
+            $data['statut'],
+            $data['taille'],
+            $data['poids']
+        );
     }
+
 }
