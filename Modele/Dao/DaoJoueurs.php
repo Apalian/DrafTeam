@@ -101,7 +101,14 @@ class DaoJoueurs extends Dao
     {
         $sql = "SELECT * FROM JOUEURS";
         $statement = $this->pdo->query($sql);
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $joueurs = [];
+
+        foreach ($results as $data) {
+            $joueurs[] = $this->creerInstance($data);
+        }
+
+        return $joueurs;
     }
 
     public function creerInstance($data): Joueurs

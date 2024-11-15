@@ -105,7 +105,14 @@ class DaoParticipation extends Dao
     {
         $sql = "SELECT * FROM PARTICIPATION";
         $statement = $this->pdo->query($sql);
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $participations = [];
+
+        foreach ($results as $data) {
+            $participations[] = $this->creerInstance($data);
+        }
+
+        return $participations;
     }
 
     public function creerInstance($data): Participation
