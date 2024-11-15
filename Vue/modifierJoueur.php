@@ -47,35 +47,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
 <div class="container">
-    <h1>Modifier le Joueur</h1>
-    <form method="POST">
-        <div class="card">
-            <div class="card-body">
-                <div class="form">
-                    <label>Nom :</label>
-                    <input type="text" name="nom" value="<?php echo htmlspecialchars($joueur->getNom()); ?>" required>
-                    <label>Prénom :</label>
-                    <input type="text" name="prenom" value="<?php echo htmlspecialchars($joueur->getPrenom()); ?>" required>
-                    <label>Date de naissance :</label>
-                    <input type="date" name="dateNaissance" value="<?php echo htmlspecialchars($joueur->getDateNaissance()); ?>" required>
-                    <label>Statut :</label>
-                    <input type="text" name="statut" value="<?php echo htmlspecialchars($joueur->getStatut()); ?>" required>
-                    <label>Commentaire :</label>
-                    <textarea name="commentaire"><?php echo htmlspecialchars($joueur->getCommentaire()); ?></textarea>
-                    <label>Taille (cm) :</label>
-                    <input type="number" name="taille" value="<?php echo htmlspecialchars($joueur->getTaille()); ?>" >
-                    <label>Poids (kg) :</label>
-                    <input type="number" name="poids" value="<?php echo htmlspecialchars($joueur->getPoids()); ?>" >
-                </div>
-            </div>
-            <!-- Boutons Valider et Annuler -->
-            <div class="card-buttons">
-                <button type="submit">Valider</button>
-                <a href="gestionJoueurs.php"><button type="button">Annuler</button></a>
-            </div>
+    <h1 class="form-title">Modifier le Joueur</h1>
+    <form method="POST" class="player-form">
+        <div class="form-group">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" class="form-input" value="<?php echo htmlspecialchars($joueur->getNom()); ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" name="prenom" class="form-input" value="<?php echo htmlspecialchars($joueur->getPrenom()); ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="dateNaissance">Date de naissance :</label>
+            <input type="date" id="dateNaissance" name="dateNaissance" class="form-input" value="<?php echo htmlspecialchars($joueur->getDateNaissance()); ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="statut">Statut :</label>
+            <input type="text" id="statut" name="statut" class="form-input" value="<?php echo htmlspecialchars($joueur->getStatut()); ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="commentaire">Commentaire :</label>
+            <textarea id="commentaire" name="commentaire" class="form-textarea"><?php echo htmlspecialchars($joueur->getCommentaire()); ?></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="taille">Taille (cm) :</label>
+            <input type="number" id="taille" name="taille" class="form-input" value="<?php echo htmlspecialchars($joueur->getTaille()); ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="poids">Poids (kg) :</label>
+            <input type="number" id="poids" name="poids" class="form-input" value="<?php echo htmlspecialchars($joueur->getPoids()); ?>" required>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="btn-submit">Valider</button>
+            <a href="gestionJoueurs.php" class="btn-cancel"><button type="button">Annuler</button></a>
         </div>
     </form>
 </div>
+
 
 </body>
 </html>
