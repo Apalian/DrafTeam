@@ -18,7 +18,7 @@ class DaoJoueurs extends Dao
             throw new \InvalidArgumentException("L'élément doit être une instance de Joueurs");
         }
 
-        $sql = "INSERT INTO MATCHS (numLicense, nom, prenom, dateNaissance, commentaire, statut, taille, poids) 
+        $sql = "INSERT INTO JOUEURS (numLicense, nom, prenom, dateNaissance, commentaire, statut, taille, poids) 
                 VALUES (:numLicense, :nom, :prenom, :dateNaissance, :commentaire, :statut, :taille, :poids)";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
