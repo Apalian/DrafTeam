@@ -32,7 +32,15 @@ if (isset($_GET['delete'])) {
     <title>Gestion des Joueurs</title>
 </head>
 <body>
-
+<nav class="navbar">
+    <div class="navbar-logo"><a href="../index.php" class="nav-link">DrafTeam</a></div>
+    <div class="navbar-links">
+        <a href="./gestionJoueurs.php" class="nav-link">Joueurs</a>
+        <a href="./gestionMatchs.php" class="nav-link">Matchs</a>
+        <a href="./dashboard.php" class="nav-link">Statistiques</a>
+        <a href="../Controller/logout.php" class="nav-link logout">Déconnexion</a>
+    </div>
+</nav>
 <div class="container">
     <h1>Gestion des Joueurs</h1>
     <a href="ajouterJoueur.php"><button>Créer un Nouveau Joueur</button></a>
