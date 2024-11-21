@@ -41,8 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($_POST['participations'] as $participation) {
                 if (
                     !empty($participation['numLicense']) &&
-                    !empty($participation['poste']) &&
-                    isset($participation['evaluation'])
+                    !empty($participation['poste'])
                 ) {
                     $nouvelleParticipation = new \Modele\Participation(
                         $participation['numLicense'],
@@ -151,10 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
 
                 <label>Évaluation (0 à 10) :</label>
-                <input type="number" name="participations[${participationIndex}][evaluation]" class="form-input" min="0" max="10" required>
+                <input type="number" name="participations[${participationIndex}][evaluation]" class="form-input" min="0" max="10" >
 
                 <label>Poste :</label>
-                <select name="participations[${participationIndex}][poste]" class="form-input">
+                <select name="participations[${participationIndex}][poste]" class="form-input" required>
                     <option value="Gardien">Gardien</option>
                     <option value="Pivot">Pivot</option>
                     <option value="Demi-centre">Demi-centre</option>
