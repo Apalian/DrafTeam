@@ -25,6 +25,7 @@ class DaoMatchs extends Dao
             ':dateMatch' => $elt->getDateMatch(),
             ':heure' => $elt->getHeure(),
             ':lieuRencontre' => $elt->getLieuRencontre(),
+            ':nomEquipeAdverse' => $elt->getNomEquipeAdverse(),
             ':scoreEquipeDomicile' => $elt->getScoreEquipeDomicile(),
             ':scoreEquipeExterne' => $elt->getScoreEquipeExterne()
         ]);
