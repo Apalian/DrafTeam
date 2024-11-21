@@ -14,9 +14,14 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
 require_once '../Modele/Database.php';
 require_once '../Modele/Dao/DaoMatchs.php';
 require_once '../Modele/Dao/DaoParticipation.php';
+require_once '../Modele/Dao/DaoJoueurs.php';
 
 $daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
 $daoParticipations = new \Modele\Dao\DaoParticipation($_SESSION['username'], $_SESSION['password']);
+$daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
+
+// Récupère la liste des joueurs pour la barre de recherche
+$joueurs = $daoJoueurs->findAll();
 
 // Vérifier si le formulaire est soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -138,12 +143,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     const participationsContainer = document.getElementById('participations-container');
     const addParticipationButton = document.getElementById('add-participation');
 
+    const joueurOptions = `<?php foreach ($joueurs as $joueur): ?>
+        <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
+            <?= htmlspecialchars($joueur->getNumLicense() . ' - ' . $joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
+        </option>
+    <?php endforeach; ?>`;
+
     addParticipationButton.addEventListener('click', () => {
         const participationDiv = document.createElement('div');
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
             <label>Numéro de Licence :</label>
-            <input type="text" name="participations[][numLicense]" class="form-input" required>
+            <input list="joueurs" name="participations[][numLicense]" class="form-input" required>
+            <datalist id="joueurs">
+                ${joueurOptions}
+            </datalist>
 
             <label>Est Titulaire :</label>
             <select name="participations[][estTitulaire]" class="form-input">
@@ -151,11 +165,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="false">Non</option>
             </select>
 
-            <label>Évaluation :</label>
-            <input type="number" name="participations[][evaluation]" class="form-input" required>
+            <label>Évaluation (0 à 10) :</label>
+            <input type="number" name="participations[][evaluation]" class="form-input" min="0" max="10" required>
 
             <label>Poste :</label>
-            <input type="text" name="participations[][poste]" class="form-input" required>
+            <select name="participations[][poste]" class="form-input">
+                <option value="Gardien">Gardien</option>
+                <option value="Pivot">Pivot</option>
+                <option value="Demi-centre">Demi-centre</option>
+                <option value="Ailier gauche">Ailier gauche</option>
+                <option value="Ailier droit">Ailier droit</option>
+                <option value="Arrière gauche">Arrière gauche</option>
+                <option value="Arrière droit">Arrière droit</option>
+            </select>
         `;
         participationsContainer.appendChild(participationDiv);
     });
