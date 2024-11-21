@@ -62,23 +62,23 @@ if (isset($_GET['dateMatch'])&&isset($_GET['heure'])) {
                         <p><strong>Lieu de rencontre:</strong> <?php echo htmlspecialchars($match->getLieuRencontre()); ?></p>
                         <p>
                             <strong>Score de l'équipe domicile:</strong>
-                            <span class="<?php echo (
-                            ($match->getScoreEquipeExterne() == $match->getScoreEquipeDomicile()) ? 'score-gray' :
-                                (($match->getScoreEquipeDomicile() > $match->getScoreEquipeExterne()) ? 'score-green' :
-                                    (($match->getScoreEquipeDomicile() === null || $match->getScoreEquipeExterne() === null) ? 'score-unknown' : 'score-red'))
-                            ); ?>">
-                                <?php echo (($match->getScoreEquipeDomicile() ) ? 'pas de score' : htmlspecialchars($match->getScoreEquipeDomicile())); ?>
-                            </span>
-                        </p>
-                        <p>
-                            <strong>Score de l'équipe adverse:</strong>
-                            <span class="<?php echo (
-                            ($match->getScoreEquipeExterne() == $match->getScoreEquipeDomicile()) ? 'score-gray' :
-                                (($match->getScoreEquipeDomicile() < $match->getScoreEquipeExterne()) ? 'score-green' :
-                                    (($match->getScoreEquipeDomicile() === null) ? 'score-unknown' : 'score-red'))
-                            ); ?>">
-                                <?php echo (($match->getScoreEquipeExterne() === null) ? 'pas de score' : htmlspecialchars($match->getScoreEquipeDomicile())); ?>
-                            </span>
+                            <?php
+                            $scoreDomicile = $match->getScoreEquipeDomicile();
+                            $scoreExterne = $match->getScoreEquipeExterne();
+
+                            if ($scoreDomicile === null || $scoreExterne === null) {
+                                $classDomicile = 'score-unknown';
+                            } elseif ($scoreDomicile == $scoreExterne) {
+                                $classDomicile = 'score-gray';
+                            } elseif ($scoreDomicile > $scoreExterne) {
+                                $classDomicile = 'score-green';
+                            } else {
+                                $classDomicile = 'score-red';
+                            }
+                            ?>
+                            <span class="<?php echo $classDomicile; ?>">
+        <?php echo ($scoreDomicile === null) ? 'pas de score' : htmlspecialchars($scoreDomicile); ?>
+    </span>
                         </p>
                     </div>
                 </div>
