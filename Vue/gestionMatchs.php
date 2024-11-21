@@ -80,6 +80,27 @@ if (isset($_GET['dateMatch'])&&isset($_GET['heure'])) {
         <?php echo ($scoreDomicile === null) ? 'pas de score' : htmlspecialchars($scoreDomicile); ?>
     </span>
                         </p>
+
+                        <p>
+                            <strong>Score de l'équipe adverse:</strong>
+                            <?php
+                            // We can reuse $scoreDomicile and $scoreExterne from before
+
+                            if ($scoreDomicile === null || $scoreExterne === null) {
+                                $classExterne = 'score-unknown';
+                            } elseif ($scoreDomicile == $scoreExterne) {
+                                $classExterne = 'score-gray';
+                            } elseif ($scoreExterne > $scoreDomicile) {
+                                $classExterne = 'score-green';
+                            } else {
+                                $classExterne = 'score-red';
+                            }
+                            ?>
+                            <span class="<?php echo $classExterne; ?>">
+        <?php echo ($scoreExterne === null) ? 'pas de score' : htmlspecialchars($scoreExterne); ?>
+    </span>
+                        </p>
+
                     </div>
                 </div>
                 <!-- Boutons Modifier et Supprimer -->
