@@ -46,10 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Ajouter le match
         $daoMatchs->create($nouveauMatch);
-        echo '<pre>';
-        print_r($_POST['participations']);
-        echo '</pre>';
-
 
         // Ajouter les participations
         if (!empty($_POST['participations'])) {
@@ -59,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $participation['numLicense'],
                         $_POST['dateMatch'],
                         $_POST['heure'],
-                        $participation['estTitulaire'] === 'true',
+                        $participation['estTitulaire'] == '1',
                         (int)$participation['evaluation'],
                         $participation['poste']
                     );
@@ -147,27 +143,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </option>
     <?php endforeach; ?>`;
 
+    let participationIndex = 0; // Initialiser l'index
+
     addParticipationButton.addEventListener('click', () => {
         const participationDiv = document.createElement('div');
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
             <label>Numéro de Licence :</label>
-            <input list="joueurs" name="participations[][numLicense]" class="form-input" required>
-            <datalist id="joueurs">
+            <input list="joueurs-${participationIndex}" name="participations[${participationIndex}][numLicense]" class="form-input" required>
+            <datalist id="joueurs-${participationIndex}">
                 ${joueurOptions}
             </datalist>
 
             <label>Est Titulaire :</label>
-            <select name="participations[][estTitulaire]" class="form-input">
+            <select name="participations[${participationIndex}][estTitulaire]" class="form-input">
                 <option value="1">Oui</option>
                 <option value="0">Non</option>
             </select>
 
             <label>Évaluation (0 à 10) :</label>
-            <input type="number" name="participations[][evaluation]" class="form-input" min="0" max="10" required>
+            <input type="number" name="participations[${participationIndex}][evaluation]" class="form-input" min="0" max="10" required>
 
             <label>Poste :</label>
-            <select name="participations[][poste]" class="form-input">
+            <select name="participations[${participationIndex}][poste]" class="form-input">
                 <option value="Gardien">Gardien</option>
                 <option value="Pivot">Pivot</option>
                 <option value="Demi-centre">Demi-centre</option>
@@ -178,6 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
         `;
         participationsContainer.appendChild(participationDiv);
+        participationIndex++; // Incrémenter l'index pour la prochaine participation
     });
 </script>
 
