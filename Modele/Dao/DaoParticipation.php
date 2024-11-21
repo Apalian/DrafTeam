@@ -5,6 +5,7 @@ use Modele\Participation;
 require_once __DIR__ . '/Dao.php';
 require_once __DIR__ . '/../Participation.php';
 
+
 class DaoParticipation extends Dao
 {
 
@@ -18,7 +19,7 @@ class DaoParticipation extends Dao
             throw new \InvalidArgumentException("L'élément doit être une instance de Joueur");
         }
 
-        $sql = "INSERT INTO MATCHS (numLicense, dateMatch, heure, estTitulaire, evaluation, poste) 
+        $sql = "INSERT INTO PARTICIPATION (numLicense, dateMatch, heure, estTitulaire, evaluation, poste) 
                 VALUES (:numLicense, :dateMatch, :heure, :estTitulaire, :evaluation,:poste)";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
@@ -37,7 +38,7 @@ class DaoParticipation extends Dao
      */
     public function update($elt)
     {
-        $sql = "UPDATE MATCHS SET numLicense = :numLicense, dateMatch = :dateMatch, heure = :heure, 
+        $sql = "UPDATE PARTICIPATION SET numLicense = :numLicense, dateMatch = :dateMatch, heure = :heure, 
                 estTitulaire = :estTitulaire, evaluation = :evaluation, poste = :poste
                 WHERE numLicense = :numLicense AND dateMatch = :dateMatch AND heure = :heure";
         $statement = $this->pdo->prepare($sql);
@@ -63,7 +64,7 @@ class DaoParticipation extends Dao
         $numLicense = $id[0];
         $dateMatch = $id[1];
         $heure = $id[2];
-        $sql = "DELETE FROM MATCHS WHERE numLicense = :numLicense AND dateMatch = :dateMatch AND heure = :heure";
+        $sql = "DELETE FROM PARTICIPATION WHERE numLicense = :numLicense AND dateMatch = :dateMatch AND heure = :heure";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
             ':numLicense' => $numLicense,

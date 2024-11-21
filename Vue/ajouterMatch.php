@@ -17,7 +17,7 @@ require_once '../Modele/Dao/DaoParticipation.php';
 require_once '../Modele/Dao/DaoJoueurs.php';
 
 $daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
-$daoParticipations = new \Modele\Dao\DaoParticipation($_SESSION['username'], $_SESSION['password']);
+$daoParticipation = new \Modele\Dao\DaoParticipation($_SESSION['username'], $_SESSION['password']);
 $daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
 
 // Récupérer les joueurs pour la barre de recherche
@@ -46,6 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Ajouter le match
         $daoMatchs->create($nouveauMatch);
+        echo '<pre>';
+        print_r($_POST['participations']);
+        echo '</pre>';
+
 
         // Ajouter les participations
         if (!empty($_POST['participations'])) {
@@ -59,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         (int)$participation['evaluation'],
                         $participation['poste']
                     );
-                    $daoParticipations->create($nouvelleParticipation);
+                    $daoParticipation->create($nouvelleParticipation);
                 }
             }
         }
@@ -148,22 +152,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
             <label>Numéro de Licence :</label>
-            <input list="joueurs" name="numLicense" id="numLicense" class="form-input" required>
+            <input list="joueurs" name="participations[][numLicense]" class="form-input" required>
             <datalist id="joueurs">
                 ${joueurOptions}
             </datalist>
 
             <label>Est Titulaire :</label>
-            <select name="estTitulaire" id="estTitulaire" class="form-input">
+            <select name="participations[][estTitulaire]" class="form-input">
                 <option value="true">Oui</option>
                 <option value="false">Non</option>
             </select>
 
             <label>Évaluation (0 à 10) :</label>
-            <input type="number" name="evaluation" id="evaluation" class="form-input" min="0" max="10" required>
+            <input type="number" name="participations[][evaluation]" class="form-input" min="0" max="10" required>
 
             <label>Poste :</label>
-            <select name="poste" id="poste" class="form-input">
+            <select name="participations[][poste]" class="form-input">
                 <option value="Gardien">Gardien</option>
                 <option value="Pivot">Pivot</option>
                 <option value="Demi-centre">Demi-centre</option>
@@ -176,5 +180,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         participationsContainer.appendChild(participationDiv);
     });
 </script>
+
 </body>
 </html>
