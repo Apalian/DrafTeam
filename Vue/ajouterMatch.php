@@ -62,20 +62,35 @@
     const participationsContainer = document.getElementById('participations-container');
     const addParticipationButton = document.getElementById('add-participation');
 
-    const joueurOptions = `<?php foreach ($joueurs as $joueur): ?>
-        <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
-            <?= htmlspecialchars($joueur->getNumLicense() . ' - ' . $joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
-        </option>
-    <?php endforeach; ?>`;
+    // Liste des joueurs récupérés dynamiquement via PHP
+    const joueurs = <?php echo json_encode(
+        array_map(function ($joueur) {
+            return [
+                'numLicense' => $joueur->getNumLicense(),
+                'nom' => $joueur->getNom(),
+                'prenom' => $joueur->getPrenom(),
+            ];
+        }, $joueurs)
+    ); ?>;
 
     addParticipationButton.addEventListener('click', () => {
         const participationDiv = document.createElement('div');
         participationDiv.classList.add('form-group');
+
+        // Crée un input avec un datalist pour la barre de recherche
+        const datalistId = `joueurs-${Date.now()}`;
+        const datalistOptions = joueurs
+            .map(
+                joueur =>
+                    `<option value="${joueur.numLicense}">${joueur.numLicense} - ${joueur.nom} ${joueur.prenom}</option>`
+            )
+            .join('');
+
         participationDiv.innerHTML = `
             <label>Numéro de Licence :</label>
-            <input list="joueurs" name="participations[][numLicense]" class="form-input" required>
-            <datalist id="joueurs">
-                ${joueurOptions}
+            <input list="${datalistId}" name="participations[][numLicense]" class="form-input" required>
+            <datalist id="${datalistId}">
+                ${datalistOptions}
             </datalist>
 
             <label>Est Titulaire :</label>
@@ -98,6 +113,7 @@
                 <option value="Arrière droit">Arrière droit</option>
             </select>
         `;
+
         participationsContainer.appendChild(participationDiv);
     });
 </script>
