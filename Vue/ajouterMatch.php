@@ -1,3 +1,78 @@
+<?php
+// Affichage des erreurs
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
+    header("Location: ../Vue/login.php");
+    exit();
+}
+
+require_once '../Modele/Database.php';
+require_once '../Modele/Dao/DaoMatchs.php';
+require_once '../Modele/Dao/DaoParticipation.php';
+require_once '../Modele/Dao/DaoJoueurs.php';
+
+$daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
+$daoParticipations = new \Modele\Dao\DaoParticipation($_SESSION['username'], $_SESSION['password']);
+$daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
+
+// Récupérer les joueurs pour la barre de recherche
+$joueurs = $daoJoueurs->findAll();
+
+// Vérifier si le formulaire est soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Vérifier les champs obligatoires
+    $requiredFields = ['dateMatch', 'heure', 'nomEquipeAdverse', 'lieuRencontre'];
+    foreach ($requiredFields as $field) {
+        if (empty($_POST[$field])) {
+            die("Erreur : le champ $field est requis.");
+        }
+    }
+
+    // Créer une instance de Match
+    $nouveauMatch = new \Modele\Matchs(
+        $_POST['dateMatch'],
+        $_POST['heure'],
+        $_POST['nomEquipeAdverse'],
+        $_POST['lieuRencontre'],
+        $_POST['scoreEquipeDomicile'] ?? null,
+        $_POST['scoreEquipeExterne'] ?? null
+    );
+
+    try {
+        // Ajouter le match
+        $daoMatchs->create($nouveauMatch);
+
+        // Ajouter les participations
+        if (!empty($_POST['participations'])) {
+            foreach ($_POST['participations'] as $participation) {
+                if (!empty($participation['numLicense']) && !empty($participation['poste']) && isset($participation['evaluation'])) {
+                    $nouvelleParticipation = new \Modele\Participation(
+                        $participation['numLicense'],
+                        $_POST['dateMatch'],
+                        $_POST['heure'],
+                        $participation['estTitulaire'] === 'true',
+                        (int)$participation['evaluation'],
+                        $participation['poste']
+                    );
+                    $daoParticipations->create($nouvelleParticipation);
+                }
+            }
+        }
+
+        // Redirection après succès
+        header("Location: gestionMatchs.php");
+        exit();
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
