@@ -159,8 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <label>Est Titulaire :</label>
             <select name="participations[][estTitulaire]" class="form-input">
-                <option value="true">Oui</option>
-                <option value="false">Non</option>
+                <option value="1">Oui</option>
+                <option value="0">Non</option>
             </select>
 
             <label>Évaluation (0 à 10) :</label>
