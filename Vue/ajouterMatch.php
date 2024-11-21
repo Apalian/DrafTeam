@@ -1,3 +1,87 @@
+<?php
+// Affichage des erreurs
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
+    header("Location: ../Vue/login.php");
+    exit();
+}
+
+require_once '../Modele/Database.php';
+require_once '../Modele/Dao/DaoMatchs.php';
+require_once '../Modele/Dao/DaoParticipation.php';
+require_once '../Modele/Dao/DaoJoueurs.php';
+
+$daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
+$daoParticipations = new \Modele\Dao\DaoParticipation($_SESSION['username'], $_SESSION['password']);
+$daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
+
+// Récupère la liste des joueurs pour la barre de recherche
+$joueurs = $daoJoueurs->findAll();
+
+// Vérifier si le formulaire est soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Vérifie les champs requis
+    $requiredFields = ['dateMatch', 'heure', 'nomEquipeAdverse', 'lieuRencontre'];
+    foreach ($requiredFields as $field) {
+        if (empty($_POST[$field])) {
+            die("Erreur : le champ $field est requis.");
+        }
+    }
+
+    // Crée une instance de Match
+    $nouveauMatch = new \Modele\Matchs(
+        $_POST['dateMatch'],
+        $_POST['heure'],
+        $_POST['nomEquipeAdverse'],
+        $_POST['lieuRencontre'],
+        $_POST['scoreEquipeDomicile'] ?? null,
+        $_POST['scoreEquipeExterne'] ?? null
+    );
+
+    // Appelle le DAO pour créer le match
+    try {
+        $daoMatchs->create($nouveauMatch);
+    } catch (Exception $e) {
+        die('Erreur lors de l\'ajout du match : ' . $e->getMessage());
+    }
+
+    // Traite les participations
+    if (!empty($_POST['participations'])) {
+        foreach ($_POST['participations'] as $participation) {
+            if (
+                !empty($participation['numLicense']) &&
+                !empty($participation['poste']) &&
+                isset($participation['estTitulaire']) &&
+                isset($participation['evaluation'])
+            ) {
+                try {
+                    $nouvelleParticipation = new \Modele\Participation(
+                        $participation['numLicense'],
+                        $_POST['dateMatch'],
+                        $_POST['heure'],
+                        $participation['estTitulaire'] === 'true',
+                        (int)$participation['evaluation'],
+                        $participation['poste']
+                    );
+                    $daoParticipations->create($nouvelleParticipation);
+                } catch (Exception $e) {
+                    die('Erreur lors de l\'ajout de la participation : ' . $e->getMessage());
+                }
+            }
+        }
+    }
+
+    // Redirection après succès
+    header("Location: gestionMatchs.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -27,10 +111,7 @@
 
         <div class="form-group">
             <label for="lieuRencontre">Lieu de la Rencontre :</label>
-            <select id="lieuRencontre" name="lieuRencontre" class="form-input" required>
-                <option value="Domicile">Domicile</option>
-                <option value="Extérieur">Extérieur</option>
-            </select>
+            <input type="text" id="lieuRencontre" name="lieuRencontre" class="form-input" required>
         </div>
 
         <div class="form-group">
@@ -62,35 +143,20 @@
     const participationsContainer = document.getElementById('participations-container');
     const addParticipationButton = document.getElementById('add-participation');
 
-    // Liste des joueurs récupérés dynamiquement via PHP
-    const joueurs = <?php echo json_encode(
-        array_map(function ($joueur) {
-            return [
-                'numLicense' => $joueur->getNumLicense(),
-                'nom' => $joueur->getNom(),
-                'prenom' => $joueur->getPrenom(),
-            ];
-        }, $joueurs)
-    ); ?>;
+    const joueurOptions = `<?php foreach ($joueurs as $joueur): ?>
+        <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
+            <?= htmlspecialchars($joueur->getNumLicense() . ' - ' . $joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
+        </option>
+    <?php endforeach; ?>`;
 
     addParticipationButton.addEventListener('click', () => {
         const participationDiv = document.createElement('div');
         participationDiv.classList.add('form-group');
-
-        // Crée un input avec un datalist pour la barre de recherche
-        const datalistId = `joueurs-${Date.now()}`;
-        const datalistOptions = joueurs
-            .map(
-                joueur =>
-                    `<option value="${joueur.numLicense}">${joueur.numLicense} - ${joueur.nom} ${joueur.prenom}</option>`
-            )
-            .join('');
-
         participationDiv.innerHTML = `
             <label>Numéro de Licence :</label>
-            <input list="${datalistId}" name="participations[][numLicense]" class="form-input" required>
-            <datalist id="${datalistId}">
-                ${datalistOptions}
+            <input list="joueurs" name="participations[][numLicense]" class="form-input" required>
+            <datalist id="joueurs">
+                ${joueurOptions}
             </datalist>
 
             <label>Est Titulaire :</label>
@@ -113,7 +179,6 @@
                 <option value="Arrière droit">Arrière droit</option>
             </select>
         `;
-
         participationsContainer.appendChild(participationDiv);
     });
 </script>
