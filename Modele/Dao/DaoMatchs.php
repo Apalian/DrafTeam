@@ -24,11 +24,12 @@ class DaoMatchs extends Dao
         $statement->execute([
             ':dateMatch' => $elt->getDateMatch(),
             ':heure' => $elt->getHeure(),
-            ':lieuRencontre' => $elt->getLieuRencontre(),
             ':nomEquipeAdverse' => $elt->getNomEquipeAdverse(),
+            ':lieuRencontre' => $elt->getLieuRencontre(),
             ':scoreEquipeDomicile' => $elt->getScoreEquipeDomicile(),
-            ':scoreEquipeExterne' => $elt->getScoreEquipeExterne()
+            ':scoreEquipeExterne' => $elt->getScoreEquipeExterne(),
         ]);
+
     }
 
     /**
