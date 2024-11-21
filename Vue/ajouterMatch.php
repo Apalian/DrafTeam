@@ -148,19 +148,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
             <label>Numéro de Licence :</label>
-            <input list="joueurs" name="participations[][numLicense]" class="form-input" required>
+            <input list="joueurs" name="numLicense" class="form-input" required>
             <datalist id="joueurs">
                 ${joueurOptions}
             </datalist>
 
             <label>Est Titulaire :</label>
-            <select name="participations[][estTitulaire]" class="form-input">
+            <select name="estTitulaire" class="form-input">
                 <option value="true">Oui</option>
                 <option value="false">Non</option>
             </select>
 
             <label>Évaluation (0 à 10) :</label>
-            <input type="number" name="participations[][evaluation]" class="form-input" min="0" max="10" required>
+            <input type="number" name="evaluation" class="form-input" min="0" max="10" required>
 
             <label>Poste :</label>
             <select name="participations[][poste]" class="form-input">
