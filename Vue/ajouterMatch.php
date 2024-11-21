@@ -25,36 +25,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    $scoreEquipeDomicile = $_POST['scoreEquipeDomicile'] !== '' ? $_POST['scoreEquipeDomicile'] : null;
+    $scoreEquipeExterne =$_POST['scoreEquipeExterne'] !== '' ?$_POST['scoreEquipeExterne'] : null;
+
     $nouveauMatch = new \Modele\Matchs(
         $_POST['dateMatch'],
         $_POST['heure'],
         $_POST['nomEquipeAdverse'],
         $_POST['lieuRencontre'],
-        $_POST['scoreEquipeDomicile'] ?? null,
-        $_POST['scoreEquipeExterne'] ?? null
+        $scoreEquipeDomicile,
+        $scoreEquipeExterne
     );
+
 
     try {
         $daoMatchs->create($nouveauMatch);
 
         if (!empty($_POST['participations'])) {
             foreach ($_POST['participations'] as $participation) {
-                if (
-                    !empty($participation['numLicense']) &&
-                    !empty($participation['poste'])
-                ) {
+                if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
+                    $evaluation = isset($participation['evaluation']) && $participation['evaluation'] !== '' ? (int)$participation['evaluation'] : null;
+
                     $nouvelleParticipation = new \Modele\Participation(
                         $participation['numLicense'],
                         $_POST['dateMatch'],
                         $_POST['heure'],
                         $participation['estTitulaire'] == '1',
-                        (int)$participation['evaluation'],
+                        $evaluation,
                         $participation['poste']
                     );
                     $daoParticipation->create($nouvelleParticipation);
                 }
             }
         }
+
 
         header("Location: gestionMatchs.php");
         exit();
