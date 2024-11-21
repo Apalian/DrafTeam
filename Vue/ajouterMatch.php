@@ -111,7 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-group">
             <label for="lieuRencontre">Lieu de la Rencontre :</label>
-            <input type="text" id="lieuRencontre" name="lieuRencontre" class="form-input" required>
+            <select id="lieuRencontre" name="lieuRencontre" class="form-input" required>
+                <option value="Domicile">Domicile</option>
+                <option value="Extérieur">Extérieur</option>
+            </select>
         </div>
 
         <div class="form-group">
