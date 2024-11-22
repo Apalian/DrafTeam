@@ -338,6 +338,10 @@ button:focus {
 .score-gray { color: gray; font-weight: bold}
 .score-unknown { color: gray}
 
+#pieChart{
+    height: 200px;
+    width: auto;
+}
 
 
 

@@ -63,7 +63,7 @@ try {
         <?php if (!empty($error)): ?>
             <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
         <?php else: ?>
-            <canvas  id="pieChart" width="100" height="100"></canvas>
+            <canvas  id="pieChart"></canvas>
             <script>
                 // Données des statistiques
                 const data = {
@@ -85,11 +85,21 @@ try {
                     data: data,
                 };
 
+                const config = {
+                    type: 'pie',
+                    data: data,
+                    options: {
+                        maintainAspectRatio: false,
+                        aspectRatio: 1.5 // Adjust this ratio to make the chart smaller or larger
+                    }
+                };
+
                 // Initialisation du graphique
                 const pieChart = new Chart(
                     document.getElementById('pieChart'),
                     config
                 );
+
             </script>
         <?php endif; ?>
     </div>
