@@ -26,12 +26,15 @@ try {
     die('Erreur lors du chargement des joueurs : ' . $e->getMessage());
 }
 
-// Récupération des stats si un joueur est sélectionné
-$stats = null;
 if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])) {
     $numLicense = htmlspecialchars($_GET['numLicense']);
     try {
-        $stats = $daoJoueurs->getStats($numLicense); // Supposons que cette méthode existe dans le DAO
+        $postePref = $daoJoueurs->getPostePrefere($numLicense);
+        $totTitu = $daoJoueurs->getTotalTitulaire($numLicense);
+        $totRemp = $daoJoueurs->getTotalRemplacant($numLicense);
+        $pourMatchG = $daoJoueurs->getPourcentageMatchsGagnes($numLicense);
+        $moyEvaluation = $daoJoueurs->getMoyenneEvaluation($numLicense);
+        $selectionConsecutive = $daoJoueurs->getSelectionsConsecutives($numLicense);
     } catch (Exception $e) {
         die('Erreur lors du chargement des statistiques : ' . $e->getMessage());
     }
@@ -75,8 +78,8 @@ if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])) {
             <a href="dashboard.php" class="btn-cancel">Annuler</a>
         </div>
     </form>
-
-    <?php if ($stats): ?>
+    
+    <?php if (isset($numLicense) && !empty($numLicense)): ?>
         <h2>Statistiques du joueur</h2>
         <table class="stats-table">
             <thead>
@@ -86,15 +89,34 @@ if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])) {
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($stats as $stat => $value): ?>
-                <tr>
-                    <td><?= htmlspecialchars(ucwords(str_replace('_', ' ', $stat))) ?></td>
-                    <td><?= htmlspecialchars($value ?? 'N/A') ?></td>
-                </tr>
-            <?php endforeach; ?>
+            <tr>
+                <td>Poste préféré</td>
+                <td><?= htmlspecialchars($postePref ?? 'N/A') ?></td>
+            </tr>
+            <tr>
+                <td>Nombre total de sélections en tant que titulaire</td>
+                <td><?= htmlspecialchars($totTitu ?? '0') ?></td>
+            </tr>
+            <tr>
+                <td>Nombre total de sélections en tant que remplaçant</td>
+                <td><?= htmlspecialchars($totRemp ?? '0') ?></td>
+            </tr>
+            <tr>
+                <td>Pourcentage de matchs gagnés</td>
+                <td><?= htmlspecialchars(number_format($pourMatchG ?? 0, 2)) ?>%</td>
+            </tr>
+            <tr>
+                <td>Moyenne des évaluations</td>
+                <td><?= htmlspecialchars(number_format($moyEvaluation ?? 0, 2)) ?></td>
+            </tr>
+            <tr>
+                <td>Nombre de sélections consécutives</td>
+                <td><?= htmlspecialchars($selectionConsecutive ?? '0') ?></td>
+            </tr>
             </tbody>
         </table>
     <?php endif; ?>
+
 </div>
 </body>
 </html>
