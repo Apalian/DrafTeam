@@ -139,7 +139,7 @@ class DaoJoueurs extends Dao
             LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['numLicense' => $numLicense]);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['poste'] ?? null;
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['poste'] ?? null;
     }
 
 
@@ -149,7 +149,7 @@ class DaoJoueurs extends Dao
             WHERE numLicense = :numLicense AND estTitulaire = TRUE";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['numLicense' => $numLicense]);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total_titulaire'] ?? 0;
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['total_titulaire'] ?? 0;
     }
 
 
@@ -159,7 +159,7 @@ class DaoJoueurs extends Dao
             WHERE numLicense = :numLicense AND estTitulaire = FALSE";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['numLicense' => $numLicense]);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total_remplacant'] ?? 0;
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['total_remplacant'] ?? 0;
     }
 
 
@@ -169,7 +169,7 @@ class DaoJoueurs extends Dao
             WHERE numLicense = :numLicense";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['numLicense' => $numLicense]);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['moyenne_evaluation'] ?? null;
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['moyenne_evaluation'] ?? null;
     }
 
 
@@ -186,14 +186,14 @@ class DaoJoueurs extends Dao
                        )";
         $stmtVictoires = $this->pdo->prepare($sqlVictoires);
         $stmtVictoires->execute(['numLicense' => $numLicense]);
-        $totalVictoires = $stmtVictoires->fetch(PDO::FETCH_ASSOC)['total_victoires'] ?? 0;
+        $totalVictoires = $stmtVictoires->fetch(\PDO::FETCH_ASSOC)['total_victoires'] ?? 0;
 
         $sqlTotalMatchs = "SELECT COUNT(*) AS total_matchs 
                        FROM PARTICIPATION 
                        WHERE numLicense = :numLicense";
         $stmtMatchs = $this->pdo->prepare($sqlTotalMatchs);
         $stmtMatchs->execute(['numLicense' => $numLicense]);
-        $totalMatchs = $stmtMatchs->fetch(PDO::FETCH_ASSOC)['total_matchs'] ?? 0;
+        $totalMatchs = $stmtMatchs->fetch(\PDO::FETCH_ASSOC)['total_matchs'] ?? 0;
 
         return $totalMatchs > 0 ? ($totalVictoires * 100.0) / $totalMatchs : 0;
     }
@@ -213,7 +213,7 @@ class DaoJoueurs extends Dao
             GROUP BY group_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['numLicense' => $numLicense]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $result['selections_consecutives'] ?? 0;
     }
 
