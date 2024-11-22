@@ -70,13 +70,6 @@ if (!empty($_GET['numLicense'])) {
 
                     // Vérification de l'existence du conteneur dans la réponse
                     const stats = doc.querySelector('#stats-container');
-                    if (stats) {
-                        console.log("Contenu extrait :", stats.innerHTML); // Logue le contenu extrait
-                        document.getElementById('stats-container').innerHTML = stats.innerHTML;
-                    } else {
-                        console.error("Le conteneur #stats-container est introuvable dans la réponse.");
-                        document.getElementById('stats-container').innerHTML = '<p>Aucune statistique trouvée.</p>';
-                    }
                 })
                 .catch(error => {
                     console.error('Erreur lors du chargement des statistiques :', error);
