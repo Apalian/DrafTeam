@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -20,6 +19,17 @@ try {
 } catch (Exception $e) {
     die('Erreur lors du chargement des joueurs : ' . $e->getMessage());
 }
+
+// Récupération des stats si un joueur est sélectionné
+$stats = null;
+if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])) {
+    $numLicense = htmlspecialchars($_GET['numLicense']);
+    try {
+        $stats = $daoJoueurs->getStats($numLicense); // Supposons que cette méthode existe dans le DAO
+    } catch (Exception $e) {
+        die('Erreur lors du chargement des statistiques : ' . $e->getMessage());
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -33,32 +43,52 @@ try {
 <nav class="navbar">
     <div class="navbar-logo"><a href="./index.php" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
-        <a href="./Vue/gestionJoueurs.php" class="nav-link">Joueurs</a>
-        <a href="./Vue/gestionMatchs.php" class="nav-link">Matchs</a>
-        <a href="./Vue/dashboard.php" class="nav-link">Statistiques</a>
-        <a href="./Controller/logout.php" class="nav-link logout">Déconnexion</a>
+        <a href="./gestionJoueurs.php" class="nav-link">Joueurs</a>
+        <a href="./gestionMatchs.php" class="nav-link">Matchs</a>
+        <a href="./dashboard.php" class="nav-link">Statistiques</a>
+        <a href="../Controller/logout.php" class="nav-link logout">Déconnexion</a>
     </div>
-
 </nav>
-    <div class="container">
-        <h1 class="form-title">Sélectionner un Joueur</h1>
-        <form method="GET" action="afficherStatsJoueur.php" class="selection-form">
-            <div class="form-group">
-                <label for="numLicense">Choisissez un joueur :</label>
-                <select id="numLicense" name="numLicense" class="form-input" required>
-                    <option value="">-- Sélectionnez un joueur --</option>
-                    <?php foreach ($joueurs as $joueur): ?>
-                        <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
-                            <?= htmlspecialchars($joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="form-buttons">
-                <button type="submit" class="btn-submit">Afficher les Statistiques</button>
-                <a href="dashboard.php" class="btn-cancel">Annuler</a>
-            </div>
-        </form>
-    </div>
-    </body>
-    </html>
+<div class="container">
+    <h1 class="form-title">Sélectionner un Joueur</h1>
+    <form method="GET" action="dashboard.php" class="selection-form">
+        <div class="form-group">
+            <label for="numLicense">Choisissez un joueur :</label>
+            <select id="numLicense" name="numLicense" class="form-input" required>
+                <option value="">-- Sélectionnez un joueur --</option>
+                <?php foreach ($joueurs as $joueur): ?>
+                    <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>"
+                        <?= isset($_GET['numLicense']) && $_GET['numLicense'] === $joueur->getNumLicense() ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-buttons">
+            <button type="submit" class="btn-submit">Afficher les Statistiques</button>
+            <a href="dashboard.php" class="btn-cancel">Annuler</a>
+        </div>
+    </form>
+
+    <?php if ($stats): ?>
+        <h2>Statistiques du joueur</h2>
+        <table class="stats-table">
+            <thead>
+            <tr>
+                <th>Statistique</th>
+                <th>Valeur</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($stats as $stat => $value): ?>
+                <tr>
+                    <td><?= htmlspecialchars(ucwords(str_replace('_', ' ', $stat))) ?></td>
+                    <td><?= htmlspecialchars($value ?? 'N/A') ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>
+</body>
+</html>
