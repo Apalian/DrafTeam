@@ -25,7 +25,19 @@ try {
 } catch (Exception $e) {
     die('Erreur lors du chargement des joueurs : ' . $e->getMessage());
 }
-
+if (!empty($_GET['numLicense'])) {
+    $numLicense = htmlspecialchars($_GET['numLicense']);
+    try {
+        $postePref = $daoJoueurs->getPostePrefere($numLicense);
+        $totTitu = $daoJoueurs->getTotalTitulaire($numLicense);
+        $totRemp = $daoJoueurs->getTotalRemplacant($numLicense);
+        $pourMatchG = $daoJoueurs->getPourcentageMatchsGagnes($numLicense);
+        $moyEvaluation = $daoJoueurs->getMoyenneEvaluation($numLicense);
+        $selectionConsecutive = $daoJoueurs->getSelectionsConsecutives($numLicense);
+    } catch (Exception $e) {
+        die('Erreur lors du chargement des statistiques : ' . $e->getMessage());
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
