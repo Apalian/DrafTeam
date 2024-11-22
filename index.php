@@ -63,7 +63,7 @@ try {
         <?php if (!empty($error)): ?>
             <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
         <?php else: ?>
-            <canvas class ='myChartDiv' id="pieChart" width="400" height="400"></canvas>
+            <canvas  id="pieChart" width="100" height="100"></canvas>
             <script>
                 // Données des statistiques
                 const data = {
