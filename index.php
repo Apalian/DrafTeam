@@ -40,7 +40,10 @@
                 <canvas id="pieChart"></canvas>
             </div>
             <script>
-                // Données pour le graphique
+                // Register the ChartDataLabels plugin
+                Chart.register(ChartDataLabels);
+
+                // Data for the chart
                 const data = {
                     labels: ['Gagnés', 'Perdus', 'Nuls'],
                     datasets: [{
@@ -54,7 +57,7 @@
                     }]
                 };
 
-                // Configuration du graphique
+                // Chart configuration
                 const config = {
                     type: 'pie',
                     data: data,
@@ -80,11 +83,10 @@
                                 }
                             }
                         }
-                    },
-                    plugins: [ChartDataLabels]
+                    }
                 };
 
-                // Initialisation du graphique
+                // Initialize the chart
                 const pieChart = new Chart(
                     document.getElementById('pieChart'),
                     config
