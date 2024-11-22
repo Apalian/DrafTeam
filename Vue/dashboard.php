@@ -45,10 +45,10 @@ try {
             fetch(`dashboard.php?numLicense=${encodeURIComponent(numLicense)}`)
                 .then(response => response.text())
                 .then(html => {
-                    console.log(`dashboard.php?numLicense=${encodeURIComponent(numLicense)}`)
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const stats = doc.querySelector('#stats-container').innerHTML;
+                    console.log(stats)
                     document.getElementById('stats-container').innerHTML = stats;
                 })
                 .catch(error => {
