@@ -16,7 +16,7 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
 require_once './Modele/Dao/DaoMatchs.php';
 require_once './Modele/Database.php'; // Fichier contenant la configuration PDO.
 
-$daoMatchs = new \Modele\Dao\DaoMatchs(Database::getPDO());
+$daoMatchs = new \Modele\Dao\DaoMatchs;
 $stats = [
     'totalMatchs' => 0,
     'matchsGagnes' => 0,
