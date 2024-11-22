@@ -1,3 +1,37 @@
+<?php
+// Affichage des erreurs
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
+
+
+// Vérifie si l'utilisateur est connecté
+if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
+    header("Location: ./Vue/login.php");
+    exit();
+}
+
+// Inclure DaoMatchs et récupérer les statistiques
+require_once './Modele/Dao/DaoMatchs.php';
+require_once './Modele/Database.php'; // Fichier contenant la configuration PDO.
+
+$daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
+$stats = [
+    'totalMatchs' => 0,
+    'matchsGagnes' => 0,
+    'matchsPerdus' => 0,
+    'matchsNuls' => 0,
+    'pourcentageGagnes' => 0,
+    'pourcentagePerdus' => 0,
+    'pourcentageNuls' => 0,
+];
+try {
+    $stats = $daoMatchs->getMatchStats();
+} catch (Exception $e) {
+    $error = "Erreur lors de la récupération des statistiques : " . $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,8 +39,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>DrafTeam</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Ajout de Chart.js -->
 </head>
 <body>
 <nav class="navbar">
@@ -27,66 +60,35 @@
     <!-- Section pour le graphique -->
     <div>
         <h2>Statistiques des matchs</h2>
-        <?php
-        // Initialisation des données avec des valeurs par défaut
-        $dataGagnes = isset($stats['matchsGagnes']) ? intval($stats['matchsGagnes']) : 0;
-        $dataPerdus = isset($stats['matchsPerdus']) ? intval($stats['matchsPerdus']) : 0;
-        $dataNuls = isset($stats['matchsNuls']) ? intval($stats['matchsNuls']) : 0;
-        ?>
         <?php if (!empty($error)): ?>
             <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
         <?php else: ?>
-            <div style="width: 300px; height: 300px; margin: 0 auto;">
+            <div style="width: 200px; height: 200px; margin: 0 auto;">
                 <canvas id="pieChart"></canvas>
             </div>
             <script>
-                // Register the ChartDataLabels plugin
-                Chart.register(ChartDataLabels);
-
-                // Data for the chart
                 const data = {
                     labels: ['Gagnés', 'Perdus', 'Nuls'],
                     datasets: [{
                         data: [
-                            <?php echo $dataGagnes; ?>,
-                            <?php echo $dataPerdus; ?>,
-                            <?php echo $dataNuls; ?>
+                            <?php echo $stats['matchsGagnes']; ?>,
+                            <?php echo $stats['matchsPerdus']; ?>,
+                            <?php echo $stats['matchsNuls']; ?>
                         ],
                         backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
                         hoverOffset: 4
                     }]
                 };
 
-                // Chart configuration
                 const config = {
                     type: 'pie',
                     data: data,
                     options: {
                         maintainAspectRatio: false,
-                        plugins: {
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                formatter: (value, ctx) => {
-                                    const totalSum = ctx.chart.data.datasets[ctx.datasetIndex].data.reduce((accumulator, currentValue) => {
-                                        return accumulator + currentValue;
-                                    }, 0);
-                                    if (totalSum === 0) {
-                                        return "0%";
-                                    }
-                                    const percentage = (value / totalSum) * 100;
-                                    return `${percentage.toFixed(1)}%`;
-                                },
-                                color: '#000',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        }
+                        aspectRatio: 1
                     }
                 };
 
-                // Initialize the chart
                 const pieChart = new Chart(
                     document.getElementById('pieChart'),
                     config
@@ -94,6 +96,7 @@
             </script>
         <?php endif; ?>
     </div>
+
 </div>
 </body>
 </html>
