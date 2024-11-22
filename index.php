@@ -63,9 +63,10 @@ try {
         <?php if (!empty($error)): ?>
             <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
         <?php else: ?>
-            <canvas  id="pieChart"></canvas>
+            <div style="width: 200px; height: 200px; margin: 0 auto;">
+                <canvas id="pieChart"></canvas>
+            </div>
             <script>
-                // Données des statistiques
                 const data = {
                     labels: ['Gagnés', 'Perdus', 'Nuls'],
                     datasets: [{
@@ -79,27 +80,19 @@ try {
                     }]
                 };
 
-                // Configuration du graphique
-                const config = {
-                    type: 'pie',
-                    data: data,
-                };
-
                 const config = {
                     type: 'pie',
                     data: data,
                     options: {
                         maintainAspectRatio: false,
-                        aspectRatio: 1.5 // Adjust this ratio to make the chart smaller or larger
+                        aspectRatio: 1
                     }
                 };
 
-                // Initialisation du graphique
                 const pieChart = new Chart(
                     document.getElementById('pieChart'),
                     config
                 );
-
             </script>
         <?php endif; ?>
     </div>
