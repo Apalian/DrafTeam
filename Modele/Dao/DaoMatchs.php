@@ -146,7 +146,7 @@ class DaoMatchs extends Dao
         SELECT
             CASE WHEN lieuRencontre = 'Domicile' THEN scoreEquipeDomicile ELSE scoreEquipeExterne END AS scoreEquipe,
             CASE WHEN lieuRencontre = 'Domicile' THEN scoreEquipeExterne ELSE scoreEquipeDomicile END AS scoreAdversaire
-        FROM MATCH_
+        FROM MATCHS
         WHERE scoreEquipeDomicile IS NOT NULL AND scoreEquipeExterne IS NOT NULL
     ) AS matches
     ";
