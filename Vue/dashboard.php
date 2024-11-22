@@ -35,28 +35,43 @@ try {
     <link rel="stylesheet" href="../styles.css">
     <title>DrafTeam</title>
     <script>
-        // Fonction pour charger automatiquement les statistiques d'un joueur
         function loadPlayerStats(numLicense) {
             if (!numLicense) {
-                console.log("test")
+                console.log("Aucun joueur sélectionné, conteneur vidé.");
                 document.getElementById('stats-container').innerHTML = ''; // Vider les stats si aucun joueur sélectionné
                 return;
             }
 
+            console.log(`Chargement des statistiques pour le joueur avec numLicense : ${numLicense}`);
+
             fetch(`dashboard.php?numLicense=${encodeURIComponent(numLicense)}`)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erreur réseau : ${response.status} - ${response.statusText}`);
+                    }
+                    return response.text();
+                })
                 .then(html => {
+                    console.log("HTML reçu :", html); // Affiche tout le HTML retourné
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
-                    const stats = doc.querySelector('#stats-container').innerHTML;
-                    console.log(stats)
-                    document.getElementById('stats-container').innerHTML = stats;
+
+                    // Vérification de l'existence du conteneur dans la réponse
+                    const stats = doc.querySelector('#stats-container');
+                    if (stats) {
+                        console.log("Contenu extrait :", stats.innerHTML); // Logue le contenu extrait
+                        document.getElementById('stats-container').innerHTML = stats.innerHTML;
+                    } else {
+                        console.error("Le conteneur #stats-container est introuvable dans la réponse.");
+                        document.getElementById('stats-container').innerHTML = '<p>Aucune statistique trouvée.</p>';
+                    }
                 })
                 .catch(error => {
                     console.error('Erreur lors du chargement des statistiques :', error);
                     document.getElementById('stats-container').innerHTML = '<p>Erreur lors du chargement des statistiques.</p>';
                 });
         }
+
     </script>
 </head>
 <body>
