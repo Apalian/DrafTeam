@@ -128,4 +128,50 @@ class DaoMatchs extends Dao
             $data['scoreEquipeExterne']
         );
     }
+    /**
+     * @return array
+     */
+    public function getMatchStats(): array
+    {
+        $sql = "
+        SELECT 
+            COUNT(*) AS totalMatchs,
+            SUM(CASE 
+                WHEN scoreEquipeDomicile > scoreEquipeExterne THEN 1 
+                ELSE 0 
+            END) AS matchsGagnes,
+            SUM(CASE 
+                WHEN scoreEquipeDomicile < scoreEquipeExterne THEN 1 
+                ELSE 0 
+            END) AS matchsPerdus,
+            SUM(CASE 
+                WHEN scoreEquipeDomicile = scoreEquipeExterne THEN 1 
+                ELSE 0 
+            END) AS matchsNuls,
+            ROUND(SUM(CASE 
+                WHEN scoreEquipeDomicile > scoreEquipeExterne THEN 1 
+                ELSE 0 
+            END) * 100 / NULLIF(COUNT(*), 0), 2) AS pourcentageGagnes,
+            ROUND(SUM(CASE 
+                WHEN scoreEquipeDomicile < scoreEquipeExterne THEN 1 
+                ELSE 0 
+            END) * 100 / NULLIF(COUNT(*), 0), 2) AS pourcentagePerdus,
+            ROUND(SUM(CASE 
+                WHEN scoreEquipeDomicile = scoreEquipeExterne THEN 1 
+                ELSE 0 
+            END) * 100 / NULLIF(COUNT(*), 0), 2) AS pourcentageNuls
+        FROM MATCHS
+        WHERE scoreEquipeDomicile IS NOT NULL AND scoreEquipeExterne IS NOT NULL;
+    ";
+
+        $statement = $this->pdo->query($sql);
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new \RuntimeException("Impossible de récupérer les statistiques des matchs.");
+        }
+
+        return $result;
+    }
+
 }
