@@ -130,4 +130,79 @@ class DaoJoueurs extends Dao
         );
     }
 
+    public function getPostePrefere($numLicense) {
+        $sql = "SELECT poste, COUNT(*) AS occurrences 
+                FROM PARTICIPATION 
+                WHERE numLicense = :numLicense 
+                GROUP BY poste 
+                ORDER BY occurrences DESC 
+                LIMIT 1";
+        $stmt = $this->db->query($sql, ['numLicense' => $numLicense]);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['poste'] ?? null;
+    }
+
+    public function getTotalTitulaire($numLicense) {
+        $sql = "SELECT COUNT(*) AS total_titulaire 
+                FROM PARTICIPATION 
+                WHERE numLicense = :numLicense AND estTitulaire = TRUE";
+        $stmt = $this->db->query($sql, ['numLicense' => $numLicense]);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total_titulaire'] ?? 0;
+    }
+
+    public function getTotalRemplacant($numLicense) {
+        $sql = "SELECT COUNT(*) AS total_remplacant 
+                FROM PARTICIPATION 
+                WHERE numLicense = :numLicense AND estTitulaire = FALSE";
+        $stmt = $this->db->query($sql, ['numLicense' => $numLicense]);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total_remplacant'] ?? 0;
+    }
+
+    public function getMoyenneEvaluation($numLicense) {
+        $sql = "SELECT AVG(evaluation) AS moyenne_evaluation 
+                FROM PARTICIPATION 
+                WHERE numLicense = :numLicense";
+        $stmt = $this->db->query($sql, ['numLicense' => $numLicense]);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['moyenne_evaluation'] ?? null;
+    }
+
+    public function getPourcentageMatchsGagnes($numLicense) {
+        $sqlVictoires = "SELECT COUNT(*) AS total_victoires 
+                         FROM PARTICIPATION, MATCHS 
+                         WHERE PARTICIPATION.numLicense = :numLicense 
+                           AND PARTICIPATION.dateMatch = MATCHS.dateMatch 
+                           AND PARTICIPATION.heure = MATCHS.heure 
+                           AND (
+                                (MATCHS.lieuRencontre = 'Domicile' AND MATCHS.scoreEquipeDomicile > MATCHS.scoreEquipeExterne) 
+                                OR 
+                                (MATCHS.lieuRencontre = 'Externe' AND MATCHS.scoreEquipeDomicile < MATCHS.scoreEquipeExterne)
+                           )";
+        $stmtVictoires = $this->db->query($sqlVictoires, ['numLicense' => $numLicense]);
+        $totalVictoires = $stmtVictoires->fetch(PDO::FETCH_ASSOC)['total_victoires'] ?? 0;
+
+        $sqlTotalMatchs = "SELECT COUNT(*) AS total_matchs 
+                           FROM PARTICIPATION 
+                           WHERE numLicense = :numLicense";
+        $stmtMatchs = $this->db->query($sqlTotalMatchs, ['numLicense' => $numLicense]);
+        $totalMatchs = $stmtMatchs->fetch(PDO::FETCH_ASSOC)['total_matchs'] ?? 0;
+
+        return $totalMatchs > 0 ? ($totalVictoires * 100.0) / $totalMatchs : 0;
+    }
+
+    public function getSelectionsConsecutives($numLicense) {
+        $sql = "WITH CTE AS (
+                    SELECT 
+                        dateMatch,
+                        ROW_NUMBER() OVER (ORDER BY dateMatch) - 
+                        ROW_NUMBER() OVER (PARTITION BY numLicense ORDER BY dateMatch) AS group_id
+                    FROM PARTICIPATION 
+                    WHERE numLicense = :numLicense
+                )
+                SELECT MAX(COUNT(*)) AS selections_consecutives 
+                FROM CTE 
+                GROUP BY group_id";
+        $stmt = $this->db->query($sql, ['numLicense' => $numLicense]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['selections_consecutives'] ?? 0;
+    }
+
 }
