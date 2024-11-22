@@ -40,6 +40,8 @@ try {
     <link rel="stylesheet" href="styles.css">
     <title>DrafTeam</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Ajout de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
 </head>
 <body>
 <nav class="navbar">
@@ -68,31 +70,52 @@ try {
             </div>
             <script>
                 const data = {
-                    labels: ['Gagnés', 'Perdus', 'Nuls'],
-                    datasets: [{
-                        data: [
-                            <?php echo $stats['matchsGagnes']; ?>,
-                            <?php echo $stats['matchsPerdus']; ?>,
-                            <?php echo $stats['matchsNuls']; ?>
-                        ],
-                        backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
-                        hoverOffset: 4
-                    }]
-                };
+                    const data = {
+                        labels: ['Gagnés', 'Perdus', 'Nuls'],
+                        datasets: [{
+                            data: [
+                                <?php echo $stats['matchsGagnes']; ?>,
+                                <?php echo $stats['matchsPerdus']; ?>,
+                                <?php echo $stats['matchsNuls']; ?>
+                            ],
+                            backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
+                            hoverOffset: 4
+                        }]
+                    };
 
-                const config = {
-                    type: 'pie',
-                    data: data,
-                    options: {
-                        maintainAspectRatio: false,
-                        aspectRatio: 1
-                    }
-                };
+                    const config = {
+                        type: 'pie',
+                        data: data,
+                        options: {
+                            maintainAspectRatio: false,
+                            aspectRatio: 1,
+                            plugins: {
+                                datalabels: {
+                                    anchor: 'end',
+                                    align: 'end',
+                                    formatter: (value, ctx) => {
+                                        const totalSum = ctx.dataset.data.reduce((accumulator, currentValue) => {
+                                            return accumulator + currentValue;
+                                        }, 0);
+                                        const percentage = (value / totalSum) * 100;
+                                        return `${percentage.toFixed(1)}%`;
+                                    },
+                                    color: '#000', // Set the color of the labels
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        },
+                        plugins: [ChartDataLabels]
+                    };
 
-                const pieChart = new Chart(
-                    document.getElementById('pieChart'),
-                    config
-                );
+// Initialize the chart
+                    const pieChart = new Chart(
+                        document.getElementById('pieChart'),
+                        config
+                    );
+
             </script>
         <?php endif; ?>
     </div>
