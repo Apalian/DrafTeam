@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="styles.css">
     <title>DrafTeam</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- Plugin for datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -27,6 +27,12 @@
     <!-- Section pour le graphique -->
     <div>
         <h2>Statistiques des matchs</h2>
+        <?php
+        // Initialisation des données avec des valeurs par défaut
+        $dataGagnes = isset($stats['matchsGagnes']) ? intval($stats['matchsGagnes']) : 0;
+        $dataPerdus = isset($stats['matchsPerdus']) ? intval($stats['matchsPerdus']) : 0;
+        $dataNuls = isset($stats['matchsNuls']) ? intval($stats['matchsNuls']) : 0;
+        ?>
         <?php if (!empty($error)): ?>
             <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
         <?php else: ?>
@@ -34,21 +40,21 @@
                 <canvas id="pieChart"></canvas>
             </div>
             <script>
-                // Data for the chart
+                // Données pour le graphique
                 const data = {
                     labels: ['Gagnés', 'Perdus', 'Nuls'],
                     datasets: [{
                         data: [
-                            <?php echo $stats['matchsGagnes']; ?>,
-                            <?php echo $stats['matchsPerdus']; ?>,
-                            <?php echo $stats['matchsNuls']; ?>
+                            <?php echo $dataGagnes; ?>,
+                            <?php echo $dataPerdus; ?>,
+                            <?php echo $dataNuls; ?>
                         ],
                         backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
                         hoverOffset: 4
                     }]
                 };
 
-                // Configuration for the chart
+                // Configuration du graphique
                 const config = {
                     type: 'pie',
                     data: data,
@@ -59,10 +65,12 @@
                                 anchor: 'end',
                                 align: 'end',
                                 formatter: (value, ctx) => {
-                                    // Get the total sum of data
                                     const totalSum = ctx.chart.data.datasets[ctx.datasetIndex].data.reduce((accumulator, currentValue) => {
                                         return accumulator + currentValue;
                                     }, 0);
+                                    if (totalSum === 0) {
+                                        return "0%";
+                                    }
                                     const percentage = (value / totalSum) * 100;
                                     return `${percentage.toFixed(1)}%`;
                                 },
@@ -76,7 +84,7 @@
                     plugins: [ChartDataLabels]
                 };
 
-                // Initialize the chart
+                // Initialisation du graphique
                 const pieChart = new Chart(
                     document.getElementById('pieChart'),
                     config
