@@ -200,22 +200,28 @@ class DaoJoueurs extends Dao
 
 
     public function getSelectionsConsecutives($numLicense) {
-        $sql = "WITH CTE AS (
-                SELECT 
-                    dateMatch,
-                    ROW_NUMBER() OVER (ORDER BY dateMatch) - 
-                    ROW_NUMBER() OVER (PARTITION BY numLicense ORDER BY dateMatch) AS group_id
-                FROM PARTICIPATION 
-                WHERE numLicense = :numLicense
-            )
-            SELECT MAX(COUNT(*)) AS selections_consecutives 
-            FROM CTE 
-            GROUP BY group_id";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['numLicense' => $numLicense]);
+        $sql = "
+        WITH CTE AS (
+            SELECT 
+                dateMatch,
+                ROW_NUMBER() OVER (ORDER BY dateMatch) AS rn1,
+                ROW_NUMBER() OVER (PARTITION BY numLicense ORDER BY dateMatch) AS rn2
+            FROM PARTICIPATION 
+            WHERE numLicense = :numLicense
+        )
+        SELECT MAX(consecutive_count) AS selections_consecutives
+        FROM (
+            SELECT COUNT(*) AS consecutive_count
+            FROM CTE
+            GROUP BY rn1 - rn2
+        ) AS consecutive_groups;
+    ";
+        $stmt = $this->pdo->prepare($sql); // Préparation
+        $stmt->execute(['numLicense' => $numLicense]); // Exécution
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $result['selections_consecutives'] ?? 0;
     }
+
 
 
 }
