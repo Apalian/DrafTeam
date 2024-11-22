@@ -38,6 +38,7 @@ try {
         // Fonction pour charger automatiquement les statistiques d'un joueur
         function loadPlayerStats(numLicense) {
             if (!numLicense) {
+                console.log("test")
                 document.getElementById('stats-container').innerHTML = ''; // Vider les stats si aucun joueur sélectionné
                 return;
             }
