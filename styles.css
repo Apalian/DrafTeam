@@ -337,6 +337,10 @@ button:focus {
 .score-red { color: red; font-weight: bold }
 .score-gray { color: gray; font-weight: bold}
 .score-unknown { color: gray}
+.myChartDiv {
+    max-width: 900px;
+    max-height: 400px;
+}
 
 
 
