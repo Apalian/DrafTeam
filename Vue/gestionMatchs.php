@@ -82,7 +82,7 @@ if (isset($_GET['dateMatch'])&&isset($_GET['heure'])) {
                         </p>
 
                         <p>
-                            <strong>Score de l'équipe adverse:</strong>
+                            <strong>Score de l'équipe externe:</strong>
                             <?php
                             // We can reuse $scoreDomicile and $scoreExterne from before
 

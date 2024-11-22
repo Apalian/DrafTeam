@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-group">
-            <label for="scoreEquipeExterne">Score Équipe Adverse :</label>
+            <label for="scoreEquipeExterne">Score Équipe Externe :</label>
             <input type="number" id="scoreEquipeExterne" name="scoreEquipeExterne" class="form-input">
         </div>
 

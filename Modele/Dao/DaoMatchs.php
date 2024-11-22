@@ -134,37 +134,25 @@ class DaoMatchs extends Dao
     public function getMatchStats(): array
     {
         $sql = "
-        SELECT 
-            COUNT(*) AS totalMatchs,
-            SUM(CASE 
-                WHEN scoreEquipeDomicile > scoreEquipeExterne THEN 1 
-                ELSE 0 
-            END) AS matchsGagnes,
-            SUM(CASE 
-                WHEN scoreEquipeDomicile < scoreEquipeExterne THEN 1 
-                ELSE 0 
-            END) AS matchsPerdus,
-            SUM(CASE 
-                WHEN scoreEquipeDomicile = scoreEquipeExterne THEN 1 
-                ELSE 0 
-            END) AS matchsNuls,
-            ROUND(SUM(CASE 
-                WHEN scoreEquipeDomicile > scoreEquipeExterne THEN 1 
-                ELSE 0 
-            END) * 100 / NULLIF(COUNT(*), 0), 2) AS pourcentageGagnes,
-            ROUND(SUM(CASE 
-                WHEN scoreEquipeDomicile < scoreEquipeExterne THEN 1 
-                ELSE 0 
-            END) * 100 / NULLIF(COUNT(*), 0), 2) AS pourcentagePerdus,
-            ROUND(SUM(CASE 
-                WHEN scoreEquipeDomicile = scoreEquipeExterne THEN 1 
-                ELSE 0 
-            END) * 100 / NULLIF(COUNT(*), 0), 2) AS pourcentageNuls
-        FROM MATCHS
-        WHERE scoreEquipeDomicile IS NOT NULL AND scoreEquipeExterne IS NOT NULL;
+    SELECT
+        COUNT(*) AS totalMatchs,
+        SUM(CASE WHEN scoreEquipe > scoreAdversaire THEN 1 ELSE 0 END) AS matchsGagnes,
+        SUM(CASE WHEN scoreEquipe < scoreAdversaire THEN 1 ELSE 0 END) AS matchsPerdus,
+        SUM(CASE WHEN scoreEquipe = scoreAdversaire THEN 1 ELSE 0 END) AS matchsNuls,
+        ROUND(SUM(CASE WHEN scoreEquipe > scoreAdversaire THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0), 2) AS pourcentageGagnes,
+        ROUND(SUM(CASE WHEN scoreEquipe < scoreAdversaire THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0), 2) AS pourcentagePerdus,
+        ROUND(SUM(CASE WHEN scoreEquipe = scoreAdversaire THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0), 2) AS pourcentageNuls
+    FROM (
+        SELECT
+            CASE WHEN lieuRencontre = 'Domicile' THEN scoreEquipeDomicile ELSE scoreEquipeExterne END AS scoreEquipe,
+            CASE WHEN lieuRencontre = 'Domicile' THEN scoreEquipeExterne ELSE scoreEquipeDomicile END AS scoreAdversaire
+        FROM MATCH_
+        WHERE scoreEquipeDomicile IS NOT NULL AND scoreEquipeExterne IS NOT NULL
+    ) AS matches
     ";
 
-        $statement = $this->pdo->query($sql);
+
+$statement = $this->pdo->query($sql);
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
         if (!$result) {
