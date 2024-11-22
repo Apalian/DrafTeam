@@ -42,11 +42,10 @@ try {
                 return;
             }
 
-            // Effectuer une requête AJAX
             fetch(`dashboard.php?numLicense=${encodeURIComponent(numLicense)}`)
                 .then(response => response.text())
                 .then(html => {
-                    // Injecter les statistiques dans le conteneur
+                    console.log(`dashboard.php?numLicense=${encodeURIComponent(numLicense)}`)
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const stats = doc.querySelector('#stats-container').innerHTML;
@@ -61,7 +60,7 @@ try {
 </head>
 <body>
 <nav class="navbar">
-    <div class="navbar-logo"><a href="./index.php" class="nav-link">DrafTeam</a></div>
+    <div class="navbar-logo"><a href="../index.php" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
         <a href="./gestionJoueurs.php" class="nav-link">Joueurs</a>
         <a href="./gestionMatchs.php" class="nav-link">Matchs</a>
