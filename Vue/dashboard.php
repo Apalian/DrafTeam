@@ -78,7 +78,7 @@ if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])) {
             <a href="dashboard.php" class="btn-cancel">Annuler</a>
         </div>
     </form>
-    
+
     <?php if (isset($numLicense) && !empty($numLicense)): ?>
         <h2>Statistiques du joueur</h2>
         <table class="stats-table">

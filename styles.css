@@ -335,8 +335,9 @@ button:focus {
 
 .score-green { color: green; font-weight: bold }
 .score-red { color: red; font-weight: bold }
-.score-gray { color: gray; font-weight: bold}
-.score-unknown { color: gray}
+.score-gray { color: rgb(128, 128, 128); font-weight: bold}
+.score-unknown { color: rgb(128, 128, 128)
+}
 
 #pieChart{
     height: 200px;
