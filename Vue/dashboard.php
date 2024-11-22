@@ -25,7 +25,8 @@ try {
 } catch (Exception $e) {
     die('Erreur lors du chargement des joueurs : ' . $e->getMessage());
 }
-if (!empty($_GET['numLicense'])) {
+
+if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])) {
     $numLicense = htmlspecialchars($_GET['numLicense']);
     try {
         $postePref = $daoJoueurs->getPostePrefere($numLicense);
@@ -38,6 +39,7 @@ if (!empty($_GET['numLicense'])) {
         die('Erreur lors du chargement des statistiques : ' . $e->getMessage());
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -49,12 +51,9 @@ if (!empty($_GET['numLicense'])) {
     <script>
         function loadPlayerStats(numLicense) {
             if (!numLicense) {
-                console.log("Aucun joueur sélectionné, conteneur vidé.");
                 document.getElementById('stats-container').innerHTML = ''; // Vider les stats si aucun joueur sélectionné
                 return;
             }
-
-            console.log(`Chargement des statistiques pour le joueur avec numLicense : ${numLicense}`);
 
             fetch(`dashboard.php?numLicense=${encodeURIComponent(numLicense)}`)
                 .then(response => {
@@ -64,24 +63,25 @@ if (!empty($_GET['numLicense'])) {
                     return response.text();
                 })
                 .then(html => {
-                    console.log("HTML reçu :", html); // Affiche tout le HTML retourné
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
 
-                    // Vérification de l'existence du conteneur dans la réponse
                     const stats = doc.querySelector('#stats-container');
+                    if (stats) {
+                        document.getElementById('stats-container').innerHTML = stats.innerHTML;
+                    } else {
+                        document.getElementById('stats-container').innerHTML = '<p>Aucune statistique trouvée.</p>';
+                    }
                 })
                 .catch(error => {
-                    console.error('Erreur lors du chargement des statistiques :', error);
                     document.getElementById('stats-container').innerHTML = '<p>Erreur lors du chargement des statistiques.</p>';
                 });
         }
-
     </script>
 </head>
 <body>
 <nav class="navbar">
-    <div class="navbar-logo"><a href="../index.php" class="nav-link">DrafTeam</a></div>
+    <div class="navbar-logo"><a href="./index.php" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
         <a href="./gestionJoueurs.php" class="nav-link">Joueurs</a>
         <a href="./gestionMatchs.php" class="nav-link">Matchs</a>
@@ -97,7 +97,8 @@ if (!empty($_GET['numLicense'])) {
             <select id="numLicense" name="numLicense" class="form-input" onchange="loadPlayerStats(this.value)">
                 <option value="">-- Sélectionnez un joueur --</option>
                 <?php foreach ($joueurs as $joueur): ?>
-                    <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
+                    <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>"
+                        <?= isset($_GET['numLicense']) && $_GET['numLicense'] === $joueur->getNumLicense() ? 'selected' : '' ?>>
                         <?= htmlspecialchars($joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
                     </option>
                 <?php endforeach; ?>
@@ -107,7 +108,7 @@ if (!empty($_GET['numLicense'])) {
 
     <!-- Conteneur des statistiques -->
     <div id="stats-container">
-        <?php if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])): ?>
+        <?php if (isset($numLicense) && !empty($numLicense)): ?>
             <h2>Statistiques du joueur</h2>
             <table class="stats-table">
                 <thead>
