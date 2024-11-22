@@ -1,37 +1,3 @@
-<?php
-// Affichage des erreurs
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-session_start();
-
-
-// Vérifie si l'utilisateur est connecté
-if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
-    header("Location: ./Vue/login.php");
-    exit();
-}
-
-// Inclure DaoMatchs et récupérer les statistiques
-require_once './Modele/Dao/DaoMatchs.php';
-require_once './Modele/Database.php'; // Fichier contenant la configuration PDO.
-
-$daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
-$stats = [
-    'totalMatchs' => 0,
-    'matchsGagnes' => 0,
-    'matchsPerdus' => 0,
-    'matchsNuls' => 0,
-    'pourcentageGagnes' => 0,
-    'pourcentagePerdus' => 0,
-    'pourcentageNuls' => 0,
-];
-try {
-    $stats = $daoMatchs->getMatchStats();
-} catch (Exception $e) {
-    $error = "Erreur lors de la récupération des statistiques : " . $e->getMessage();
-}
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -39,9 +5,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>DrafTeam</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Ajout de Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- Plugin for datalabels -->
 </head>
 <body>
 <nav class="navbar">
@@ -65,57 +30,57 @@ try {
         <?php if (!empty($error)): ?>
             <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
         <?php else: ?>
-            <div style="width: 200px; height: 200px; margin: 0 auto;">
+            <div style="width: 300px; height: 300px; margin: 0 auto;">
                 <canvas id="pieChart"></canvas>
             </div>
             <script>
+                // Data for the chart
                 const data = {
-                    const data = {
-                        labels: ['Gagnés', 'Perdus', 'Nuls'],
-                        datasets: [{
-                            data: [
-                                <?php echo $stats['matchsGagnes']; ?>,
-                                <?php echo $stats['matchsPerdus']; ?>,
-                                <?php echo $stats['matchsNuls']; ?>
-                            ],
-                            backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
-                            hoverOffset: 4
-                        }]
-                    };
+                    labels: ['Gagnés', 'Perdus', 'Nuls'],
+                    datasets: [{
+                        data: [
+                            <?php echo $stats['matchsGagnes']; ?>,
+                            <?php echo $stats['matchsPerdus']; ?>,
+                            <?php echo $stats['matchsNuls']; ?>
+                        ],
+                        backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
+                        hoverOffset: 4
+                    }]
+                };
 
-                    const config = {
-                        type: 'pie',
-                        data: data,
-                        options: {
-                            maintainAspectRatio: false,
-                            aspectRatio: 1,
-                            plugins: {
-                                datalabels: {
-                                    anchor: 'end',
-                                    align: 'end',
-                                    formatter: (value, ctx) => {
-                                        const totalSum = ctx.dataset.data.reduce((accumulator, currentValue) => {
-                                            return accumulator + currentValue;
-                                        }, 0);
-                                        const percentage = (value / totalSum) * 100;
-                                        return `${percentage.toFixed(1)}%`;
-                                    },
-                                    color: '#000', // Set the color of the labels
-                                    font: {
-                                        size: 12
-                                    }
+                // Configuration for the chart
+                const config = {
+                    type: 'pie',
+                    data: data,
+                    options: {
+                        maintainAspectRatio: false,
+                        plugins: {
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                formatter: (value, ctx) => {
+                                    // Get the total sum of data
+                                    const totalSum = ctx.chart.data.datasets[ctx.datasetIndex].data.reduce((accumulator, currentValue) => {
+                                        return accumulator + currentValue;
+                                    }, 0);
+                                    const percentage = (value / totalSum) * 100;
+                                    return `${percentage.toFixed(1)}%`;
+                                },
+                                color: '#000',
+                                font: {
+                                    size: 12
                                 }
                             }
-                        },
-                        plugins: [ChartDataLabels]
-                    };
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                };
 
-// Initialize the chart
-                    const pieChart = new Chart(
-                        document.getElementById('pieChart'),
-                        config
-                    );
-
+                // Initialize the chart
+                const pieChart = new Chart(
+                    document.getElementById('pieChart'),
+                    config
+                );
             </script>
         <?php endif; ?>
     </div>
