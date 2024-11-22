@@ -174,29 +174,42 @@ class DaoJoueurs extends Dao
 
 
     public function getPourcentageMatchsGagnes($numLicense) {
-        $sqlVictoires = "SELECT COUNT(*) AS total_victoires 
-                     FROM PARTICIPATION, MATCHS 
-                     WHERE PARTICIPATION.numLicense = :numLicense 
-                       AND PARTICIPATION.dateMatch = MATCHS.dateMatch 
-                       AND PARTICIPATION.heure = MATCHS.heure 
-                       AND (
-                            (MATCHS.lieuRencontre = 'Domicile' AND MATCHS.scoreEquipeDomicile > MATCHS.scoreEquipeExterne) 
-                            OR 
-                            (MATCHS.lieuRencontre = 'Externe' AND MATCHS.scoreEquipeDomicile < MATCHS.scoreEquipeExterne)
-                       )";
+        $sqlVictoires = "
+        SELECT COUNT(*) AS total_victoires 
+        FROM PARTICIPATION, MATCHS 
+        WHERE PARTICIPATION.numLicense = :numLicense 
+          AND PARTICIPATION.dateMatch = MATCHS.dateMatch 
+          AND PARTICIPATION.heure = MATCHS.heure 
+          AND (
+              (MATCHS.lieuRencontre = 'Domicile' AND MATCHS.scoreEquipeDomicile > MATCHS.scoreEquipeExterne) 
+              OR 
+              (MATCHS.lieuRencontre = 'Externe' AND MATCHS.scoreEquipeDomicile < MATCHS.scoreEquipeExterne)
+          )
+          AND MATCHS.scoreEquipeDomicile IS NOT NULL 
+          AND MATCHS.scoreEquipeExterne IS NOT NULL 
+          AND MATCHS.scoreEquipeDomicile != MATCHS.scoreEquipeExterne;
+    ";
         $stmtVictoires = $this->pdo->prepare($sqlVictoires);
         $stmtVictoires->execute(['numLicense' => $numLicense]);
         $totalVictoires = $stmtVictoires->fetch(\PDO::FETCH_ASSOC)['total_victoires'] ?? 0;
 
-        $sqlTotalMatchs = "SELECT COUNT(*) AS total_matchs 
-                       FROM PARTICIPATION 
-                       WHERE numLicense = :numLicense";
+        $sqlTotalMatchs = "
+        SELECT COUNT(*) AS total_matchs 
+        FROM PARTICIPATION, MATCHS 
+        WHERE PARTICIPATION.numLicense = :numLicense 
+          AND PARTICIPATION.dateMatch = MATCHS.dateMatch 
+          AND PARTICIPATION.heure = MATCHS.heure 
+          AND MATCHS.scoreEquipeDomicile IS NOT NULL 
+          AND MATCHS.scoreEquipeExterne IS NOT NULL 
+          AND MATCHS.scoreEquipeDomicile != MATCHS.scoreEquipeExterne;
+    ";
         $stmtMatchs = $this->pdo->prepare($sqlTotalMatchs);
         $stmtMatchs->execute(['numLicense' => $numLicense]);
         $totalMatchs = $stmtMatchs->fetch(\PDO::FETCH_ASSOC)['total_matchs'] ?? 0;
 
         return $totalMatchs > 0 ? ($totalVictoires * 100.0) / $totalMatchs : 0;
     }
+
 
 
     public function getSelectionsConsecutives($numLicense) {
