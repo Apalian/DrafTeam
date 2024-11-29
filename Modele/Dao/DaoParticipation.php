@@ -102,6 +102,33 @@ class DaoParticipation extends Dao
     }
 
     /**
+     * @param ...$id
+     * @return Participation
+     */
+    public function findByMatch(...$id): Participation
+    {
+        if (empty($id[0]) && empty($id[1]) ) {
+            throw new \InvalidArgumentException("une date et une heure sont requis");
+        }
+
+        $dateMatch = $id[0];
+        $heure = $id[1];
+        $sql = "SELECT * FROM PARTICIPATION WHERE dateMatch = :dateMatch AND heure = :heure";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            ':dateMatch' => $dateMatch,
+            ':heure' => $heure
+        ]);
+        $data = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            throw new \RuntimeException("Aucun participation trouvé pour cette date et heure");
+        }
+
+        return $this->creerInstance($data);
+    }
+
+    /**
      * @return array
      */
     public function findAll(): array
