@@ -51,6 +51,7 @@ try {
     <link rel="stylesheet" href="styles.css">
     <title>DrafTeam</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./script.js"></script>
 </head>
 <body>
 <nav class="navbar">
