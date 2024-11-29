@@ -142,22 +142,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
                 <label>Numéro de Licence :</label>
-                <input list="joueurs-${participationIndex}" name="participations[${participationIndex}][numLicense]" class="form_add_player" required>
+                <input list="joueurs-${participationIndex}" name="participations[${participationIndex}][numLicense]" class="form-input-add-player" required>
                 <datalist id="joueurs-${participationIndex}">
                     ${joueurOptions}
                 </datalist>
 
                 <label>Est Titulaire :</label>
-                <select name="participations[${participationIndex}][estTitulaire]" class="form_add_player" >
+                <select name="participations[${participationIndex}][estTitulaire]" class="form-input-add-player">
                     <option value="1">Oui</option>
                     <option value="0">Non</option>
                 </select>
 
                 <label>Évaluation (0 à 10) :</label>
-                <input type="number" name="participations[${participationIndex}][evaluation]" class="form_add_player" min="0" max="10" >
+                <input type="number" name="participations[${participationIndex}][evaluation]" class="form-input-add-player" min="0" max="10" >
 
                 <label>Poste :</label>
-                <select name="participations[${participationIndex}][poste]" class="form_add_player" required>
+                <select name="participations[${participationIndex}][poste]" class="form-input-add-player" required>
                     <option value="Gardien">Gardien</option>
                     <option value="Pivot">Pivot</option>
                     <option value="Demi-centre">Demi-centre</option>
