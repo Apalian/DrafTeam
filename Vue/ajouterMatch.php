@@ -17,11 +17,13 @@ $daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['passw
 
 $joueurs = $daoJoueurs->findAll();
 
+$errorMessage = null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requiredFields = ['dateMatch', 'heure', 'nomEquipeAdverse', 'lieuRencontre'];
     foreach ($requiredFields as $field) {
         if (empty($_POST[$field])) {
-            die("Erreur : le champ $field est requis.");
+            $errorMessage = "Erreur : le champ $field est requis.";
         }
     }
 
@@ -48,32 +50,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($titulaireCount < 7) {
-        die("Erreur : Impossible d'ajouter un match sans au moins 7 joueurs titulaires.");
+        $errorMessage = "Erreur : Impossible d'ajouter un match sans au moins 7 joueurs titulaires.";
     }
 
-    try {
-        $daoMatchs->create($nouveauMatch);
+    if (!$errorMessage) {
+        try {
+            $daoMatchs->create($nouveauMatch);
 
-        foreach ($_POST['participations'] as $participation) {
-            if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
-                $evaluation = isset($participation['evaluation']) && $participation['evaluation'] !== '' ? (int)$participation['evaluation'] : null;
+            foreach ($_POST['participations'] as $participation) {
+                if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
+                    $evaluation = isset($participation['evaluation']) && $participation['evaluation'] !== '' ? (int)$participation['evaluation'] : null;
 
-                $nouvelleParticipation = new \Modele\Participation(
-                    $participation['numLicense'],
-                    $_POST['dateMatch'],
-                    $_POST['heure'],
-                    $participation['estTitulaire'] == '1',
-                    $evaluation,
-                    $participation['poste']
-                );
-                $daoParticipation->create($nouvelleParticipation);
+                    $nouvelleParticipation = new \Modele\Participation(
+                        $participation['numLicense'],
+                        $_POST['dateMatch'],
+                        $_POST['heure'],
+                        $participation['estTitulaire'] == '1',
+                        $evaluation,
+                        $participation['poste']
+                    );
+                    $daoParticipation->create($nouvelleParticipation);
+                }
             }
-        }
 
-        header("Location: gestionMatchs.php");
-        exit();
-    } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
+            header("Location: gestionMatchs.php");
+            exit();
+        } catch (Exception $e) {
+            $errorMessage = 'Erreur : ' . $e->getMessage();
+        }
     }
 }
 ?>
@@ -86,6 +90,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Ajouter un Match</title>
 </head>
 <body>
+<?php if (isset($errorMessage)): ?>
+    <script>
+        alert("<?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?>");
+    </script>
+<?php endif; ?>
+
 <div class="container">
     <h1 class="form-title">Ajouter un Nouveau Match</h1>
     <form method="POST" class="match-form">
