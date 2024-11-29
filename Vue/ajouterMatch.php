@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $scoreEquipeDomicile = $_POST['scoreEquipeDomicile'] !== '' ? $_POST['scoreEquipeDomicile'] : null;
-    $scoreEquipeExterne =$_POST['scoreEquipeExterne'] !== '' ?$_POST['scoreEquipeExterne'] : null;
+    $scoreEquipeExterne = $_POST['scoreEquipeExterne'] !== '' ? $_POST['scoreEquipeExterne'] : null;
 
     $nouveauMatch = new \Modele\Matchs(
         $_POST['dateMatch'],
@@ -37,28 +37,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $scoreEquipeExterne
     );
 
+    // Vérification des joueurs titulaires
+    $titulaireCount = 0;
+    if (!empty($_POST['participations'])) {
+        foreach ($_POST['participations'] as $participation) {
+            if (!empty($participation['numLicense']) && isset($participation['estTitulaire']) && $participation['estTitulaire'] == '1') {
+                $titulaireCount++;
+            }
+        }
+    }
+
+    if ($titulaireCount < 7) {
+        die("Erreur : Impossible d'ajouter un match sans au moins 7 joueurs titulaires.");
+    }
 
     try {
         $daoMatchs->create($nouveauMatch);
 
-        if (!empty($_POST['participations'])) {
-            foreach ($_POST['participations'] as $participation) {
-                if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
-                    $evaluation = isset($participation['evaluation']) && $participation['evaluation'] !== '' ? (int)$participation['evaluation'] : null;
+        foreach ($_POST['participations'] as $participation) {
+            if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
+                $evaluation = isset($participation['evaluation']) && $participation['evaluation'] !== '' ? (int)$participation['evaluation'] : null;
 
-                    $nouvelleParticipation = new \Modele\Participation(
-                        $participation['numLicense'],
-                        $_POST['dateMatch'],
-                        $_POST['heure'],
-                        $participation['estTitulaire'] == '1',
-                        $evaluation,
-                        $participation['poste']
-                    );
-                    $daoParticipation->create($nouvelleParticipation);
-                }
+                $nouvelleParticipation = new \Modele\Participation(
+                    $participation['numLicense'],
+                    $_POST['dateMatch'],
+                    $_POST['heure'],
+                    $participation['estTitulaire'] == '1',
+                    $evaluation,
+                    $participation['poste']
+                );
+                $daoParticipation->create($nouvelleParticipation);
             }
         }
-
 
         header("Location: gestionMatchs.php");
         exit();
