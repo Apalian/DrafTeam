@@ -344,5 +344,9 @@ button:focus {
     width: auto;
 }
 
+.form_add_player{
+    padding: 10px;
+    width: 200px;
+}
 
 
