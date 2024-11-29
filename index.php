@@ -5,18 +5,22 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
-
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
     header("Location: ./Vue/login.php");
     exit();
 }
 
-// Inclure DaoMatchs et récupérer les statistiques
+// Inclure les DAO
 require_once './Modele/Dao/DaoMatchs.php';
-require_once './Modele/Database.php'; // Fichier contenant la configuration PDO.
+require_once './Modele/Dao/DaoJoueurs.php';
+require_once './Modele/Database.php';
 
+// Initialiser les DAO
 $daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
+$daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
+
+// Récupération des statistiques des matchs
 $stats = [
     'totalMatchs' => 0,
     'matchsGagnes' => 0,
@@ -29,7 +33,14 @@ $stats = [
 try {
     $stats = $daoMatchs->getMatchStats();
 } catch (Exception $e) {
-    $error = "Erreur lors de la récupération des statistiques : " . $e->getMessage();
+    $errorMatch = "Erreur lors de la récupération des statistiques : " . $e->getMessage();
+}
+
+// Récupération des joueurs
+try {
+    $joueurs = $daoJoueurs->findAll();
+} catch (Exception $e) {
+    $errorJoueurs = "Erreur lors de la récupération des joueurs : " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -39,7 +50,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>DrafTeam</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Ajout de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -52,16 +63,15 @@ try {
     </div>
 </nav>
 
-<!-- Contenu de la page -->
 <div class="content">
     <h1>Bienvenue sur DrafTeam!</h1>
     <p>Votre plateforme de gestion de matchs de Handball.</p>
 
-    <!-- Section pour le graphique -->
+    <!-- Section Matchs -->
     <div>
         <h2>Statistiques des matchs</h2>
-        <?php if (!empty($error)): ?>
-            <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+        <?php if (!empty($errorMatch)): ?>
+            <p style="color: red;"><?php echo htmlspecialchars($errorMatch); ?></p>
         <?php else: ?>
             <div style="width: 200px; height: 200px; margin: 0 auto;">
                 <canvas id="pieChart"></canvas>
@@ -97,6 +107,28 @@ try {
         <?php endif; ?>
     </div>
 
+    <!-- Section Joueurs -->
+    <div>
+        <h2>Sélectionner un Joueur</h2>
+        <?php if (!empty($errorJoueurs)): ?>
+            <p style="color: red;"><?php echo htmlspecialchars($errorJoueurs); ?></p>
+        <?php else: ?>
+            <form class="selection-form">
+                <div class="form-group">
+                    <label for="numLicense">Choisissez un joueur :</label>
+                    <select id="numLicense" name="numLicense" class="form-input" onchange="loadPlayerStats(this.value)">
+                        <option value="">-- Sélectionnez un joueur --</option>
+                        <?php foreach ($joueurs as $joueur): ?>
+                            <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
+                                <?= htmlspecialchars($joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </form>
+            <div id="stats-container"></div>
+        <?php endif; ?>
+    </div>
 </div>
 </body>
 </html>
