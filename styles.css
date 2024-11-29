@@ -345,8 +345,7 @@ button:focus {
 }
 
 /* Champs d'entrée */
-.form-input-add-player
-{
+.form-input-add-player {
     width: 100%;
     padding: 10px;
     font-size: 14px;
@@ -356,8 +355,7 @@ button:focus {
 }
 
 /* Champs au focus */
-.form-input-add-player:focus
-{
+.form-input-add-player:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
