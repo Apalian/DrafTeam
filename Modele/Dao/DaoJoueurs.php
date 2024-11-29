@@ -163,15 +163,50 @@ class DaoJoueurs extends Dao
     }
 
 
-    public function getMoyenneEvaluation($numLicense) {
-        $sql = "SELECT AVG(evaluation) AS moyenne_evaluation 
+    public function getMoyenneEndurance($numLicense) {
+        $sql = "SELECT AVG(endurance) AS moyenne_endurance 
             FROM PARTICIPATION 
             WHERE numLicense = :numLicense";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['numLicense' => $numLicense]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC)['moyenne_evaluation'] ?? null;
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['moyenne_endurance'] ?? null;
     }
 
+    public function getMoyenneVitesse($numLicense) {
+        $sql = "SELECT AVG(vitesse) AS moyenne_vitesse 
+            FROM PARTICIPATION 
+            WHERE numLicense = :numLicense";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['numLicense' => $numLicense]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['moyenne_vitesse'] ?? null;
+    }
+
+    public function getMoyenneDefense($numLicense) {
+        $sql = "SELECT AVG(defense) AS moyenne_defense 
+            FROM PARTICIPATION 
+            WHERE numLicense = :numLicense";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['numLicense' => $numLicense]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['moyenne_defense'] ?? null;
+    }
+
+    public function getMoyenneTirs($numLicense) {
+        $sql = "SELECT AVG(tirs) AS moyenne_tirs 
+            FROM PARTICIPATION 
+            WHERE numLicense = :numLicense";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['numLicense' => $numLicense]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['moyenne_tirs'] ?? null;
+    }
+
+    public function getMoyennePasses($numLicense) {
+        $sql = "SELECT AVG(passes) AS moyenne_passes 
+            FROM PARTICIPATION 
+            WHERE numLicense = :numLicense";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['numLicense' => $numLicense]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['moyenne_passes'] ?? null;
+    }
 
     public function getPourcentageMatchsGagnes($numLicense) {
         $sqlVictoires = "SELECT COUNT(*) AS total_victoires 
