@@ -109,26 +109,78 @@ try {
     </div>
 
     <!-- Section Joueurs -->
-    <div>
-        <h2>Sélectionner un Joueur</h2>
-        <?php if (!empty($errorJoueurs)): ?>
-            <p style="color: red;"><?php echo htmlspecialchars($errorJoueurs); ?></p>
-        <?php else: ?>
-            <form class="selection-form">
-                <div class="form-group">
-                    <label for="numLicense">Choisissez un joueur :</label>
-                    <select id="numLicense" name="numLicense" class="form-input" onchange="loadPlayerStats(this.value)">
-                        <option value="">-- Sélectionnez un joueur --</option>
-                        <?php foreach ($joueurs as $joueur): ?>
-                            <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
-                                <?= htmlspecialchars($joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </form>
-            <div id="stats-container"></div>
-        <?php endif; ?>
+    <div class="container">
+        <h1 class="form-title">Sélectionner un Joueur</h1>
+        <form class="selection-form">
+            <div class="form-group">
+                <label for="numLicense">Choisissez un joueur :</label>
+                <select id="numLicense" name="numLicense" class="form-input" onchange="loadPlayerStats(this.value)">
+                    <option value="">-- Sélectionnez un joueur --</option>
+                    <?php foreach ($joueurs as $joueur): ?>
+                        <option value="<?= htmlspecialchars($joueur->getNumLicense()) ?>">
+                            <?= htmlspecialchars($joueur->getNom() . ' ' . $joueur->getPrenom()) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </form>
+
+        <!-- Conteneur des statistiques -->
+        <div id="stats-container">
+            <?php if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])): ?>
+                <h2>Statistiques du joueur</h2>
+                <table class="stats-table">
+                    <thead>
+                    <tr>
+                        <th>Statistique</th>
+                        <th>Valeur</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Poste préféré</td>
+                        <td><?= htmlspecialchars($postePref ?? 'N/A') ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nombre total de sélections en tant que titulaire</td>
+                        <td><?= htmlspecialchars($totTitu ?? '0') ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nombre total de sélections en tant que remplaçant</td>
+                        <td><?= htmlspecialchars($totRemp ?? '0') ?></td>
+                    </tr>
+                    <tr>
+                        <td>Pourcentage de matchs gagnés</td>
+                        <td><?= htmlspecialchars(number_format($pourMatchG ?? 0, 2)) ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>Moyenne des évaluations de la vitesse</td>
+                        <td><?= htmlspecialchars(number_format($moyVitesse ?? 0, 2)) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Moyenne des évaluations de endurance</td>
+                        <td><?= htmlspecialchars(number_format($moyEndurance ?? 0, 2)) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Moyenne des évaluations de la défense</td>
+                        <td><?= htmlspecialchars(number_format($moyDefense ?? 0, 2)) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Moyenne des évaluations des tirs</td>
+                        <td><?= htmlspecialchars(number_format($moyTirs ?? 0, 2)) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Moyenne des évaluations des passes</td>
+                        <td><?= htmlspecialchars(number_format($moyPasses ?? 0, 2)) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de sélections consécutives</td>
+                        <td><?= htmlspecialchars($selectionConsecutive ?? '0') ?></td>
+                    </tr>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 </body>
