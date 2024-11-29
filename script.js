@@ -14,7 +14,7 @@ function loadPlayerStats(numLicense) {
 
     console.log(`Chargement des statistiques pour le joueur avec numLicense : ${numLicense}`);
 
-    fetch(`dashboard.php?numLicense=${encodeURIComponent(numLicense)}`)
+    fetch(`index.php?numLicense=${encodeURIComponent(numLicense)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erreur réseau : ${response.status} - ${response.statusText}`);
