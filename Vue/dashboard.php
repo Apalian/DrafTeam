@@ -26,7 +26,11 @@ if (!empty($_GET['numLicense'])) {
         $totTitu = $daoJoueurs->getTotalTitulaire($numLicense);
         $totRemp = $daoJoueurs->getTotalRemplacant($numLicense);
         $pourMatchG = $daoJoueurs->getPourcentageMatchsGagnes($numLicense);
-        $moyEvaluation = $daoJoueurs->getMoyenneEvaluation($numLicense);
+        $moyEndurance = $daoJoueurs->getMoyenneEndurance($numLicense);
+        $moyVitesse = $daoJoueurs->getMoyenneVitesse($numLicense);
+        $moyDefense = $daoJoueurs->getMoyenneDefense($numLicense);
+        $moyTirs = $daoJoueurs->getMoyenneTirs($numLicense);
+        $moyPasses = $daoJoueurs->getMoyennePasses($numLicense);
         $selectionConsecutive = $daoJoueurs->getSelectionsConsecutives($numLicense);
     } catch (Exception $e) {
         die('Erreur lors du chargement des statistiques : ' . $e->getMessage());
@@ -135,8 +139,24 @@ if (!empty($_GET['numLicense'])) {
                     <td><?= htmlspecialchars(number_format($pourMatchG ?? 0, 2)) ?>%</td>
                 </tr>
                 <tr>
-                    <td>Moyenne des évaluations</td>
-                    <td><?= htmlspecialchars(number_format($moyEvaluation ?? 0, 2)) ?></td>
+                    <td>Moyenne des évaluations de la vitesse</td>
+                    <td><?= htmlspecialchars(number_format($moyVitesse ?? 0, 2)) ?></td>
+                </tr>
+                <tr>
+                    <td>Moyenne des évaluations de endurance</td>
+                    <td><?= htmlspecialchars(number_format($moyEndurance ?? 0, 2)) ?></td>
+                </tr>
+                <tr>
+                    <td>Moyenne des évaluations de la défense</td>
+                    <td><?= htmlspecialchars(number_format($moyDefense ?? 0, 2)) ?></td>
+                </tr>
+                <tr>
+                    <td>Moyenne des évaluations des tirs</td>
+                    <td><?= htmlspecialchars(number_format($moyTirs ?? 0, 2)) ?></td>
+                </tr>
+                <tr>
+                    <td>Moyenne des évaluations des passes</td>
+                    <td><?= htmlspecialchars(number_format($moyPasses ?? 0, 2)) ?></td>
                 </tr>
                 <tr>
                     <td>Nombre de sélections consécutives</td>
