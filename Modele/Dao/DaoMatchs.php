@@ -81,7 +81,7 @@ class DaoMatchs extends Dao
         }
         $dateMatch = $id[0];
         $heure = $id[1];
-        $sql = "SELECT * FROM JOUEURS WHERE dateMatch = :dateMatch AND heure = :heure";
+        $sql = "SELECT * FROM MATCHS WHERE dateMatch = :dateMatch AND heure = :heure";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
             ':dateMatch' => $dateMatch,
