@@ -95,7 +95,7 @@ if (!empty($_GET['numLicense'])) {
     </div>
 </nav>
 <div class="container">
-    <h1 class="form-title">Sélectionner un Joueur</h1>
+    <h1 class="form-title">Statistiques des Joueurs</h1>
     <form class="selection-form">
         <div class="form-group">
             <label for="numLicense">Choisissez un joueur :</label>
@@ -112,7 +112,7 @@ if (!empty($_GET['numLicense'])) {
 
     <!-- Conteneur des statistiques -->
     <div id="stats-container">
-        <?php if (isset($_GET['numLicense']) && !empty($_GET['numLicense'])): ?>
+        <?php if (!empty($_GET['numLicense'])): ?>
             <h2>Statistiques du joueur</h2>
             <table class="stats-table">
                 <thead>
