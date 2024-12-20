@@ -178,19 +178,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </select>
 
         <label>Endurance :</label>
-        <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="100" step="10" required>
+        <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="100" step="1" required>
 
         <label>Vitesse :</label>
-        <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="100" step="10" required>
+        <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="100" step="1" required>
 
         <label>Défense :</label>
-        <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="100" step="10" required>
+        <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="100" step="1" required>
 
         <label>Tirs :</label>
-        <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="100" step="10" required>
+        <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="100" step="1" required>
 
         <label>Passes :</label>
-        <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="100" step="10" required>
+        <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="100" step="1" required>
 
         <label>Poste :</label>
         <select name="participations[${participationIndex}][poste]" class="form-input-add-player" required>
