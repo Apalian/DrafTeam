@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $match->setScoreEquipeDomicile($scoreEquipeDomicile);
     $match->setScoreEquipeExterne($scoreEquipeExterne);
 
+    // Counting titulaires
     $titulaireCount = 0;
     if (!empty($_POST['participations'])) {
         foreach ($_POST['participations'] as $participation) {
@@ -59,17 +60,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $daoMatchs->update($match);
 
+            // We assume there's a method deleteByMatch or you have logic to delete old participations
             $daoParticipation->deleteByMatch($dateMatch, $heure);
+
             foreach ($_POST['participations'] as $participation) {
                 if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
-                    $evaluation = isset($participation['evaluation']) && $participation['evaluation'] !== '' ? (int)$participation['evaluation'] : null;
+                    $endurance = isset($participation['endurance']) ? (int)$participation['endurance'] : null;
+                    $vitesse = isset($participation['vitesse']) ? (int)$participation['vitesse'] : null;
+                    $defense = isset($participation['defense']) ? (int)$participation['defense'] : null;
+                    $tirs = isset($participation['tirs']) ? (int)$participation['tirs'] : null;
+                    $passes = isset($participation['passes']) ? (int)$participation['passes'] : null;
 
                     $nouvelleParticipation = new \Modele\Participation(
                         $participation['numLicense'],
                         $dateMatch,
                         $heure,
                         $participation['estTitulaire'] == '1',
-                        $evaluation,
+                        $endurance,
+                        $vitesse,
+                        $defense,
+                        $tirs,
+                        $passes,
                         $participation['poste']
                     );
                     $daoParticipation->create($nouvelleParticipation);
@@ -140,6 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="participations-container">
                 <?php foreach ($participations as $index => $participation): ?>
                     <div class="form-group">
+                        <h3>Joueur <?= $index + 1 ?></h3>
                         <label>Numéro de Licence :</label>
                         <input list="joueurs-<?= $index ?>" name="participations[<?= $index ?>][numLicense]" class="form-input-add-player" value="<?= htmlspecialchars($participation->getNumLicense()) ?>" required>
                         <datalist id="joueurs-<?= $index ?>">
@@ -154,8 +166,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="0" <?= !$participation->getEstTitulaire() ? 'selected' : '' ?>>Non</option>
                         </select>
 
-                        <label>Évaluation (0 à 10) :</label>
-                        <input type="number" name="participations[<?= $index ?>][evaluation]" class="form-input-add-player" min="0" max="10" value="<?= htmlspecialchars($participation->getEvaluation()) ?>">
+                        <label>Endurance (0 à 10) :</label>
+                        <input type="number" name="participations[<?= $index ?>][endurance]" class="form-input-add-player" min="0" max="10" step="1" value="<?= htmlspecialchars($participation->getEndurance()) ?>" required>
+
+                        <label>Vitesse (0 à 10) :</label>
+                        <input type="number" name="participations[<?= $index ?>][vitesse]" class="form-input-add-player" min="0" max="10" step="1" value="<?= htmlspecialchars($participation->getVitesse()) ?>" required>
+
+                        <label>Défense (0 à 10) :</label>
+                        <input type="number" name="participations[<?= $index ?>][defense]" class="form-input-add-player" min="0" max="10" step="1" value="<?= htmlspecialchars($participation->getDefense()) ?>" required>
+
+                        <label>Tirs (0 à 10) :</label>
+                        <input type="number" name="participations[<?= $index ?>][tirs]" class="form-input-add-player" min="0" max="10" step="1" value="<?= htmlspecialchars($participation->getTirs()) ?>" required>
+
+                        <label>Passes (0 à 10) :</label>
+                        <input type="number" name="participations[<?= $index ?>][passes]" class="form-input-add-player" min="0" max="10" step="1" value="<?= htmlspecialchars($participation->getPasses()) ?>" required>
 
                         <label>Poste :</label>
                         <select name="participations[<?= $index ?>][poste]" class="form-input-add-player" required>
@@ -175,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-buttons">
             <button type="submit" class="btn-submit">Valider</button>
-            <a href="gestionMatchs.php" class="btn-cancel"><button type="button">Annuler</button></a>
+            <a href="gestionMatchs.php" class="btn-cancel">Annuler</a>
         </div>
     </form>
 </div>
@@ -194,6 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const participationDiv = document.createElement('div');
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
+            <h3>Joueur ${participationIndex + 1}</h3>
             <label>Numéro de Licence :</label>
             <input list="joueurs-${participationIndex}" name="participations[${participationIndex}][numLicense]" class="form-input-add-player" required>
             <datalist id="joueurs-${participationIndex}">
@@ -206,8 +231,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="0">Non</option>
             </select>
 
-            <label>Évaluation (0 à 10) :</label>
-            <input type="number" name="participations[${participationIndex}][evaluation]" class="form-input-add-player" min="0" max="10">
+            <label>Endurance (0 à 10) :</label>
+            <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+            <label>Vitesse (0 à 10) :</label>
+            <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+            <label>Défense (0 à 10) :</label>
+            <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+            <label>Tirs (0 à 10) :</label>
+            <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+            <label>Passes (0 à 10) :</label>
+            <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="10" step="1" required>
 
             <label>Poste :</label>
             <select name="participations[${participationIndex}][poste]" class="form-input-add-player" required>

@@ -164,7 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const participationDiv = document.createElement('div');
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
-        <label>Numéro de Licence :</label>
+        <h2>Joueur ${participationIndex + 1}</h2>
+       <label>Numéro de Licence :</label>
         <input list="joueurs-${participationIndex}" name="participations[${participationIndex}][numLicense]" class="form-input-add-player" required>
         <datalist id="joueurs-${participationIndex}">
             ${joueurOptions}
@@ -177,19 +178,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </select>
 
         <label>Endurance :</label>
-        <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="10" step="1" required>
+        <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="100" step="10" required>
 
         <label>Vitesse :</label>
-        <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="10" step="1" required>
+        <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="100" step="10" required>
 
         <label>Défense :</label>
-        <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="10" step="1" required>
+        <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="100" step="10" required>
 
         <label>Tirs :</label>
-        <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="10" step="1" required>
+        <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="100" step="10" required>
 
         <label>Passes :</label>
-        <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="10" step="1" required>
+        <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="100" step="10" required>
 
         <label>Poste :</label>
         <select name="participations[${participationIndex}][poste]" class="form-input-add-player" required>
