@@ -62,7 +62,9 @@ class DaoMatchs extends Dao
         }
         $dateMatch = $id[0];
         $heure = $id[1];
-        $sql = "DELETE FROM MATCHS WHERE dateMatch = :dateMatch AND heure = :heure";
+        $sql = "DELETE FROM PARTICIPATION WHERE dateMatch = :dateMatch AND heure = :heure;
+                DELETE FROM MATCHS WHERE dateMatch = :dateMatch AND heure = :heure;";
+
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
             ':dateMatch' => $dateMatch,
