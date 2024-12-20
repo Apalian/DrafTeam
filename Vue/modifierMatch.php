@@ -1,3 +1,4 @@
+
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -42,11 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $match->setScoreEquipeDomicile($scoreEquipeDomicile);
     $match->setScoreEquipeExterne($scoreEquipeExterne);
 
-    // Counting titulaires
+    // Count the number of titulares
     $titulaireCount = 0;
     if (!empty($_POST['participations'])) {
-        foreach ($_POST['participations'] as $participation) {
-            if (!empty($participation['numLicense']) && isset($participation['estTitulaire']) && $participation['estTitulaire'] == '1') {
+        foreach ($_POST['participations'] as $pData) {
+            if (!empty($pData['numLicense']) && isset($pData['estTitulaire']) && $pData['estTitulaire'] == '1') {
                 $titulaireCount++;
             }
         }
@@ -58,33 +59,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$errorMessage) {
         try {
+            // Update the match
             $daoMatchs->update($match);
 
-            // We assume there's a method deleteByMatch or you have logic to delete old participations
-            $daoParticipation->deleteByMatch($dateMatch, $heure);
+            // Create an associative array of existing participations keyed by numLicense
+            $existingParticipations = [];
+            foreach ($participations as $part) {
+                $existingParticipations[$part->getNumLicense()] = $part;
+            }
 
-            foreach ($_POST['participations'] as $participation) {
-                if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
-                    $endurance = isset($participation['endurance']) ? (int)$participation['endurance'] : null;
-                    $vitesse = isset($participation['vitesse']) ? (int)$participation['vitesse'] : null;
-                    $defense = isset($participation['defense']) ? (int)$participation['defense'] : null;
-                    $tirs = isset($participation['tirs']) ? (int)$participation['tirs'] : null;
-                    $passes = isset($participation['passes']) ? (int)$participation['passes'] : null;
+            // Process submitted participations
+            if (!empty($_POST['participations'])) {
+                foreach ($_POST['participations'] as $pData) {
+                    if (!empty($pData['numLicense']) && !empty($pData['poste'])) {
+                        $numLicense = $pData['numLicense'];
 
-                    $nouvelleParticipation = new \Modele\Participation(
-                        $participation['numLicense'],
-                        $dateMatch,
-                        $heure,
-                        $participation['estTitulaire'] == '1',
-                        $endurance,
-                        $vitesse,
-                        $defense,
-                        $tirs,
-                        $passes,
-                        $participation['poste']
-                    );
-                    $daoParticipation->create($nouvelleParticipation);
+                        // Extract skill fields
+                        $endurance = isset($pData['endurance']) ? (int)$pData['endurance'] : null;
+                        $vitesse = isset($pData['vitesse']) ? (int)$pData['vitesse'] : null;
+                        $defense = isset($pData['defense']) ? (int)$pData['defense'] : null;
+                        $tirs = isset($pData['tirs']) ? (int)$pData['tirs'] : null;
+                        $passes = isset($pData['passes']) ? (int)$pData['passes'] : null;
+
+                        if (isset($existingParticipations[$numLicense])) {
+                            // Update existing participation
+                            $oldParticipation = $existingParticipations[$numLicense];
+                            $oldParticipation->setEstTitulaire($pData['estTitulaire'] == '1');
+                            $oldParticipation->setEndurance($endurance);
+                            $oldParticipation->setVitesse($vitesse);
+                            $oldParticipation->setDefense($defense);
+                            $oldParticipation->setTirs($tirs);
+                            $oldParticipation->setPasses($passes);
+                            $oldParticipation->setPoste($pData['poste']);
+
+                            $daoParticipation->update($oldParticipation);
+                            unset($existingParticipations[$numLicense]);
+                        } else {
+                            // Create new participation
+                            $newParticipation = new \Modele\Participation(
+                                $numLicense,
+                                $dateMatch,
+                                $heure,
+                                $pData['estTitulaire'] == '1',
+                                $endurance,
+                                $vitesse,
+                                $defense,
+                                $tirs,
+                                $passes,
+                                $pData['poste']
+                            );
+                            $daoParticipation->create($newParticipation);
+                        }
+                    }
                 }
+            }
+
+            // Delete removed participations
+            foreach ($existingParticipations as $oldLicense => $oldParticipation) {
+                $daoParticipation->delete($oldLicense, $dateMatch, $heure);
             }
 
             header("Location: gestionMatchs.php");
