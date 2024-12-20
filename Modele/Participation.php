@@ -1,145 +1,61 @@
 <?php
 
 namespace Modele;
+
 class Participation
 {
-    /**
-     * @var
-     */
     private $numLicense;
-    /**
-     * @var
-     */
     private $dateMatch;
-    /**
-     * @var
-     */
     private $heure;
-    /**
-     * @var
-     */
     private $estTitulaire;
-    /**
-     * @var
-     */
-    private $evaluation;
-    /**
-     * @var
-     */
+    private $endurance;
+    private $vitesse;
+    private $defense;
+    private $tirs;
+    private $passes;
     private $poste;
 
-    /**
-     * @param $numLicense
-     * @param $dateMatch
-     * @param $heure
-     * @param $estTitulaire
-     * @param $evaluation
-     * @param $poste
-     */
-    public function __construct($numLicense, $dateMatch, $heure, $estTitulaire, $evaluation, $poste)
+    public function __construct($numLicense, $dateMatch, $heure, $estTitulaire, $endurance, $vitesse, $defense, $tirs, $passes, $poste)
     {
         $this->numLicense = $numLicense;
         $this->dateMatch = $dateMatch;
         $this->heure = $heure;
         $this->estTitulaire = $estTitulaire;
-        $this->evaluation = $evaluation;
+        $this->endurance = $endurance;
+        $this->vitesse = $vitesse;
+        $this->defense = $defense;
+        $this->tirs = $tirs;
+        $this->passes = $passes;
         $this->poste = $poste;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNumLicense()
-    {
-        return $this->numLicense;
-    }
+    public function getNumLicense() { return $this->numLicense; }
+    public function setNumLicense($numLicense): void { $this->numLicense = $numLicense; }
 
-    /**
-     * @param mixed $numLicense
-     */
-    public function setNumLicense($numLicense): void
-    {
-        $this->numLicense = $numLicense;
-    }
+    public function getDateMatch() { return $this->dateMatch; }
+    public function setDateMatch($dateMatch): void { $this->dateMatch = $dateMatch; }
 
-    /**
-     * @return mixed
-     */
-    public function getDateMatch()
-    {
-        return $this->dateMatch;
-    }
+    public function getHeure() { return $this->heure; }
+    public function setHeure($heure): void { $this->heure = $heure; }
 
-    /**
-     * @param mixed $dateMatch
-     */
-    public function setDateMatch($dateMatch): void
-    {
-        $this->dateMatch = $dateMatch;
-    }
+    public function getEstTitulaire() { return $this->estTitulaire; }
+    public function setEstTitulaire($estTitulaire): void { $this->estTitulaire = $estTitulaire; }
 
-    /**
-     * @return mixed
-     */
-    public function getHeure()
-    {
-        return $this->heure;
-    }
+    public function getEndurance() { return $this->endurance; }
+    public function setEndurance($endurance): void { $this->endurance = $endurance; }
 
-    /**
-     * @param mixed $heure
-     */
-    public function setHeure($heure): void
-    {
-        $this->heure = $heure;
-    }
+    public function getVitesse() { return $this->vitesse; }
+    public function setVitesse($vitesse): void { $this->vitesse = $vitesse; }
 
-    /**
-     * @return mixed
-     */
-    public function getEstTitulaire()
-    {
-        return $this->estTitulaire;
-    }
+    public function getDefense() { return $this->defense; }
+    public function setDefense($defense): void { $this->defense = $defense; }
 
-    /**
-     * @param mixed $estTitulaire
-     */
-    public function setEstTitulaire($estTitulaire): void
-    {
-        $this->estTitulaire = $estTitulaire;
-    }
+    public function getTirs() { return $this->tirs; }
+    public function setTirs($tirs): void { $this->tirs = $tirs; }
 
-    /**
-     * @return mixed
-     */
-    public function getEvaluation()
-    {
-        return $this->evaluation;
-    }
+    public function getPasses() { return $this->passes; }
+    public function setPasses($passes): void { $this->passes = $passes; }
 
-    /**
-     * @param mixed $evaluation
-     */
-    public function setEvaluation($evaluation): void
-    {
-        $this->evaluation = $evaluation;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPoste()
-    {
-        return $this->poste;
-    }
-
-    /**
-     * @param mixed $poste
-     */
-    public function setPoste($poste): void
-    {
-        $this->poste = $poste;
-    }
-
+    public function getPoste() { return $this->poste; }
+    public function setPoste($poste): void { $this->poste = $poste; }
 }

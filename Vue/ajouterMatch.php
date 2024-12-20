@@ -59,14 +59,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             foreach ($_POST['participations'] as $participation) {
                 if (!empty($participation['numLicense']) && !empty($participation['poste'])) {
-                    $evaluation = isset($participation['evaluation']) && $participation['evaluation'] !== '' ? (int)$participation['evaluation'] : null;
-
                     $nouvelleParticipation = new \Modele\Participation(
                         $participation['numLicense'],
                         $_POST['dateMatch'],
                         $_POST['heure'],
                         $participation['estTitulaire'] == '1',
-                        $evaluation,
+                        $participation['endurance'] ?? null,
+                        $participation['vitesse'] ?? null,
+                        $participation['defense'] ?? null,
+                        $participation['tirs'] ?? null,
+                        $participation['passes'] ?? null,
                         $participation['poste']
                     );
                     $daoParticipation->create($nouvelleParticipation);
@@ -80,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -161,35 +164,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const participationDiv = document.createElement('div');
         participationDiv.classList.add('form-group');
         participationDiv.innerHTML = `
-                <label>Numéro de Licence :</label>
-                <input list="joueurs-${participationIndex}" name="participations[${participationIndex}][numLicense]" class="form-input-add-player" required>
-                <datalist id="joueurs-${participationIndex}">
-                    ${joueurOptions}
-                </datalist>
+        <label>Numéro de Licence :</label>
+        <input list="joueurs-${participationIndex}" name="participations[${participationIndex}][numLicense]" class="form-input-add-player" required>
+        <datalist id="joueurs-${participationIndex}">
+            ${joueurOptions}
+        </datalist>
 
-                <label>Est Titulaire :</label>
-                <select name="participations[${participationIndex}][estTitulaire]" class="form-input-add-player">
-                    <option value="1">Oui</option>
-                    <option value="0">Non</option>
-                </select>
+        <label>Est Titulaire :</label>
+        <select name="participations[${participationIndex}][estTitulaire]" class="form-input-add-player">
+            <option value="1">Oui</option>
+            <option value="0">Non</option>
+        </select>
 
-                <label>Évaluation (0 à 10) :</label>
-                <input type="number" name="participations[${participationIndex}][evaluation]" class="form-input-add-player" min="0" max="10" >
+        <label>Endurance :</label>
+        <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="10" step="1" required>
 
-                <label>Poste :</label>
-                <select name="participations[${participationIndex}][poste]" class="form-input-add-player" required>
-                    <option value="Gardien">Gardien</option>
-                    <option value="Pivot">Pivot</option>
-                    <option value="Demi-centre">Demi-centre</option>
-                    <option value="Ailier gauche">Ailier gauche</option>
-                    <option value="Ailier droit">Ailier droit</option>
-                    <option value="Arrière gauche">Arrière gauche</option>
-                    <option value="Arrière droit">Arrière droit</option>
-                </select>
-            `;
+        <label>Vitesse :</label>
+        <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+        <label>Défense :</label>
+        <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+        <label>Tirs :</label>
+        <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+        <label>Passes :</label>
+        <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="10" step="1" required>
+
+        <label>Poste :</label>
+        <select name="participations[${participationIndex}][poste]" class="form-input-add-player" required>
+            <option value="Gardien">Gardien</option>
+            <option value="Pivot">Pivot</option>
+            <option value="Demi-centre">Demi-centre</option>
+            <option value="Ailier gauche">Ailier gauche</option>
+            <option value="Ailier droit">Ailier droit</option>
+            <option value="Arrière gauche">Arrière gauche</option>
+            <option value="Arrière droit">Arrière droit</option>
+        </select>
+    `;
         participationsContainer.appendChild(participationDiv);
         participationIndex++;
     });
+
 </script>
 </body>
 </html>
