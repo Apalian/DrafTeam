@@ -263,20 +263,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="0">Non</option>
             </select>
 
-            <label>Endurance (0 à 10) :</label>
-            <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="10" step="1" required>
+            <label>Endurance (0 à 100) :</label>
+            <input type="number" name="participations[${participationIndex}][endurance]" class="form-input-add-player" min="0" max="100" step="10" required>
 
-            <label>Vitesse (0 à 10) :</label>
-            <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="10" step="1" required>
+            <label>Vitesse (0 à 100) :</label>
+            <input type="number" name="participations[${participationIndex}][vitesse]" class="form-input-add-player" min="0" max="100" step="10" required>
 
-            <label>Défense (0 à 10) :</label>
-            <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="10" step="1" required>
+            <label>Défense (0 à 100) :</label>
+            <input type="number" name="participations[${participationIndex}][defense]" class="form-input-add-player" min="0" max="100" step="10" required>
 
-            <label>Tirs (0 à 10) :</label>
-            <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="10" step="1" required>
+            <label>Tirs (0 à 100) :</label>
+            <input type="number" name="participations[${participationIndex}][tirs]" class="form-input-add-player" min="0" max="100" step="10" required>
 
-            <label>Passes (0 à 10) :</label>
-            <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="10" step="1" required>
+            <label>Passes (0 à 100) :</label>
+            <input type="number" name="participations[${participationIndex}][passes]" class="form-input-add-player" min="0" max="100" step="10" required>
 
             <label>Poste :</label>
             <select name="participations[${participationIndex}][poste]" class="form-input-add-player" required>
