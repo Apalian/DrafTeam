@@ -28,4 +28,4 @@ if (isset($_GET['dateMatch']) && isset($_GET['heure'])) {
 }
 
 // Inclure la vue et transmettre les données
-require_once '../Vue/gestionMatchs.php';
+require_once '../Vue/GestionMatchs.php';
