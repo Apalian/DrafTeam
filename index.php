@@ -74,10 +74,9 @@ if (!empty($_GET['numLicense'])) {
 <nav class="navbar">
     <div class="navbar-logo"><a href="./index.php" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
-        <a href="Vue/GestionJoueurs.php" class="nav-link">Joueurs</a>
-        <a href="Vue/GestionMatchs.php" class="nav-link">Matchs</a>
-        <a href="Vue/Dashboard.php" class="nav-link">Statistiques</a>
-        <a href="Controller/LogoutController.php" class="nav-link logout">Déconnexion</a>
+        <a href="./Controller/GestionJoueursController.php" class="nav-link">Joueurs</a>
+        <a href="./Controller/GestionMatchsController.php" class="nav-link">Matchs</a>
+        <a href="./Controller/LogoutController.php" class="nav-link logout">Déconnexion</a>
     </div>
 </nav>
 
