@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $daoJoueurs->create($nouveauJoueur);
 
     // Rediriger vers la gestion des joueurs
-    header("Location: GestionJoueurs.php");
+    header("Location: GestionJoueursController.php");
     exit();
 }
 // Inclure la vue

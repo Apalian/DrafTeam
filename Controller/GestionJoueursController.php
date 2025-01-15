@@ -24,7 +24,7 @@ $joueurs = $daoJoueurs->findAll();  // Récupérer tous les joueurs
 if (isset($_GET['delete'])) {
     $numLicense = $_GET['delete'];
     $daoJoueurs->delete($numLicense);
-    header("Location: gestionJoueurs.php");
+    header("Location: GestionJoueursController.php");
     exit();
 }
 

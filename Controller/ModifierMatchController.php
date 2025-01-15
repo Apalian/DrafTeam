@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $daoParticipation->delete($oldLicense, $dateMatch, $heure);
             }
 
-            header("Location: GestionMatchs.php");
+            header("Location: GestionMatchsController.php");
             exit();
         } catch (Exception $e) {
             $errorMessage = 'Erreur : ' . $e->getMessage();

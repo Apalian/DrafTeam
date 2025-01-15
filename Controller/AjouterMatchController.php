@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            header("Location: GestionMatchs.php");
+            header("Location: GestionMatchsController.php");
             exit();
         } catch (Exception $e) {
             $errorMessage = 'Erreur : ' . $e->getMessage();

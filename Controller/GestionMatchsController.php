@@ -23,7 +23,7 @@ if (isset($_GET['dateMatch']) && isset($_GET['heure'])) {
     $dateMatch = $_GET['dateMatch'];
     $heure = $_GET['heure'];
     $daoMatchs->delete($dateMatch, $heure);
-    header("Location: GestionMatchs.php");
+    header("Location: GestionMatchsController.php");
     exit;
 }
 

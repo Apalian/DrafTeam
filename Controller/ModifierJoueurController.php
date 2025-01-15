@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mettre à jour le joueur
     $daoJoueurs->update($joueur);
 
-    header("Location: GestionJoueurs.php");
+    header("Location: GestionJoueursController.php");
     exit();
 }
 
