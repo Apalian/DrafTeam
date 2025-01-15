@@ -40,7 +40,7 @@
                     <!-- Boutons Modifier et Supprimer -->
                     <div class="card-buttons">
                         <a href="../Controller/ModifierJoueurController.php?numLicense=<?php echo $joueur->getNumLicense(); ?>"><button>Modifier</button></a>
-                        <a href="?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
+                        <a href="../Controller/ModifierJoueurController.php?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
                     </div>
                 </div>
             <?php endforeach; ?>
