@@ -103,7 +103,7 @@
 
         <div class="form-buttons">
             <button type="submit" class="btn-submit">Valider</button>
-            <a href="GestionMatchs.php" class="btn-cancel">Annuler</a>
+            <a href="../Controller/GestionMatchsController.php" class="btn-cancel">Annuler</a>
         </div>
     </form>
 </div>
