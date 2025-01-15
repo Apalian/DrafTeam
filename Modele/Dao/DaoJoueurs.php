@@ -65,7 +65,8 @@ class DaoJoueurs extends Dao
             throw new \InvalidArgumentException("Un numéro de licence est requis.");
         }
         $numLicense = $id[0];
-        $sql = "DELETE FROM JOUEURS WHERE numLicense = :numLicense";
+        $sql = "DELETE FROM PARTICIPATION WHERE numLicense = :numLicense;
+                DELETE FROM JOUEURS WHERE numLicense = :numLicense";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([':numLicense' => $numLicense]);
     }
