@@ -7,7 +7,7 @@ session_start();
 
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
-    header("Location: ./Vue/login.php");
+    header("Location: ./Vue/Login.php");
     exit();
 }
 
@@ -74,10 +74,10 @@ if (!empty($_GET['numLicense'])) {
 <nav class="navbar">
     <div class="navbar-logo"><a href="./index.php" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
-        <a href="./Vue/gestionJoueurs.php" class="nav-link">Joueurs</a>
-        <a href="./Vue/gestionMatchs.php" class="nav-link">Matchs</a>
-        <a href="./Vue/dashboard.php" class="nav-link">Statistiques</a>
-        <a href="./Controller/logout.php" class="nav-link logout">Déconnexion</a>
+        <a href="Vue/GestionJoueurs.php" class="nav-link">Joueurs</a>
+        <a href="Vue/GestionMatchs.php" class="nav-link">Matchs</a>
+        <a href="Vue/Dashboard.php" class="nav-link">Statistiques</a>
+        <a href="Controller/LogoutController.php" class="nav-link logout">Déconnexion</a>
     </div>
 </nav>
 
