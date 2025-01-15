@@ -168,22 +168,21 @@ class DaoParticipation extends Dao
      */
     public function delete(...$id)
     {
-        if (empty($id[0]) || empty($id[1]) || empty($id[2])) {
-            throw new \InvalidArgumentException("Un numéro de licence, une date et une heure sont requis");
+        if (empty($id[0])) {
+            throw new \InvalidArgumentException("Un numéro de licence est requis.");
         }
 
         $numLicense = $id[0];
-        $dateMatch = $id[1];
-        $heure = $id[2];
 
-        $sql = "DELETE FROM PARTICIPATION WHERE numLicense = :numLicense AND dateMatch = :dateMatch AND heure = :heure";
-        $statement = $this->pdo->prepare($sql);
+        // First, delete the related participations from the PARTICIPATION table
+        $sqlParticipation = "DELETE FROM PARTICIPATION WHERE numLicense = :numLicense";
+        $stmtParticipation = $this->pdo->prepare($sqlParticipation);
+        $stmtParticipation->execute([':numLicense' => $numLicense]);
 
-        $statement->execute([
-            ':numLicense' => $numLicense,
-            ':dateMatch' => $dateMatch,
-            ':heure' => $heure
-        ]);
+        // Then, delete the player from the JOUEURS table
+        $sqlPlayer = "DELETE FROM JOUEURS WHERE numLicense = :numLicense";
+        $stmtPlayer = $this->pdo->prepare($sqlPlayer);
+        $stmtPlayer->execute([':numLicense' => $numLicense]);
     }
 
     public function deleteByMatch($dateMatch, $heure)
