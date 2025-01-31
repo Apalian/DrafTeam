@@ -1,0 +1,4 @@
+Login : admin
+Mdp : admin
+Lien du site : https://drafteam.lespi.fr/
+Lien du GitHub : github.com/Apalian/DrafTeam
