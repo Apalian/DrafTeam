@@ -1,10 +1,10 @@
 <?php
-require_once 'connexionDB.php';
-require_once 'functions.php';
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+require_once 'connexionDB.php';
+require_once 'functions.php';
+
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
