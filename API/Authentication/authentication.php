@@ -45,7 +45,7 @@ if ($login && $password) {
             echo json_encode([
                 "status" => "success",
                 "status_code" => 200,
-                "status_message" => "[Chuck API] : Authentification OK",
+                "status_message" => "[Drafteam API] : Authentification OK",
                 "data" => $jwt
             ]);
         } else {
@@ -53,7 +53,7 @@ if ($login && $password) {
             echo json_encode([
                 "status" => "error",
                 "status_code" => 401,
-                "status_message" => "[Chuck API] : Identifiants invalides"
+                "status_message" => "[Drafteam API] : Identifiants invalides"
             ]);
         }
     } else {
@@ -61,7 +61,7 @@ if ($login && $password) {
         echo json_encode([
             "status" => "error",
             "status_code" => 401,
-            "status_message" => "[Chuck API] : Identifiants invalides"
+            "status_message" => "[Drafteam API] : Identifiants invalides"
         ]);
     }
 } else {
@@ -69,7 +69,7 @@ if ($login && $password) {
     echo json_encode([
         "status" => "error",
         "status_code" => 400,
-        "status_message" => "[Chuck API] : Donnees manquantes"
+        "status_message" => "[Drafteam API] : Donnees manquantes"
     ]);
 }
 
