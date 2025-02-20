@@ -39,18 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $scoreEquipeExterne
     );
 
-    // Vérification des joueurs titulaires
-    $titulaireCount = 0;
     if (!empty($_POST['participations'])) {
         foreach ($_POST['participations'] as $participation) {
             if (!empty($participation['numLicense']) && isset($participation['estTitulaire']) && $participation['estTitulaire'] == '1') {
                 $titulaireCount++;
             }
         }
-    }
-
-    if ($titulaireCount < 7) {
-        $errorMessage = "Erreur : Impossible d'ajouter un match sans au moins 7 joueurs titulaires.";
     }
 
     if (!$errorMessage) {
