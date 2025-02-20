@@ -24,6 +24,12 @@
         </div>
     <?php endif; ?>
 
+    <!-- Formulaire de recherche -->
+    <form method="GET" action="GestionJoueursController.php" class="search-form">
+        <input type="text" name="search" placeholder="Rechercher un joueur..." class="search-input" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+        <button type="submit" class="search-button">Rechercher</button>
+    </form>
+
     <a href="../Controller/AjouterJoueurController.php"><button>Créer un Nouveau Joueur</button></a>
 
     <div class="joueurs-list">

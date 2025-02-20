@@ -18,7 +18,14 @@ require_once '../Modele/Dao/DaoJoueurs.php';
 
 // Création de l'instance du DAO pour récupérer les joueurs
 $daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
-$joueurs = $daoJoueurs->findAll();  // Récupérer tous les joueurs
+
+// Vérifier si une recherche a été effectuée
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $searchTerm = $_GET['search'];
+    $joueurs = $daoJoueurs->searchPlayers($searchTerm); // Méthode à créer dans DaoJoueurs
+} else {
+    $joueurs = $daoJoueurs->findAll();  // Récupérer tous les joueurs
+}
 
 // Vérifier si un joueur a été supprimé
 if (isset($_GET['delete'])) {

@@ -373,3 +373,40 @@ button:focus {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   outline: none;
 }
+
+/* Styles pour le formulaire de recherche */
+.search-form {
+  display: flex;
+  justify-content: center; /* Centrer le formulaire */
+  margin-bottom: 20px; /* Espacement en bas */
+}
+
+.search-input {
+  width: 70%; /* Largeur de la barre de recherche */
+  padding: 10px; /* Espacement interne */
+  font-size: 16px; /* Taille de la police */
+  border: 1px solid #ccc; /* Bordure */
+  border-radius: 5px; /* Coins arrondis */
+  transition: border-color 0.3s ease; /* Transition pour le focus */
+}
+
+.search-input:focus {
+  border-color: #007bff; /* Couleur de la bordure au focus */
+  outline: none; /* Supprimer le contour par défaut */
+}
+
+.search-button {
+  padding: 10px 15px; /* Espacement interne */
+  background-color: #007bff; /* Couleur de fond */
+  color: white; /* Couleur du texte */
+  border: none; /* Pas de bordure */
+  border-radius: 5px; /* Coins arrondis */
+  cursor: pointer; /* Curseur en main */
+  font-size: 16px; /* Taille de la police */
+  margin-left: 10px; /* Espacement à gauche */
+  transition: background-color 0.3s ease; /* Transition pour le hover */
+}
+
+.search-button:hover {
+  background-color: #0056b3; /* Couleur de fond au hover */
+}

@@ -272,4 +272,14 @@ class DaoJoueurs extends Dao
         return $count > 0;
     }
 
+    public function searchPlayers($searchTerm) {
+        $query = "SELECT * FROM joueurs WHERE nom LIKE :searchTerm OR prenom LIKE :searchTerm OR numLicense LIKE :searchTerm";
+        $stmt = $this->pdo->prepare($query);
+        $searchTerm = '%' . $searchTerm . '%'; // Pour la recherche partielle
+        $stmt->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(\PDO::FETCH_OBJ); // Retourner les joueurs correspondants
+    }
+
 }
