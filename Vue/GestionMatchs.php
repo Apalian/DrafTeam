@@ -27,6 +27,12 @@
 
     <a href="../Controller/AjouterMatchController.php"><button>Créer un Nouveau Match</button></a>
 
+    <?php if (isset($_GET['error'])): ?>
+        <div class="error-message">
+            <p><?php echo htmlspecialchars($_GET['error']); ?></p>
+        </div>
+    <?php endif; ?>
+
     <div class="joueurs-list">
         <?php if (!empty($matchs)): ?>
             <?php foreach ($matchs as $match): ?>
