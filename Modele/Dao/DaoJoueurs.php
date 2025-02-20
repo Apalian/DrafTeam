@@ -258,6 +258,18 @@ class DaoJoueurs extends Dao
         return $result['selections_consecutives'] ?? 0;
     }
 
+    public function hasParticipatedInMatches($numLicense) {
+        // Préparer la requête pour vérifier si le joueur a des matchs
+        $query = "SELECT COUNT(*) FROM matchs WHERE num_license = :numLicense";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':numLicense', $numLicense, \PDO::PARAM_STR);
+        $stmt->execute();
 
+        // Récupérer le nombre de matchs
+        $count = $stmt->fetchColumn();
+
+        // Retourner vrai si le joueur a participé à des matchs, sinon faux
+        return $count > 0;
+    }
 
 }

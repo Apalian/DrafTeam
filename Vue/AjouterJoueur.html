@@ -1,60 +1,103 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles.css" />
     <title>Ajouter un Joueur</title>
-</head>
-<body>
-<div class="container">
-    <h1 class="form-title">Ajouter un Nouveau Joueur</h1>
-    <form method="POST" class="player-form">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="form-title">Ajouter un Nouveau Joueur</h1>
+      <form method="POST" class="player-form">
         <div class="form-group">
-            <label for="numLicense">Numéro de Licence :</label>
-            <input type="text" id="numLicense" name="numLicense" class="form-input" required>
+          <label for="numLicense">Numéro de Licence :</label>
+          <input
+            type="text"
+            id="numLicense"
+            name="numLicense"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="nom">Nom :</label>
-            <input type="text" id="nom" name="nom" class="form-input" required>
+          <label for="nom">Nom :</label>
+          <input type="text" id="nom" name="nom" class="form-input" required />
         </div>
 
         <div class="form-group">
-            <label for="prenom">Prénom :</label>
-            <input type="text" id="prenom" name="prenom" class="form-input" required>
+          <label for="prenom">Prénom :</label>
+          <input
+            type="text"
+            id="prenom"
+            name="prenom"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="dateNaissance">Date de Naissance :</label>
-            <input type="date" id="dateNaissance" name="dateNaissance" class="form-input" required>
+          <label for="dateNaissance">Date de Naissance :</label>
+          <input
+            type="date"
+            id="dateNaissance"
+            name="dateNaissance"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="statut">Statut :</label>
-            <input type="text" id="statut" name="statut" class="form-input" required>
+          <label for="statut">Statut :</label>
+          <select id="statut" name="statut" class="form-input" required>
+            <option value="Actif">Actif</option>
+            <option value="Blessé">Blessé</option>
+            <option value="Suspendu">Suspendu</option>
+            <option value="Absent">Absent</option>
+          </select>
         </div>
 
         <div class="form-group">
-            <label for="commentaire">Commentaire :</label>
-            <textarea id="commentaire" name="commentaire" class="form-textarea"></textarea>
+          <label for="commentaire">Commentaire :</label>
+          <textarea
+            id="commentaire"
+            name="commentaire"
+            class="form-textarea"
+          ></textarea>
         </div>
 
         <div class="form-group">
-            <label for="taille">Taille (cm) :</label>
-            <input type="number" id="taille" name="taille" class="form-input" required>
+          <label for="taille">Taille (cm) :</label>
+          <input
+            type="number"
+            id="taille"
+            name="taille"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="poids">Poids (kg) :</label>
-            <input type="number" id="poids" name="poids" class="form-input" required>
+          <label for="poids">Poids (kg) :</label>
+          <input
+            type="number"
+            id="poids"
+            name="poids"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-buttons">
-            <button type="submit" class="btn-submit">Ajouter</button>
-            <a href="../Controller/GestionJoueursController.php" class="btn-cancel"><button type="button">Annuler</button></a>
+          <button type="submit" class="btn-submit">Ajouter</button>
+          <a
+            href="../Controller/GestionJoueursController.php"
+            class="btn-cancel"
+            ><button type="button">Annuler</button></a
+          >
         </div>
-    </form>
-</div>
-</body>
+      </form>
+    </div>
+  </body>
 </html>

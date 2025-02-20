@@ -37,7 +37,6 @@
                             <p><strong>Poids:</strong> <?php echo htmlspecialchars($joueur->getPoids()); ?>kg</p>
                         </div>
                     </div>
-                    <!-- Boutons Modifier et Supprimer -->
                     <div class="card-buttons">
                         <a href="../Controller/ModifierJoueurController.php?numLicense=<?php echo $joueur->getNumLicense(); ?>"><button>Modifier</button></a>
                         <a href="?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>

@@ -23,9 +23,17 @@ $joueurs = $daoJoueurs->findAll();  // Récupérer tous les joueurs
 // Vérifier si un joueur a été supprimé
 if (isset($_GET['delete'])) {
     $numLicense = $_GET['delete'];
-    $daoJoueurs->delete($numLicense);
-    header("Location: GestionJoueursController.php");
-    exit();
+    
+    // Vérifier si le joueur a participé à des matchs
+    if (!$daoJoueurs->hasParticipatedInMatches($numLicense)) {
+        $daoJoueurs->delete($numLicense);
+        header("Location: GestionJoueursController.php");
+        exit();
+    } else {
+        // Rediriger avec un message d'erreur
+        header("Location: GestionJoueursController.php?error=joueur_participe_match");
+        exit();
+    }
 }
 
 // Inclure la vue et transmettre les données à la vue
