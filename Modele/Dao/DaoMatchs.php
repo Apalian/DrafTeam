@@ -176,8 +176,8 @@ $statement = $this->pdo->query($sql);
 
         // Créer des instances de la classe Match
         foreach ($results as $row) {
-            $match = new Match();
-            $match->setDateMatch($row['date_match']);
+            $match = new Matchs();
+            $match->setDateMatch($row['dateMatch']);
             $match->setHeure($row['heure']);
             $match->setNomEquipeAdverse($row['nomEquipeAdverse']);
             $match->setLieuRencontre($row['lieuRencontre']);
