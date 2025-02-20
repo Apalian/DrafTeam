@@ -240,7 +240,9 @@ button:focus {
 }
 
 .error-message {
+  text-align: center;
   color: red;
+  font-weight: bold;
   font-size: 18px;
   margin-top: 20px;
 }
