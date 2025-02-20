@@ -77,8 +77,12 @@
                         </div>
                     </div>
                     <div class="card-buttons">
-                        <a href="../Controller/ModifierMatchController.php?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>"><button>Feuille de match</button></a>
-                        <a href="?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer <?= $match->isMatchPassed() ? 'disabled' : '' ?></button></a>
+                    <a href="../Controller/ModifierMatchController.php?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>"><button>Feuille de match</button></a>
+                    <?php if (!$match->isMatchPassed()): ?> 
+                            <a href="?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
+                        <?php else: ?>
+                            <button disabled title="Ce match est déjà passé et ne peut pas être supprimé.">Supprimer</button>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
