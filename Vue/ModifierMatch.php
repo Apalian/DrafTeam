@@ -23,17 +23,17 @@
     <form method="POST" class="match-form">
         <div class="form-group">
             <label for="dateMatch">Date du Match :</label>
-            <input type="date" id="dateMatch" name="dateMatch" class="form-input" value="<?= htmlspecialchars($match->getDateMatch()) ?>" <?= $match->isMatchPassed() ? 'readonly' : '' ?>>
+            <input type="date" id="dateMatch" name="dateMatch" class="form-input" value="<?= htmlspecialchars($match->getDateMatch()) ?>" <?= $match->isMatchPassed() ? 'disabled' : '' ?>>
         </div>
 
         <div class="form-group">
             <label for="heure">Heure :</label>
-            <input type="time" id="heure" name="heure" class="form-input" value="<?= htmlspecialchars($match->getHeure()) ?>" <?= $match->isMatchPassed() ? 'readonly' : '' ?>>
+            <input type="time" id="heure" name="heure" class="form-input" value="<?= htmlspecialchars($match->getHeure()) ?>" <?= $match->isMatchPassed() ? 'disabled' : '' ?>>
         </div>
 
         <div class="form-group">
             <label for="nomEquipeAdverse">Nom de l'Équipe Adverse :</label>
-            <input type="text" id="nomEquipeAdverse" name="nomEquipeAdverse" class="form-input" value="<?= htmlspecialchars($match->getNomEquipeAdverse()) ?>" required <?= $match->isMatchPassed() ? 'readonly' : '' ?>>
+            <input type="text" id="nomEquipeAdverse" name="nomEquipeAdverse" class="form-input" value="<?= htmlspecialchars($match->getNomEquipeAdverse()) ?>" required <?= $match->isMatchPassed() ? 'disabled' : '' ?>>
         </div>
 
         <div class="form-group">
@@ -46,12 +46,12 @@
 
         <div class="form-group">
             <label for="scoreEquipeDomicile">Score Équipe Domicile :</label>
-            <input type="number" id="scoreEquipeDomicile" name="scoreEquipeDomicile" class="form-input" value="<?= htmlspecialchars($match->getScoreEquipeDomicile()) ?>">
+            <input type="number" id="scoreEquipeDomicile" name="scoreEquipeDomicile" class="form-input" value="<?= htmlspecialchars($match->getScoreEquipeDomicile()) ?>" <?= $match->isMatchPassed() ? 'disabled' : '' ?>>
         </div>
 
         <div class="form-group">
             <label for="scoreEquipeExterne">Score Équipe Externe :</label>
-            <input type="number" id="scoreEquipeExterne" name="scoreEquipeExterne" class="form-input" value="<?= htmlspecialchars($match->getScoreEquipeExterne()) ?>">
+            <input type="number" id="scoreEquipeExterne" name="scoreEquipeExterne" class="form-input" value="<?= htmlspecialchars($match->getScoreEquipeExterne()) ?>" <?= $match->isMatchPassed() ? 'disabled' : '' ?>>
         </div>
 
         <div class="form-group">
