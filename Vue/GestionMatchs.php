@@ -20,7 +20,7 @@
     <h1>Gestion des Matchs</h1>
 
     <!-- Formulaire de recherche -->
-    <form method="GET" action="GestionMatchs.php" class="search-form">
+    <form method="GET" action="GestionMatchsController.php" class="search-form">
         <input type="text" name="search" placeholder="Rechercher un match..." class="search-input" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
         <button type="submit" class="search-button">Rechercher</button>
     </form>
