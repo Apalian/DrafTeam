@@ -145,8 +145,8 @@ class Matchs
     }
 
     public function isMatchPassed() {
-        $matchDateTime = new DateTime($this->getDateMatch() . ' ' . $this->getHeure());
-        $currentDateTime = new DateTime();
+        $matchDateTime = new \DateTime($this->getDateMatch() . ' ' . $this->getHeure());
+        $currentDateTime = new \DateTime();
         return $matchDateTime < $currentDateTime;
     }
 
