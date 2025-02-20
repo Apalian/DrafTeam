@@ -171,7 +171,22 @@ $statement = $this->pdo->query($sql);
         $stmt->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
         $stmt->execute();
         
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $matches = [];
+
+        // Créer des instances de la classe Match
+        foreach ($results as $row) {
+            $match = new Match();
+            $match->setDateMatch($row['date_match']);
+            $match->setHeure($row['heure']);
+            $match->setNomEquipeAdverse($row['nomEquipeAdverse']);
+            $match->setLieuRencontre($row['lieuRencontre']);
+            $match->setScoreEquipeDomicile($row['scoreEquipeDomicile']);
+            $match->setScoreEquipeExterne($row['scoreEquipeExterne']);
+            $matches[] = $match;
+        }
+
+        return $matches;
     }
 
 }
