@@ -165,7 +165,7 @@ $statement = $this->pdo->query($sql);
     }
 
     public function searchMatches($searchTerm) {
-        $query = "SELECT * FROM matchs WHERE date_match LIKE :searchTerm OR heure LIKE :searchTerm";
+        $query = "SELECT * FROM MATCHS WHERE dateMatch LIKE :searchTerm OR heure LIKE :searchTerm OR nomEquipeAdverse LIKE :searchTerm OR lieuRencontre LIKE :searchTerm";
         $stmt = $this->pdo->prepare($query);
         $searchTerm = '%' . $searchTerm . '%'; // Pour la recherche partielle
         $stmt->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
