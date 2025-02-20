@@ -273,7 +273,7 @@ class DaoJoueurs extends Dao
     }
 
     public function searchPlayers($searchTerm) {
-        $query = "SELECT * FROM joueurs WHERE nom LIKE :searchTerm OR prenom LIKE :searchTerm OR numLicense LIKE :searchTerm";
+        $query = "SELECT * FROM JOUEURS WHERE nom LIKE :searchTerm OR prenom LIKE :searchTerm OR numLicense LIKE :searchTerm";
         $stmt = $this->pdo->prepare($query);
         $searchTerm = '%' . $searchTerm . '%'; // Pour la recherche partielle
         $stmt->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
