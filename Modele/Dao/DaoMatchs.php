@@ -170,23 +170,12 @@ $statement = $this->pdo->query($sql);
         $searchTerm = '%' . $searchTerm . '%'; // Pour la recherche partielle
         $stmt->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
         $stmt->execute();
-        
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        $matches = [];
+        $matchs = [];
 
-        // Créer des instances de la classe Match
-        foreach ($results as $row) {
-            $match = new Matchs();
-            $match->setDateMatch($row['dateMatch']);
-            $match->setHeure($row['heure']);
-            $match->setNomEquipeAdverse($row['nomEquipeAdverse']);
-            $match->setLieuRencontre($row['lieuRencontre']);
-            $match->setScoreEquipeDomicile($row['scoreEquipeDomicile']);
-            $match->setScoreEquipeExterne($row['scoreEquipeExterne']);
-            $matches[] = $match;
+        foreach ($results as $data) {
+            $matchs[] = $this->creerInstance($data);
         }
-
-        return $matches;
     }
 
 }
