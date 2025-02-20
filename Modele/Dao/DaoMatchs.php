@@ -171,7 +171,7 @@ $statement = $this->pdo->query($sql);
         $stmt->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
         $stmt->execute();
         
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $matches = [];
 
         // Créer des instances de la classe Match
