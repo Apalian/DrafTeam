@@ -260,7 +260,7 @@ class DaoJoueurs extends Dao
 
     public function hasParticipatedInMatches($numLicense) {
         // Préparer la requête pour vérifier si le joueur a des matchs
-        $query = "SELECT COUNT(*) FROM matchs WHERE num_license = :numLicense";
+        $query = "SELECT COUNT(*) FROM PARTICIPATION WHERE num_license = :numLicense";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':numLicense', $numLicense, \PDO::PARAM_STR);
         $stmt->execute();
