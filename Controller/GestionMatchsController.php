@@ -18,6 +18,12 @@ require_once '../Modele/Dao/DaoMatchs.php';
 $daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
 $matchs = $daoMatchs->findAll();
 
+// Vérifier si une recherche a été effectuée
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $searchTerm = $_GET['search'];
+    $matchs = $daoMatchs->searchMatches($searchTerm);
+}
+
 // Vérifier si un Match a été supprimé
 if (isset($_GET['dateMatch']) && isset($_GET['heure'])) {
     $dateMatch = $_GET['dateMatch'];
