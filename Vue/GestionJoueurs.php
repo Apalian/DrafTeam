@@ -17,6 +17,13 @@
 </nav>
 <div class="container">
     <h1>Gestion des Joueurs</h1>
+    
+    <?php if (isset($_GET['error'])): ?>
+        <div class="error-message">
+            <p><?php echo htmlspecialchars($_GET['error']); ?></p>
+        </div>
+    <?php endif; ?>
+
     <a href="../Controller/AjouterJoueurController.php"><button>Créer un Nouveau Joueur</button></a>
 
     <div class="joueurs-list">
