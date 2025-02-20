@@ -29,6 +29,7 @@
 
     <div class="joueurs-list">
         <?php if (!empty($matchs)): ?>
+            <?php var_dump($matchs); ?>
             <?php foreach ($matchs as $match): ?>
                 <div class="card">
                     <div class="card-body">
