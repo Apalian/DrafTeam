@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,25 +15,30 @@
 
 <div class="container">
     <h1 class="form-title">Modifier le Match</h1>
+
+    <?php if ($match->isMatchPassed()): ?>
+        <p class="error-message">Ce match est déjà passé. Vous ne pouvez pas modifier les informations.</p>
+    <?php endif; ?>
+
     <form method="POST" class="match-form">
         <div class="form-group">
             <label for="dateMatch">Date du Match :</label>
-            <input type="date" id="dateMatch" name="dateMatch" class="form-input" value="<?= htmlspecialchars($match->getDateMatch()) ?>" readonly>
+            <input type="date" id="dateMatch" name="dateMatch" class="form-input" value="<?= htmlspecialchars($match->getDateMatch()) ?>" <?= $match->isMatchPassed() ? 'readonly' : '' ?>>
         </div>
 
         <div class="form-group">
             <label for="heure">Heure :</label>
-            <input type="time" id="heure" name="heure" class="form-input" value="<?= htmlspecialchars($match->getHeure()) ?>" readonly>
+            <input type="time" id="heure" name="heure" class="form-input" value="<?= htmlspecialchars($match->getHeure()) ?>" <?= $match->isMatchPassed() ? 'readonly' : '' ?>>
         </div>
 
         <div class="form-group">
             <label for="nomEquipeAdverse">Nom de l'Équipe Adverse :</label>
-            <input type="text" id="nomEquipeAdverse" name="nomEquipeAdverse" class="form-input" value="<?= htmlspecialchars($match->getNomEquipeAdverse()) ?>" required>
+            <input type="text" id="nomEquipeAdverse" name="nomEquipeAdverse" class="form-input" value="<?= htmlspecialchars($match->getNomEquipeAdverse()) ?>" required <?= $match->isMatchPassed() ? 'readonly' : '' ?>>
         </div>
 
         <div class="form-group">
             <label for="lieuRencontre">Lieu de la Rencontre :</label>
-            <select id="lieuRencontre" name="lieuRencontre" class="form-input" required>
+            <select id="lieuRencontre" name="lieuRencontre" class="form-input" required <?= $match->isMatchPassed() ? 'disabled' : '' ?>>
                 <option value="Domicile" <?= $match->getLieuRencontre() === 'Domicile' ? 'selected' : '' ?>>Domicile</option>
                 <option value="Extérieur" <?= $match->getLieuRencontre() === 'Extérieur' ? 'selected' : '' ?>>Extérieur</option>
             </select>
@@ -102,7 +106,7 @@
         </div>
 
         <div class="form-buttons">
-            <button type="submit" class="btn-submit">Valider</button>
+            <button type="submit" class="btn-submit" <?= $match->isMatchPassed() ? 'disabled' : '' ?>>Valider</button>
             <a href="../Controller/GestionMatchsController.php" class="btn-cancel">Annuler</a>
         </div>
     </form>

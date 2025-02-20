@@ -76,10 +76,11 @@
                             </p>
                         </div>
                     </div>
-                    <!-- Boutons Modifier et Supprimer -->
                     <div class="card-buttons">
-                        <a href="../Controller/ModifierMatchController.php?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>"><button>Modifier</button></a>
-                        <a href="?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
+                        <a href="../Controller/ModifierMatchController.php?matchId=<?php echo $match->getId(); ?>"><button>Modifier</button></a>
+                        <?php if (!$match->isMatchPassed()): ?>
+                            <a href="?delete=<?php echo $match->getId(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
