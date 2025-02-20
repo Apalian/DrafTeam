@@ -20,7 +20,7 @@
     
     <?php if (isset($_GET['error'])): ?>
         <div class="error-message">
-            <p><?php echo htmlspecialchars($_GET['error']); ?></p>
+            <p>Erreur lors de la suppression du joueur, ce joueur a participé à des matchs !</p>
         </div>
     <?php endif; ?>
 
