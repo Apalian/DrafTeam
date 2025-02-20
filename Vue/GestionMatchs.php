@@ -30,59 +30,58 @@
     <div class="joueurs-list">
         <?php if (!empty($matchs)): ?>
             <?php foreach ($matchs as $match): ?>
-    <div class="card">
-        <div class="card-body">
-            <div class="card-left">
-                <h2><?php echo 'Match du '.htmlspecialchars($match->getDateMatch()) . ' à ' . htmlspecialchars($match->getHeure()); ?></h2>
-                <p><strong>Nom de l'équipe adverse:</strong> <?php echo htmlspecialchars($match->getNomEquipeAdverse()); ?></p>
-                <p><strong>Lieu de rencontre:</strong> <?php echo htmlspecialchars($match->getLieuRencontre()); ?></p>
-                <p>
-                    <strong>Score de l'équipe domicile:</strong>
-                    <?php
-                    $scoreDomicile = $match->getScoreEquipeDomicile();
-                    $scoreExterne = $match->getScoreEquipeExterne();
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-left">
+                            <h2><?php echo 'Match du '.htmlspecialchars($match->getDateMatch()) . ' à ' . htmlspecialchars($match->getHeure()); ?></h2>
+                            <p><strong>Nom de l'équipe adverse:</strong> <?php echo htmlspecialchars($match->getNomEquipeAdverse()); ?></p>
+                            <p><strong>Lieu de rencontre:</strong> <?php echo htmlspecialchars($match->getLieuRencontre()); ?></p>
+                            <p>
+                                <strong>Score de l'équipe domicile:</strong>
+                                <?php
+                                $scoreDomicile = $match->getScoreEquipeDomicile();
+                                $scoreExterne = $match->getScoreEquipeExterne();
 
-                    if ($scoreDomicile === null || $scoreExterne === null) {
-                        $classDomicile = 'score-unknown';
-                    } elseif ($scoreDomicile == $scoreExterne) {
-                        $classDomicile = 'score-gray';
-                    } elseif ($scoreDomicile > $scoreExterne) {
-                        $classDomicile = 'score-green';
-                    } else {
-                        $classDomicile = 'score-red';
-                    }
-                    ?>
-                    <span class="<?php echo $classDomicile; ?>">
-                        <?php echo ($scoreDomicile === null) ? 'pas de score' : htmlspecialchars($scoreDomicile); ?>
-                    </span>
-                </p>
+                                if ($scoreDomicile === null || $scoreExterne === null) {
+                                    $classDomicile = 'score-unknown';
+                                } elseif ($scoreDomicile == $scoreExterne) {
+                                    $classDomicile = 'score-gray';
+                                } elseif ($scoreDomicile > $scoreExterne) {
+                                    $classDomicile = 'score-green';
+                                } else {
+                                    $classDomicile = 'score-red';
+                                }
+                                ?>
+                                <span class="<?php echo $classDomicile; ?>">
+                                    <?php echo ($scoreDomicile === null) ? 'pas de score' : htmlspecialchars($scoreDomicile); ?>
+                                </span>
+                            </p>
 
-                <p>
-                    <strong>Score de l'équipe externe:</strong>
-                    <?php
-                    if ($scoreDomicile === null || $scoreExterne === null) {
-                        $classExterne = 'score-unknown';
-                    } elseif ($scoreDomicile == $scoreExterne) {
-                        $classExterne = 'score-gray';
-                    } elseif ($scoreExterne > $scoreDomicile) {
-                        $classExterne = 'score-green';
-                    } else {
-                        $classExterne = 'score-red';
-                    }
-                    ?>
-                    <span class="<?php echo $classExterne; ?>">
-                        <?php echo ($scoreExterne === null) ? 'pas de score' : htmlspecialchars($scoreExterne); ?>
-                    </span>
-                </p>
-            </div>
-        </div>
-        <div class="card-buttons">
-            <a href="../Controller/ModifierMatchController.php?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>"><button>Feuille de match</button></a>
-
-        </div>
-    </div>
-<?php endforeach; ?>
-
+                            <p>
+                                <strong>Score de l'équipe externe:</strong>
+                                <?php
+                                if ($scoreDomicile === null || $scoreExterne === null) {
+                                    $classExterne = 'score-unknown';
+                                } elseif ($scoreDomicile == $scoreExterne) {
+                                    $classExterne = 'score-gray';
+                                } elseif ($scoreExterne > $scoreDomicile) {
+                                    $classExterne = 'score-green';
+                                } else {
+                                    $classExterne = 'score-red';
+                                }
+                                ?>
+                                <span class="<?php echo $classExterne; ?>">
+                                    <?php echo ($scoreExterne === null) ? 'pas de score' : htmlspecialchars($scoreExterne); ?>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-buttons">
+                        <a href="../Controller/ModifierMatchController.php?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>"><button>Feuille de match</button></a>
+                        <a href="?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         <?php else: ?>
             <p>Aucun match trouvé.</p>
         <?php endif; ?>
