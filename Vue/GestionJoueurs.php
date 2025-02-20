@@ -46,7 +46,11 @@
                     </div>
                     <div class="card-buttons">
                         <a href="../Controller/ModifierJoueurController.php?numLicense=<?php echo $joueur->getNumLicense(); ?>"><button>Modifier</button></a>
-                        <a href="?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
+                        <?php if (!$daoJoueurs->hasParticipatedInMatches($joueur->getNumLicense())): ?>
+                            <a href="?delete=<?php echo $joueur->getNumLicense(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?');"><button>Supprimer</button></a>
+                        <?php else: ?>
+                            <button disabled title="Ce joueur a participé à des matchs et ne peut pas être supprimé.">Supprimer</button>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
