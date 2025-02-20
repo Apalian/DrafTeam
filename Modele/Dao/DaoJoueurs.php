@@ -278,8 +278,14 @@ class DaoJoueurs extends Dao
         $searchTerm = '%' . $searchTerm . '%'; // Pour la recherche partielle
         $stmt->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
         $stmt->execute();
-        
-        return $stmt->fetchAll(\PDO::FETCH_OBJ); // Retourner les joueurs correspondants
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $joueurs = [];
+
+        foreach ($results as $data) {
+            $joueurs[] = $this->creerInstance($data);
+        }
+
+        return $joueurs;
     }
 
 }
