@@ -27,12 +27,6 @@
 
     <a href="../Controller/AjouterMatchController.php"><button>Créer un Nouveau Match</button></a>
 
-    <?php if (isset($_GET['error'])): ?>
-        <div class="error-message">
-            <p><?php echo htmlspecialchars($_GET['error']); ?></p>
-        </div>
-    <?php endif; ?>
-
     <div class="joueurs-list">
         <?php if (!empty($matchs)): ?>
             <?php foreach ($matchs as $match): ?>
@@ -82,11 +76,10 @@
                             </p>
                         </div>
                     </div>
+                    <!-- Boutons Modifier et Supprimer -->
                     <div class="card-buttons">
-                        <a href="../Controller/ModifierMatchController.php?matchId=<?php echo $match->getId(); ?>"><button>Modifier</button></a>
-                        <?php if (!$match->isMatchPassed()): ?>
-                            <a href="?delete=<?php echo $match->getId(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
-                        <?php endif; ?>
+                        <a href="../Controller/ModifierMatchController.php?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>"><button>Feuille de match</button></a>
+                        <a href="?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');"><button>Supprimer</button></a>
                     </div>
                 </div>
             <?php endforeach; ?>
