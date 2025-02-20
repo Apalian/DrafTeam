@@ -16,12 +16,14 @@ require_once '../Modele/Dao/DaoMatchs.php';
 
 // Instanciation du DAO et récupération des matchs
 $daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
-$matchs = $daoMatchs->findAll();
+$matchs = null;
 
 // Vérifier si une recherche a été effectuée
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $searchTerm = $_GET['search'];
     $matchs = $daoMatchs->searchMatches($searchTerm);
+}else {
+    $matchs = $daoMatchs->findAll();
 }
 
 // Vérifier si un Match a été supprimé
