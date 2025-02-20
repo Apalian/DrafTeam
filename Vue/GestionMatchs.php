@@ -77,16 +77,8 @@
             </div>
         </div>
         <div class="card-buttons">
-            <a href="../Controller/ModifierMatchController.php?matchId=<?php echo $match->getId(); ?>"><button>Modifier</button></a>
-            <?php
-            try {
-                if (!$match->isMatchPassed()) {
-                    echo '<a href="?delete=' . $match->getId() . '" onclick="return confirm(\'Êtes-vous sûr de vouloir supprimer ce match ?\');"><button>Supprimer</button></a>';
-                }
-            } catch (Exception $e) {
-                error_log("Erreur dans isMatchPassed() : " . $e->getMessage());
-            }
-            ?>
+            <a href="../Controller/ModifierMatchController.php?dateMatch=<?php echo $match->getDateMatch(); ?>&heure=<?php echo $match->getHeure(); ?>"><button>Feuille de match</button></a>
+
         </div>
     </div>
 <?php endforeach; ?>
