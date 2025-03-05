@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles.css">
     <title>Authentification - DrafTeam</title>
-    <script src="./JS/login.js"></script>
+    <script src="../JS/login.js"></script>
 </head>
 <body>
 <div class="login">
