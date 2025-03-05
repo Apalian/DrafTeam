@@ -17,9 +17,8 @@ async function login(event) {
     if (data.status === 'success') {
         // Stocker les informations dans le localStorage
         localStorage.setItem('username', username);
-        localStorage.setItem('role', data.data.role);
-        localStorage.setItem('token', data.data.token);
-        window.location.href = '../index.php'; // Rediriger vers la page d'accueil
+        localStorage.setItem('token', data.data);
+        //window.location.href = '../index.php'; // Rediriger vers la page d'accueil
     } else {
         // Afficher un message d'erreur
         alert(data.status_message);
