@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles.css">
     <title>Authentification - DrafTeam</title>
+    <script src="./JS/login.js"></script>
 </head>
 <body>
 <div class="login">
-    <form class="login-form" action="../Controller/LoginController.php" method="post">
+    <form class="login-form" onsubmit="login(event)">
         <h2>Authentification</h2>
 
         <!-- Affichage des erreurs -->
@@ -25,5 +26,13 @@
         <input type="submit" value="Se connecter">
     </form>
 </div>
+
+<script>
+    // Vérifier si l'utilisateur est déjà connecté
+    if (localStorage.getItem('username')) {
+        // Rediriger vers la page d'accueil ou une autre page
+        window.location.href = '../index.php';
+    }
+</script>
 </body>
 </html>
