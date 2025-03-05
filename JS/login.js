@@ -1,6 +1,8 @@
 async function login(event) {
     event.preventDefault(); // Empêche le rechargement de la page
 
+    console.log("tzewst");
+
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
