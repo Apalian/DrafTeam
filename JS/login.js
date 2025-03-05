@@ -12,6 +12,8 @@ async function login(event) {
         body: JSON.stringify({ login: username, password: password })
     });
 
+    console.log("test");
+
     const data = await response.json();
 
     if (data.status === 'success') {
