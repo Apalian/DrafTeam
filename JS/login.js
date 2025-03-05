@@ -6,7 +6,7 @@ async function login(event) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch('https://drafteamAuth.lespi.fr/authentication.php', {
+    const response = await fetch('https://drafteamauthentication.lespi.fr/authentication.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
