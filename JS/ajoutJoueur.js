@@ -11,9 +11,9 @@ async function ajouterJoueur() {
     taille: document.getElementById("taille").value,
     poids: document.getElementById("poids").value,
   };
-
+  console.log(joueurData);
   try {
-    const response = await fetch("drafteamapi/lespi.fr/Joueur/index.php", {
+    const response = await fetch("https://drafteamapi/lespi.fr/Joueur/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ async function ajouterJoueur() {
     }
     console.log("success");
     // Rediriger ou afficher un message de succès
-    window.location.href = "GestionJoueursController.php";
+    window.location.href = "./GestionJoueurs.html";
     return false; // Empêche la soumission par défaut
   } catch (error) {
     console.error("Erreur:", error);
