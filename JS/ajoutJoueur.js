@@ -21,7 +21,7 @@ async function ajouterJoueur(event) {
       },
       body: JSON.stringify(joueurData),
     });
-
+    console.log(response);
     if (!response.ok) {
       throw new Error("Erreur lors de l'ajout du joueur");
     }
