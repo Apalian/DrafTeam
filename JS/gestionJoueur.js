@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const joueurs = await response.json();
-      displayJoueurs(joueurs);
+      displayJoueurs(joueurs.data);
     } catch (error) {
       console.error("Erreur lors de la récupération des joueurs:", error);
       displayJoueurs([]); // Afficher un message d'erreur dans la liste
