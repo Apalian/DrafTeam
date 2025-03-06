@@ -27,8 +27,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const joueurs = await response.json();
-      displayJoueurs(joueurs);
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const joueurs = await response.json();
+        displayJoueurs(joueurs);
+      } else {
+        const errorMessage = await response.text(); // Lire le texte brut
+        console.error("Réponse non-JSON:", errorMessage);
+        displayJoueurs([]); // Afficher un message d'erreur dans la liste
+      }
     } catch (error) {
       console.error("Erreur lors de la récupération des joueurs:", error);
       displayJoueurs([]); // Afficher un message d'erreur dans la liste
