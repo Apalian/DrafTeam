@@ -14,37 +14,37 @@ $stats = [
     'pourcentagePerdus' => 0,
     'pourcentageNuls' => 0,
 ];
-try {
-    $daoMatchs = new \Modele\Dao\DaoMatchs($_GET['username'] ?? '', $_GET['token'] ?? '');
-    $stats = $daoMatchs->getMatchStats();
-} catch (Exception $e) {
-    $errorMatch = "Erreur lors de la récupération des statistiques : " . $e->getMessage();
-}
+// try {
+//     $daoMatchs = new \Modele\Dao\DaoMatchs($_GET['username'] ?? '', $_GET['token'] ?? '');
+//     $stats = $daoMatchs->getMatchStats();
+// } catch (Exception $e) {
+//     $errorMatch = "Erreur lors de la récupération des statistiques : " . $e->getMessage();
+// }
 
-// Récupération des joueurs
-try {
-    $daoJoueurs = new \Modele\Dao\DaoJoueurs($_GET['username'] ?? '', $_GET['token'] ?? '');
-    $joueurs = $daoJoueurs->findAll();
-} catch (Exception $e) {
-    $errorJoueurs = "Erreur lors de la récupération des joueurs : " . $e->getMessage();
-}
-if (!empty($_GET['numLicense'])) {
-    $numLicense = htmlspecialchars($_GET['numLicense']);
-    try {
-        $postePref = $daoJoueurs->getPostePrefere($numLicense);
-        $totTitu = $daoJoueurs->getTotalTitulaire($numLicense);
-        $totRemp = $daoJoueurs->getTotalRemplacant($numLicense);
-        $pourMatchG = $daoJoueurs->getPourcentageMatchsGagnes($numLicense);
-        $moyEndurance = $daoJoueurs->getMoyenneEndurance($numLicense);
-        $moyVitesse = $daoJoueurs->getMoyenneVitesse($numLicense);
-        $moyDefense = $daoJoueurs->getMoyenneDefense($numLicense);
-        $moyTirs = $daoJoueurs->getMoyenneTirs($numLicense);
-        $moyPasses = $daoJoueurs->getMoyennePasses($numLicense);
-        $selectionConsecutive = $daoJoueurs->getSelectionsConsecutives($numLicense);
-    } catch (Exception $e) {
-        die('Erreur lors du chargement des statistiques : ' . $e->getMessage());
-    }
-}
+// // Récupération des joueurs
+// try {
+//     $daoJoueurs = new \Modele\Dao\DaoJoueurs($_GET['username'] ?? '', $_GET['token'] ?? '');
+//     $joueurs = $daoJoueurs->findAll();
+// } catch (Exception $e) {
+//     $errorJoueurs = "Erreur lors de la récupération des joueurs : " . $e->getMessage();
+// }
+// if (!empty($_GET['numLicense'])) {
+//     $numLicense = htmlspecialchars($_GET['numLicense']);
+//     try {
+//         $postePref = $daoJoueurs->getPostePrefere($numLicense);
+//         $totTitu = $daoJoueurs->getTotalTitulaire($numLicense);
+//         $totRemp = $daoJoueurs->getTotalRemplacant($numLicense);
+//         $pourMatchG = $daoJoueurs->getPourcentageMatchsGagnes($numLicense);
+//         $moyEndurance = $daoJoueurs->getMoyenneEndurance($numLicense);
+//         $moyVitesse = $daoJoueurs->getMoyenneVitesse($numLicense);
+//         $moyDefense = $daoJoueurs->getMoyenneDefense($numLicense);
+//         $moyTirs = $daoJoueurs->getMoyenneTirs($numLicense);
+//         $moyPasses = $daoJoueurs->getMoyennePasses($numLicense);
+//         $selectionConsecutive = $daoJoueurs->getSelectionsConsecutives($numLicense);
+//     } catch (Exception $e) {
+//         die('Erreur lors du chargement des statistiques : ' . $e->getMessage());
+//     }
+// }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
