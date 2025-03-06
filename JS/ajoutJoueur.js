@@ -25,7 +25,7 @@ async function ajouterJoueur() {
     if (!response.ok) {
       throw new Error("Erreur lors de l'ajout du joueur");
     }
-
+    console.log("success");
     // Rediriger ou afficher un message de succès
     window.location.href = "GestionJoueursController.php";
     return false; // Empêche la soumission par défaut
