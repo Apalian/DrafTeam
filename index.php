@@ -3,22 +3,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-session_start();
-
-// Vérifie si l'utilisateur est connecté
-if (!localStorage.getItem('username') || !localStorage.getItem('token')) {
-    header("Location: ./Vue/Login.php");
-    exit();
-}
-
-// Inclure les DAO
-require_once './Modele/Dao/DaoMatchs.php';
-require_once './Modele/Dao/DaoJoueurs.php';
-require_once './Modele/Database.php';
-
-// Initialiser les DAO
-$daoMatchs = new \Modele\Dao\DaoMatchs($_SESSION['username'], $_SESSION['password']);
-$daoJoueurs = new \Modele\Dao\DaoJoueurs($_SESSION['username'], $_SESSION['password']);
 
 // Récupération des statistiques des matchs
 $stats = [
@@ -31,6 +15,7 @@ $stats = [
     'pourcentageNuls' => 0,
 ];
 try {
+    $daoMatchs = new \Modele\Dao\DaoMatchs($_GET['username'] ?? '', $_GET['token'] ?? '');
     $stats = $daoMatchs->getMatchStats();
 } catch (Exception $e) {
     $errorMatch = "Erreur lors de la récupération des statistiques : " . $e->getMessage();
@@ -38,6 +23,7 @@ try {
 
 // Récupération des joueurs
 try {
+    $daoJoueurs = new \Modele\Dao\DaoJoueurs($_GET['username'] ?? '', $_GET['token'] ?? '');
     $joueurs = $daoJoueurs->findAll();
 } catch (Exception $e) {
     $errorJoueurs = "Erreur lors de la récupération des joueurs : " . $e->getMessage();
@@ -68,15 +54,16 @@ if (!empty($_GET['numLicense'])) {
     <link rel="stylesheet" href="styles.css">
     <title>DrafTeam</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./JS/auth.js"></script>
     <script src="./script.js"></script>
 </head>
 <body>
 <nav class="navbar">
-    <div class="navbar-logo"><a href="./index.php" class="nav-link">DrafTeam</a></div>
+    <div class="navbar-logo"><a href="javascript:void(0)" onclick="navigateWithAuth('./index.php')" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
-        <a href="./Controller/GestionJoueursController.php" class="nav-link">Joueurs</a>
-        <a href="./Controller/GestionMatchsController.php" class="nav-link">Matchs</a>
-        <a href="./Controller/LogoutController.php" class="nav-link logout">Déconnexion</a>
+        <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/GestionJoueursController.php')" class="nav-link">Joueurs</a>
+        <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/GestionMatchsController.php')" class="nav-link">Matchs</a>
+        <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/LogoutController.php')" class="nav-link logout">Déconnexion</a>
     </div>
 </nav>
 
