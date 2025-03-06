@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(`Erreur HTTP! statut: ${response.status}`);
       }
   
-      const matchs = await response.json();
-      displayMatchs(matchs);
+      const data = await response.json();
+      displayMatchs(data.data);
     } catch (error) {
       console.error("Erreur lors du chargement des matchs:", error);
       document.getElementById("matchsList").innerHTML = "<p>Erreur lors du chargement des matchs.</p>";

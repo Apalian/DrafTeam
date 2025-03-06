@@ -4,6 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Vérifie si l'utilisateur est connecté
+
+
 require_once '../Modele/Database.php';
 require_once '../Modele/Dao/DaoJoueurs.php';
 
