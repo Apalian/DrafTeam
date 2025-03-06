@@ -55,7 +55,7 @@ $stats = [
     <title>DrafTeam</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./JS/auth.js"></script>
-    <script src="./script.js"></script>
+    <script src="./JS/script.js"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -63,7 +63,7 @@ $stats = [
     <div class="navbar-links">
         <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/GestionJoueursController.php')" class="nav-link">Joueurs</a>
         <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/GestionMatchsController.php')" class="nav-link">Matchs</a>
-        <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/LogoutController.php')" class="nav-link logout">Déconnexion</a>
+        <a href="javascript:void(0)" onclick="logout()" class="nav-link logout">Déconnexion</a>
     </div>
 </nav>
 
