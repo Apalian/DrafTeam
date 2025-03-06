@@ -56,13 +56,16 @@ $stats = [
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./JS/auth.js"></script>
     <script src="./JS/script.js"></script>
+    <script>
+        checkAuth();
+    </script>
 </head>
 <body>
 <nav class="navbar">
     <div class="navbar-logo"><a href="javascript:void(0)" onclick="navigateWithAuth('./index.php')" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
-        <a href="javascript:void(0)" onclick="navigateWithAuth('./GestionJoueurs.html')" class="nav-link">Joueurs</a>
-        <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/GestionMatchsController.php')" class="nav-link">Matchs</a>
+        <a href="javascript:void(0)" onclick="navigateWithAuth('GestionJoueurs.html')" class="nav-link">Joueurs</a>
+        <a href="javascript:void(0)" onclick="navigateWithAuth('GestionMatchs.html')" class="nav-link">Matchs</a>
         <a href="javascript:void(0)" onclick="logout()" class="nav-link logout">Déconnexion</a>
     </div>
 </nav>

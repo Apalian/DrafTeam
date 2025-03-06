@@ -1,34 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles.css" />
     <title>Gestion des Joueurs</title>
-    <script src="gestionJoueurs.js" defer></script>
-</head>
-<body>
-<nav class="navbar">
-    <div class="navbar-logo"><a href="../index.php" class="nav-link">DrafTeam</a></div>
-    <div class="navbar-links">
-        <a href="../Controller/GestionJoueursController.php" class="nav-link">Joueurs</a>
-        <a href="../Controller/GestionMatchsController.php" class="nav-link">Matchs</a>
-        <a href="#" class="nav-link logout" onclick="logout();">Déconnexion</a>
-    </div>
-</nav>
-<div class="container">
-    <h1>Gestion des Joueurs</h1>
+    <script src="../JS/auth.js"></script>
+    <script src="../JS/gestionJoueur.js" defer></script>
+    <script>
+      // Vérifier l'authentification à chaque chargement de la page
+      checkAuth();
+    </script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-logo">
+        <a href="../index.php" class="nav-link">DrafTeam</a>
+      </div>
+      <div class="navbar-links">
+        <a
+          href="javascript:void(0)"
+          onclick="navigateWithAuth('../Controller/GestionJoueursController.php')"
+          class="nav-link"
+          >Joueurs</a
+        >
+        <a
+          href="javascript:void(0)"
+          onclick="navigateWithAuth('../Controller/GestionMatchsController.php')"
+          class="nav-link"
+          >Matchs</a
+        >
+        <a href="javascript:void(0)" onclick="logout();" class="nav-link logout"
+          >Déconnexion</a
+        >
+      </div>
+    </nav>
+    <div class="container">
+      <h1>Gestion des Joueurs</h1>
 
-    <form id="search-form" class="search-form">
-        <input type="text" id="search-input" placeholder="Rechercher un joueur..." class="search-input">
+      <form id="search-form" class="search-form">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Rechercher un joueur..."
+          class="search-input"
+        />
         <button type="submit" class="search-button">Rechercher</button>
-    </form>
+      </form>
 
-    <a href="../Controller/AjouterJoueurController.php"><button>Créer un Nouveau Joueur</button></a>
+      <a href="../Controller/AjouterJoueurController.php"
+        ><button>Créer un Nouveau Joueur</button></a
+      >
 
-    <div id="joueurs-list" class="joueurs-list">
-        <!-- Les joueurs seront ajoutés ici par JavaScript -->
+      <div id="joueurs-list" class="joueurs-list"></div>
     </div>
-</div>
-</body>
+  </body>
 </html>
