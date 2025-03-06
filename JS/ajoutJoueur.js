@@ -1,5 +1,6 @@
-// Fonction pour ajouter un joueur
 async function ajouterJoueur() {
+  console.log("Le fichier ajoutJoueur.js est chargé.");
+
   const token = localStorage.getItem("token");
   const joueurData = {
     numLicense: document.getElementById("numLicense").value,
@@ -13,7 +14,7 @@ async function ajouterJoueur() {
   };
   console.log(joueurData);
   try {
-    const response = await fetch("https://drafteamapi/lespi.fr/Joueur/", {
+    const response = await fetch("https://drafteamapi.lespi.fr/Joueur/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
