@@ -13,9 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
       // Construction de l'URL de l'API pour les matchs
       let url = `https://drafteamapi.lespi.fr/Match/index.php`;
-      if (searchQuery) {
-        url += `?search=${encodeURIComponent(searchQuery)}`;
-      }
   
       const response = await fetch(url, {
         method: "GET",
