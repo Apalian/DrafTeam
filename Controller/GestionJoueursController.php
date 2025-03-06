@@ -5,11 +5,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
-
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
-    header("Location: ../Vue/Login.php");
+// Vérifie si l'utilisateur est connecté
+if (!localStorage.getItem('username') || !localStorage.getItem('token')) {
+    header("Location: ./Vue/Login.php");
     exit();
 }
 

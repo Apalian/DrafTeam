@@ -12,7 +12,7 @@
     <div class="navbar-links">
         <a href="../Controller/GestionJoueursController.php" class="nav-link">Joueurs</a>
         <a href="../Controller/GestionMatchsController.php" class="nav-link">Matchs</a>
-        <a href="../Controller/LogoutController.php" class="nav-link logout">Déconnexion</a>
+        <a href="#" class="nav-link logout" onclick="logout();">Déconnexion</a>
     </div>
 </nav>
 

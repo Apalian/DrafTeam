@@ -9,7 +9,12 @@
   <body>
     <div class="container">
       <h1 class="form-title">Ajouter un Nouveau Joueur</h1>
-      <form method="POST" class="player-form">
+      <form
+        id="ajoutJoueurForm"
+        method="POST"
+        class="player-form"
+        onsubmit="return ajouterJoueur();"
+      >
         <div class="form-group">
           <label for="numLicense">Numéro de Licence :</label>
           <input
@@ -91,11 +96,6 @@
 
         <div class="form-buttons">
           <button type="submit" class="btn-submit">Ajouter</button>
-          <a
-            href="../Controller/GestionJoueursController.php"
-            class="btn-cancel"
-            ><button type="button">Annuler</button></a
-          >
         </div>
       </form>
     </div>

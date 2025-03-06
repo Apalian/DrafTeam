@@ -1,8 +1,9 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
-    header("Location: ../Vue/Login.php");
+// Vérifie si l'utilisateur est connecté
+if (!localStorage.getItem('username') || !localStorage.getItem('token')) {
+    header("Location: ./Vue/Login.php");
     exit();
 }
 

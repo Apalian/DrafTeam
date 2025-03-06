@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 session_start();
 
 // Vérifie si l'utilisateur est connecté
-if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
+if (!localStorage.getItem('username') || !localStorage.getItem('token')) {
     header("Location: ./Vue/Login.php");
     exit();
 }
