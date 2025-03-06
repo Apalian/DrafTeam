@@ -1,11 +1,4 @@
 <?php
-session_start();
-
-// Vérifie si l'utilisateur est connecté
-if (!localStorage.getItem('username') || !localStorage.getItem('token')) {
-    header("Location: ./Vue/Login.php");
-    exit();
-}
 
 require_once '../Modele/Database.php';
 require_once '../Modele/Dao/DaoMatchs.php';
