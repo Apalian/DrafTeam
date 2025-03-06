@@ -57,7 +57,6 @@ $stats = [
     <script src="./JS/auth.js"></script>
     <script src="./JS/script.js"></script>
     <script>
-        // Vérifier l'authentification à chaque chargement de la page
         checkAuth();
     </script>
 </head>
