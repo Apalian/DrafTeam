@@ -5,12 +5,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Vérifie si l'utilisateur est connecté
-if (!localStorage.getItem('username') || !localStorage.getItem('token')) {
-    header("Location: ./Vue/Login.php");
-    exit();
-}
-
 require_once '../Modele/Database.php';
 require_once '../Modele/Dao/DaoJoueurs.php';
 
