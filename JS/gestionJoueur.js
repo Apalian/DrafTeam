@@ -11,15 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const response = await fetch(
-        `https://drafteamapi.lespi.fr/Joueur/index.php`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`https://drafteamapi.lespi.fr/Joueur/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         console.error("Erreur HTTP:", response.status, response.statusText);
@@ -27,15 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const joueurs = await response.json();
-        displayJoueurs(joueurs);
-      } else {
-        const errorMessage = await response.text(); // Lire le texte brut
-        console.error("Réponse non-JSON:", errorMessage);
-        displayJoueurs([]); // Afficher un message d'erreur dans la liste
-      }
+      const data = await response.json();
+      console.log(data);
+      displayJoueurs(joueurs.data);
     } catch (error) {
       console.error("Erreur lors de la récupération des joueurs:", error);
       displayJoueurs([]); // Afficher un message d'erreur dans la liste
