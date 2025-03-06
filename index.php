@@ -61,7 +61,7 @@ $stats = [
 <nav class="navbar">
     <div class="navbar-logo"><a href="javascript:void(0)" onclick="navigateWithAuth('./index.php')" class="nav-link">DrafTeam</a></div>
     <div class="navbar-links">
-        <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/GestionJoueursController.php')" class="nav-link">Joueurs</a>
+        <a href="javascript:void(0)" onclick="navigateWithAuth('./GestionJoueurs.html')" class="nav-link">Joueurs</a>
         <a href="javascript:void(0)" onclick="navigateWithAuth('./Controller/GestionMatchsController.php')" class="nav-link">Matchs</a>
         <a href="javascript:void(0)" onclick="logout()" class="nav-link logout">Déconnexion</a>
     </div>
