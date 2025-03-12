@@ -18,7 +18,7 @@ function ajouterParticipation() {
             <select name="statuts[]" class="form-input" required>
                 <option value="Titulaire">Titulaire</option>
                 <option value="Remplaçant">Remplaçant</option>
-            </select>
+        </select>
         </div>
         <button type="button" class="btn-remove" onclick="this.parentElement.remove()">Supprimer</button>
     `;
@@ -80,6 +80,7 @@ async function ajouterMatch(event) {
             scoreEquipeDomicile: document.getElementById('scoreEquipeDomicile').value || null,
             scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null
         };
+        
 
         // Envoyer les données à l'API
         const response = await fetch('https://drafteamapi.lespi.fr/Match/index.php', {
