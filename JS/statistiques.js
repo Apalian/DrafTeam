@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!numLicense) return;
 
         try {
-            const response = await fetch(`https://drafteamapi.lespi.fr/Joueur/${numLicense}/stats`, {
+            const response = await fetch(`https://drafteamapi.lespi.fr/Statistques?numLicense=${numLicense}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
