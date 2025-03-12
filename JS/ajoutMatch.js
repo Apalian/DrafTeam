@@ -71,18 +71,29 @@ async function ajouterMatch(event) {
             return false;
         }
 
-        // Récupérer les données du formulaire
+        // Collect form data
         const formData = {
             dateMatch: document.getElementById('dateMatch').value,
             heure: document.getElementById('heure').value,
             nomEquipeAdverse: document.getElementById('nomEquipeAdverse').value,
-            LieuRencontre: document.getElementById('lieuRencontre').value, // Notez le 'L' majuscule
+            LieuRencontre: document.getElementById('lieuRencontre').value,
             scoreEquipeDomicile: document.getElementById('scoreEquipeDomicile').value || null,
-            scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null
+            scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null,
+            participations: []
         };
-        
 
-        // Envoyer les données à l'API
+        // Collect participations
+        const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
+        const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
+        
+        for (let i = 0; i < joueursSelects.length; i++) {
+            formData.participations.push({
+                numLicense: joueursSelects[i].value,
+                statut: statutsSelects[i].value
+            });
+        }
+
+        // Send data to API
         const response = await fetch('https://drafteamapi.lespi.fr/Match/index.php', {
             method: 'POST',
             headers: {
@@ -97,7 +108,7 @@ async function ajouterMatch(event) {
             throw new Error(errorData.status_message || `HTTP error! status: ${response.status}`);
         }
 
-        // Rediriger vers la page de gestion des matchs
+        // Redirect to match management page
         window.location.href = '../Vue/GestionMatchs.html';
         return false;
     } catch (error) {
