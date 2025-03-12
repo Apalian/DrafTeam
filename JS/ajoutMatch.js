@@ -1,6 +1,6 @@
 const participationsContainer = document.getElementById('participations-container');
 
-// Fonction pour ajouter un champ de participation (unique méthode)
+// Fonction pour ajouter un champ de participation
 function ajouterParticipation() {
     const container = document.getElementById('participations-container');
     const participationDiv = document.createElement('div');
@@ -8,7 +8,7 @@ function ajouterParticipation() {
     
     participationDiv.innerHTML = `
         <div class="form-group">
-            <label>Joueur (Prénom) :</label>
+            <label>Joueur :</label>
             <select name="joueurs[]" class="form-input" required>
                 <option value="">Sélectionner un joueur</option>
             </select>
@@ -27,7 +27,7 @@ function ajouterParticipation() {
     chargerJoueurs(participationDiv.querySelector('select[name="joueurs[]"]'));
 }
 
-// Fonction pour charger la liste des joueurs dans le select
+// Fonction pour charger la liste des joueurs dans un select
 async function chargerJoueurs(selectElement) {
     try {
         const token = localStorage.getItem('token');
@@ -48,11 +48,10 @@ async function chargerJoueurs(selectElement) {
 
         const data = await response.json();
         
-        // Remplir le select avec uniquement le prénom du joueur
         data.data.forEach(joueur => {
             const option = document.createElement('option');
-            option.value = joueur.numLicense; // valeur conservée en interne si besoin
-            option.textContent = joueur.prenom; // on affiche uniquement le prénom
+            option.value = joueur.numLicense;
+            option.textContent = `${joueur.nom} ${joueur.prenom}`;
             selectElement.appendChild(option);
         });
     } catch (error) {
@@ -77,26 +76,10 @@ async function ajouterMatch(event) {
             dateMatch: document.getElementById('dateMatch').value,
             heure: document.getElementById('heure').value,
             nomEquipeAdverse: document.getElementById('nomEquipeAdverse').value,
-            lieuRencontre: document.getElementById('lieuRencontre').value,
+            LieuRencontre: document.getElementById('lieuRencontre').value, // Notez le 'L' majuscule
             scoreEquipeDomicile: document.getElementById('scoreEquipeDomicile').value || null,
-            scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null,
-            participations: []
+            scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null
         };
-
-        // Récupérer les participations : on n'envoie que le prénom et le statut
-        const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
-        const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
-        
-        for (let i = 0; i < joueursSelects.length; i++) {
-            const joueurSelect = joueursSelects[i];
-            const selectedOption = joueurSelect.selectedOptions[0];
-            // Le texte de l'option correspond au prénom affiché
-            const prenom = selectedOption ? selectedOption.textContent : "";
-            formData.participations.push({
-                prenom: prenom,
-                statut: statutsSelects[i].value
-            });
-        }
 
         // Envoyer les données à l'API
         const response = await fetch('https://drafteamapi.lespi.fr/Match/index.php', {
@@ -109,7 +92,8 @@ async function ajouterMatch(event) {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(errorData.status_message || `HTTP error! status: ${response.status}`);
         }
 
         // Rediriger vers la page de gestion des matchs
@@ -117,7 +101,7 @@ async function ajouterMatch(event) {
         return false;
     } catch (error) {
         console.error('Erreur lors de l\'ajout du match:', error);
-        alert('Erreur lors de l\'ajout du match.');
+        alert(error.message || 'Erreur lors de l\'ajout du match.');
         return false;
     }
 }
