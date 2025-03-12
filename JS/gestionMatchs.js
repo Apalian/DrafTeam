@@ -107,38 +107,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const dateMatch = button.dataset.dateMatch;
     const heure = button.dataset.heure;
   
-    if (!confirm("Êtes-vous sûr de vouloir supprimer ce match ?")) {
-      return;
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce match ?')) {
+        return;
     }
   
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        window.location.href = "../Vue/Login.html";
-        return;
-      }
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '../Vue/Login.html';
+            return;
+        }
   
-      const response = await fetch("https://drafteamapi.lespi.fr/Match/index.php", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          dateMatch,
-          heure
-        })
-      });
+        const response = await fetch(`https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
   
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP! statut: ${response.status}`);
-      }
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.status_message || `HTTP error! status: ${response.status}`);
+        }
   
-      // Recharger la liste des matchs après suppression
-      loadMatchs(document.getElementById("searchInput").value);
+        // Refresh the match list after deletion
+        loadMatchs(document.getElementById('searchInput').value);
     } catch (error) {
-      console.error("Erreur lors de la suppression du match:", error);
-      alert("Erreur lors de la suppression du match.");
+        console.error('Erreur lors de la suppression du match:', error);
+        alert(error.message || 'Erreur lors de la suppression du match.');
     }
   }
   
