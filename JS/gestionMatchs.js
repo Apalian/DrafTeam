@@ -198,8 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(errorData.status_message || `HTTP error! status: ${response.status}`);
         }
 
-        // Redirect to match management page
-        window.location.href = '../Vue/GestionMatchs.html';
         return false;
     } catch (error) {
         console.error('Erreur lors de l\'ajout du match:', error);
