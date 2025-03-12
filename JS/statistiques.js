@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fonction pour charger les statistiques des matchs
     async function loadMatchStats() {
         try {
-            const response = await fetch('https://drafteamapi.lespi.fr/Statistiques', {
+            const response = await fetch('https://drafteamapi.lespi.fr/Statistiques/index.php', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
