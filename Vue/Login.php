@@ -31,7 +31,7 @@
     // Vérifier si l'utilisateur est déjà connecté
     if (localStorage.getItem('username')) {
         // Rediriger vers la page d'accueil ou une autre page
-        window.location.href = '../index.php';
+        window.location.href = '../index.html';
     }
 </script>
 </body>
