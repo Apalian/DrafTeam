@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>DrafTeam</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./JS/auth.js"></script>
+    <script src="./JS/script.js"></script>
+    <script src="./JS/statistiques.js"></script>
+    <script>
+        checkAuth();
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo"><a href="./index.html" class="nav-link">DrafTeam</a></div>
+        <div class="navbar-links">
+            <a href="./Vue/GestionJoueurs.html" class="nav-link">Joueurs</a>
+            <a href="./Vue/GestionMatchs.html" class="nav-link">Matchs</a>
+            <a href="javascript:void(0)" onclick="logout()" class="nav-link logout">Déconnexion</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <h1>Bienvenue sur DrafTeam!</h1>
+        <p>Votre plateforme de gestion de matchs de Handball.</p>
+
+        <!-- Section Matchs -->
+        <div>
+            <h2>Statistiques des matchs</h2>
+            <div style="width: 200px; height: 200px; margin: 0 auto;">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Section Joueurs -->
+        <div class="container">
+            <h1 class="form-title">Sélectionner un Joueur</h1>
+            <form class="selection-form">
+                <div class="form-group">
+                    <label for="numLicense">Choisissez un joueur :</label>
+                    <select id="numLicense" name="numLicense" class="form-input">
+                        <option value="">-- Sélectionnez un joueur --</option>
+                    </select>
+                </div>
+            </form>
+
+            <!-- Conteneur des statistiques -->
+            <div id="stats-container">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

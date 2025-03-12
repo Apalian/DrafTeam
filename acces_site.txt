@@ -1,4 +1,4 @@
-Login : admin
-Mdp : admin
+Login : admin -> role: administrateur / user -> role: user
+Mdp : $iutinfo
 Lien du site : https://drafteam.lespi.fr/
 Lien du GitHub : github.com/Apalian/DrafTeam

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchForm = document.getElementById("search-form");
   const searchInput = document.getElementById("search-input");
 
-  async function fetchJoueurs(searchTerm = "") {
+  async function fetchJoueurs() {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
