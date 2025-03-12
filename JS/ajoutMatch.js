@@ -109,7 +109,6 @@ async function ajouterMatch(event) {
         }
 
         // Redirect to match management page
-        window.location.href = '../Vue/GestionMatchs.html';
         return false;
     } catch (error) {
         console.error('Erreur lors de l\'ajout du match:', error);
