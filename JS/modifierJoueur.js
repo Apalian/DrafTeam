@@ -28,19 +28,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Erreur HTTP:", response.status, response.statusText);
       return;
     }
-
-    initialData = await response.json(); // Stocker les données initiales
+    const jsonData = await response.json();
+    initialData = jsonData.data[0]; // Stocker les données initiales
     console.log(initialData);
     // Remplir les champs du formulaire avec les données du joueur
-    document.getElementById("nom").value = initialData.data[0].nom;
-    document.getElementById("prenom").value = initialData.data[0].prenom;
-    document.getElementById("dateNaissance").value =
-      initialData.data[0].dateNaissance;
-    document.getElementById("statut").value = initialData.data[0].statuts;
-    document.getElementById("commentaire").value =
-      initialData.data[0].commentaire;
-    document.getElementById("taille").value = initialData.data[0].taille;
-    document.getElementById("poids").value = initialData.data[0].poids;
+    document.getElementById("nom").value = initialData.nom;
+    document.getElementById("prenom").value = initialData.prenom;
+    document.getElementById("dateNaissance").value = initialData.dateNaissance;
+    document.getElementById("statut").value = initialData.statuts;
+    document.getElementById("commentaire").value = initialData.commentaire;
+    document.getElementById("taille").value = initialData.taille;
+    document.getElementById("poids").value = initialData.poids;
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des données du joueur:",
