@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     initialData = await response.json(); // Stocker les données initiales
+    console.log(initialData);
     // Remplir les champs du formulaire avec les données du joueur
     document.getElementById("nom").value = initialData.data.nom;
     document.getElementById("prenom").value = initialData.data.prenom;
