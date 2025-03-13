@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     "numLicense"
   );
 
+  console.log("Numéro de licence:", numLicense); // Debugging
+
   let initialData = {}; // Pour stocker les données initiales du joueur
 
   // Récupérer les données du joueur
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const response = await fetch(
-      `https://drafteamapi.lespi.fr/Joueur/index.php?numLicense=${numLicense}`,
+      `https://drafteamapi.lespi.fr/Joueur/?numLicense=${numLicense}`,
       {
         method: "GET",
         headers: {
