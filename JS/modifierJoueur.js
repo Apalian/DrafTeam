@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     const jsonData = await response.json();
     initialData = jsonData.data[0]; // Stocker les données initiales
-    console.log(initialData);
     // Remplir les champs du formulaire avec les données du joueur
     document.getElementById("nom").value = initialData.nom;
     document.getElementById("prenom").value = initialData.prenom;
@@ -95,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       alert("Joueur modifié avec succès !");
-      window.location.href = "../GestionJoueurs.html";
+      window.location.href = "./GestionJoueurs.html";
     } catch (error) {
       console.error("Erreur lors de la modification du joueur:", error);
     }

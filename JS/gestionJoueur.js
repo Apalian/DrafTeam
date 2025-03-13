@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                           <p><strong>Date de naissance:</strong> ${
                             joueur.dateNaissance
                           }</p>
-                          <p><strong>Statut:</strong> ${joueur.statuts}</p>
+                          <p><strong>Statut:</strong> ${joueur.statut}</p>
                           <p><strong>Commentaire:</strong> ${
                             joueur.commentaire
                           }</p>
