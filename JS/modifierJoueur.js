@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     "numLicense"
   );
 
-  console.log("Numéro de licence:", numLicense); // Debugging
-
   let initialData = {}; // Pour stocker les données initiales du joueur
 
   // Récupérer les données du joueur
@@ -33,13 +31,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     initialData = await response.json(); // Stocker les données initiales
     // Remplir les champs du formulaire avec les données du joueur
-    document.getElementById("nom").value = initialData.nom;
-    document.getElementById("prenom").value = initialData.prenom;
-    document.getElementById("dateNaissance").value = initialData.dateNaissance;
-    document.getElementById("statut").value = initialData.statuts;
-    document.getElementById("commentaire").value = initialData.commentaire;
-    document.getElementById("taille").value = initialData.taille;
-    document.getElementById("poids").value = initialData.poids;
+    document.getElementById("nom").value = initialData.data.nom;
+    document.getElementById("prenom").value = initialData.data.prenom;
+    document.getElementById("dateNaissance").value =
+      initialData.data.dateNaissance;
+    document.getElementById("statut").value = initialData.data.statuts;
+    document.getElementById("commentaire").value = initialData.data.commentaire;
+    document.getElementById("taille").value = initialData.data.taille;
+    document.getElementById("poids").value = initialData.data.poids;
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des données du joueur:",
