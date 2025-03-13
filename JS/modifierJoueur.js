@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const response = await fetch(
-      `https://drafteamapi.lespi.fr/Joueur/?numLicense=${numLicense}`,
+      `https://drafteamapi.lespi.fr/Joueur/index.php?numLicense=${numLicense}`,
       {
         method: "GET",
         headers: {
