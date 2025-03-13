@@ -21,7 +21,7 @@ async function login(event) {
     // Stocker les informations dans le localStorage
     localStorage.setItem("username", username);
     localStorage.setItem("token", data.data);
-    window.location.href = "../index.php"; // Rediriger vers la page d'accueil
+    window.location.href = "../index.html"; // Rediriger vers la page d'accueil
   } else {
     // Afficher un message d'erreur
     alert(data.status_message);
