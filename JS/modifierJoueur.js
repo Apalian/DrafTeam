@@ -35,7 +35,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("nom").value = initialData.nom;
     document.getElementById("prenom").value = initialData.prenom;
     document.getElementById("dateNaissance").value = initialData.dateNaissance;
-    document.getElementById("statut").value = initialData.statuts;
+
+    // Pré-sélectionner le statut
+    const statutSelect = document.getElementById("statut");
+    statutSelect.value = initialData.statuts; // Pré-sélectionner le statut
+
     document.getElementById("commentaire").value = initialData.commentaire;
     document.getElementById("taille").value = initialData.taille;
     document.getElementById("poids").value = initialData.poids;
