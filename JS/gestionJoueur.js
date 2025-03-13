@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       </div>
                   </div>
                   <div class="card-buttons">
-                      <a href="../Controller/ModifierJoueurController.php?numLicense=${
+                      <a href="./ModifierJoueur.html?numLicense=${
                         joueur.numLicense
                       }">
                           <button>Modifier</button>
