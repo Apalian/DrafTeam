@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     "numLicense"
   );
 
-  console.log("Numéro de licence:", numLicense); // Debugging
-
   let initialData = {}; // Pour stocker les données initiales du joueur
 
   // Récupérer les données du joueur
@@ -30,13 +28,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Erreur HTTP:", response.status, response.statusText);
       return;
     }
-
-    initialData = await response.json(); // Stocker les données initiales
+    const jsonData = await response.json();
+    initialData = jsonData.data[0]; // Stocker les données initiales
     // Remplir les champs du formulaire avec les données du joueur
     document.getElementById("nom").value = initialData.nom;
     document.getElementById("prenom").value = initialData.prenom;
     document.getElementById("dateNaissance").value = initialData.dateNaissance;
-    document.getElementById("statut").value = initialData.statuts;
+
+    // Pré-sélectionner le statut
+    const statutSelect = document.getElementById("statut");
+    statutSelect.value = initialData.statuts; // Pré-sélectionner le statut
+
     document.getElementById("commentaire").value = initialData.commentaire;
     document.getElementById("taille").value = initialData.taille;
     document.getElementById("poids").value = initialData.poids;
@@ -92,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       alert("Joueur modifié avec succès !");
-      window.location.href = "../GestionJoueurs.html";
+      window.location.href = "./GestionJoueurs.html";
     } catch (error) {
       console.error("Erreur lors de la modification du joueur:", error);
     }
