@@ -89,9 +89,11 @@ async function ajouterMatch(event) {
         for (let i = 0; i < joueursSelects.length; i++) {
             formData.participations.push({
                 numLicense: joueursSelects[i].value,
-                statut: statutsSelects[i].value
+                estTitulaire: statutsSelects[i].value === 'Titulaire' ? 1 : 0
             });
         }
+
+        console.log('Sending data to API:', formData);
 
         // Send data to API
         const response = await fetch('https://drafteamapi.lespi.fr/Match/index.php', {
@@ -107,7 +109,9 @@ async function ajouterMatch(event) {
             const errorData = await response.json();
             throw new Error(errorData.status_message || `HTTP error! status: ${response.status}`);
         }
-        
+
+        // Redirect to match management page on success
+        window.location.href = '../Vue/GestionMatchs.html';
     } catch (error) {
         console.error('Erreur lors de l\'ajout du match:', error);
         alert(error.message || 'Erreur lors de l\'ajout du match.');
