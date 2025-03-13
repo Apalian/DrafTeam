@@ -107,9 +107,7 @@ async function ajouterMatch(event) {
             const errorData = await response.json();
             throw new Error(errorData.status_message || `HTTP error! status: ${response.status}`);
         }
-
-        // Only redirect if the response is successful
-        window.location.href = '../Vue/GestionMatchs.html';
+        
     } catch (error) {
         console.error('Erreur lors de l\'ajout du match:', error);
         alert(error.message || 'Erreur lors de l\'ajout du match.');
