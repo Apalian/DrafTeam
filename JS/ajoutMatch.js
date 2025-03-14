@@ -183,9 +183,6 @@ async function ajouterMatch(event) {
             }
         }
 
-        // Tout s'est bien passé, on redirige
-        window.location.href = '../Vue/GestionMatchs.html';
-
     } catch (error) {
         console.error('Erreur lors de l’ajout du match ou des participations :', error);
         alert(error.message || 'Erreur lors de l’ajout du match/participations.');
