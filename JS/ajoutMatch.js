@@ -149,7 +149,7 @@ async function ajouterMatch(event) {
             }
 
             // Convertir ce statut en un int non-vide (1 ou 2) pour contourner empty(0) en PHP
-            const estTitulaire = (statut === 'Titulaire') ? 0 : 1;
+            const estTitulaire = (statut === 'Titulaire') ? 1 : 0;
 
             // On n’a pas d’autres champs (endurance, vitesse, etc.) => on met 0 ou null
             const participationBody = {
