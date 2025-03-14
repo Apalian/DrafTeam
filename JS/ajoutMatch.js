@@ -2,19 +2,18 @@
  * ajoutMatch.js
  *********************************************/
 
-// Sélection du conteneur des participations
+/**
+ * Sélection du conteneur des participations
+ */
 const participationsContainer = document.getElementById('participations-container');
 
 /**
  * Fonction pour ajouter un bloc de participation
- * (sélection joueur + statut)
  */
 function ajouterParticipation() {
-    // Créer la div qui contiendra la participation
     const participationDiv = document.createElement('div');
     participationDiv.className = 'participation-group';
 
-    // Injecter le HTML du formulaire de participation
     participationDiv.innerHTML = `
         <div class="form-group">
             <label>Joueur :</label>
@@ -32,23 +31,20 @@ function ajouterParticipation() {
         <button type="button" class="btn-remove" onclick="this.parentElement.remove()">Supprimer</button>
     `;
 
-    // Ajouter au conteneur principal
     participationsContainer.appendChild(participationDiv);
 
-    // Charger la liste de joueurs dans le <select> nouvellement créé
+    // Charger la liste des joueurs dans ce select
     const selectJoueur = participationDiv.querySelector('select[name="joueurs[]"]');
     chargerJoueurs(selectJoueur);
 }
 
 /**
- * Fonction pour charger la liste des joueurs depuis l'API
- * et remplir le <select> donné en paramètre
+ * Charger la liste des joueurs dans le <select> donné
  */
 async function chargerJoueurs(selectElement) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
-            // Si pas de token, on redirige vers la page de login
             window.location.href = '../Vue/Login.html';
             return;
         }
@@ -60,16 +56,15 @@ async function chargerJoueurs(selectElement) {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`Erreur HTTP! statut: ${response.status}`);
         }
 
         const data = await response.json();
-        // data.data est supposé être la liste des joueurs
         if (!data.data || !Array.isArray(data.data)) {
-            throw new Error('Réponse inattendue du serveur (liste des joueurs manquante)');
+            throw new Error('Réponse inattendue de l’API Joueur');
         }
 
-        // Remplir le select avec les joueurs
+        // Remplir le <select> avec la liste des joueurs
         data.data.forEach(joueur => {
             const option = document.createElement('option');
             option.value = joueur.numLicense;
@@ -83,94 +78,122 @@ async function chargerJoueurs(selectElement) {
 }
 
 /**
- * Fonction principale pour ajouter un match + participations
- * Appelée lorsque l'utilisateur soumet le formulaire
+ * Fonction appelée au submit pour ajouter le match
+ * puis les participations (chacune séparément).
  */
 async function ajouterMatch(event) {
-    event.preventDefault(); // Empêche la soumission classique du formulaire
+    event.preventDefault(); // Empêche la soumission classique
 
     try {
+        // Vérif token
         const token = localStorage.getItem('token');
         if (!token) {
             window.location.href = '../Vue/Login.html';
-            return false;
+            return;
         }
 
-        // Récupérer les champs du formulaire Match
-        // Convertir les scores en entier si remplis, sinon null
+        // Préparer les données du match
+        const dateMatch = document.getElementById('dateMatch').value;
+        const heure = document.getElementById('heure').value;
+        const nomEquipeAdverse = document.getElementById('nomEquipeAdverse').value.trim();
+        const LieuRencontre = document.getElementById('lieuRencontre').value; // Domicile / Extérieur
         const rawScoreDomicile = document.getElementById('scoreEquipeDomicile').value;
         const rawScoreExterne = document.getElementById('scoreEquipeExterne').value;
 
-        const formData = {
-            dateMatch: document.getElementById('dateMatch').value,
-            heure: document.getElementById('heure').value,
-            nomEquipeAdverse: document.getElementById('nomEquipeAdverse').value.trim(),
-            LieuRencontre: document.getElementById('lieuRencontre').value, // Majuscule si le back l'exige
-            scoreEquipeDomicile: rawScoreDomicile !== '' ? parseInt(rawScoreDomicile, 10) : null,
-            scoreEquipeExterne: rawScoreExterne !== '' ? parseInt(rawScoreExterne, 10) : null,
-            participations: []
+        // Convertir en entier ou null
+        const scoreEquipeDomicile = rawScoreDomicile !== '' ? parseInt(rawScoreDomicile, 10) : null;
+        const scoreEquipeExterne = rawScoreExterne !== '' ? parseInt(rawScoreExterne, 10) : null;
+
+        // Construire l'objet "match" à envoyer
+        const matchData = {
+            dateMatch,
+            heure,
+            nomEquipeAdverse,
+            LieuRencontre,
+            scoreEquipeDomicile,
+            scoreEquipeExterne
         };
 
-        // Récupérer toutes les participations (joueurs + statut)
-        const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
-        const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
+        // 1) -- APPEL API POUR CRÉER LE MATCH --
+        console.log('Envoi du match :', matchData);
 
-        for (let i = 0; i < joueursSelects.length; i++) {
-            const numLicense = joueursSelects[i].value;
-            const statut = statutsSelects[i].value;
-
-            // On peut vérifier qu'un joueur est bien sélectionné
-            if (numLicense === '') {
-                alert("Veuillez sélectionner un joueur pour chaque participation.");
-                return;
-            }
-
-            formData.participations.push({
-                numLicense,
-                estTitulaire: (statut === 'Titulaire') ? 1 : 0
-            });
-        }
-
-        console.log('Données envoyées à l’API :', formData);
-
-        // Appel à l'API pour ajouter le match
-        const response = await fetch('https://drafteamapi.lespi.fr/Match/index.php', {
+        let response = await fetch('https://drafteamapi.lespi.fr/Match/index.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(matchData)
         });
 
-        // Si la réponse est un code d'erreur HTTP
         if (!response.ok) {
-            // Tenter de lire le JSON d'erreur renvoyé par le serveur
-            let errorMsg = `Erreur HTTP! status: ${response.status}`;
-            try {
-                const errorData = await response.json();
-                if (errorData.status_message) {
-                    errorMsg = errorData.status_message;
-                }
-            } catch (parseErr) {
-                // On n'a pas pu parser le JSON d'erreur, on garde le message générique
-            }
+            const errorData = await response.json().catch(() => ({}));
+            const errorMsg = errorData.status_message || `Erreur HTTP lors de l'ajout du match (code ${response.status})`;
             throw new Error(errorMsg);
         }
 
-        // Succès : on redirige l'utilisateur vers la page de gestion des matchs
+        // 2) -- ENSUITE, INSÉRER CHAQUE PARTICIPATION INDIVIDUELLEMENT --
+        // Récupération des sélections de joueurs + statuts
+        const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
+        const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
+
+        // Boucle sur toutes les participations
+        for (let i = 0; i < joueursSelects.length; i++) {
+            const numLicense = joueursSelects[i].value;
+            const statut = statutsSelects[i].value; // "Titulaire" ou "Remplaçant"
+
+            // Si le champ joueur n’est pas sélectionné
+            if (!numLicense) {
+                alert("Veuillez sélectionner un joueur pour chaque participation.");
+                return;
+            }
+
+            // Convertir ce statut en un int non-vide (1 ou 2) pour contourner empty(0) en PHP
+            const estTitulaire = (statut === 'Titulaire') ? 0 : 1;
+
+            // On n’a pas d’autres champs (endurance, vitesse, etc.) => on met 0 ou null
+            const participationBody = {
+                numLicense,
+                dateMatch,
+                heure,
+                estTitulaire,
+                endurance: 0,
+                vitesse: 0,
+                defense: 0,
+                tirs: 0,
+                passes: 0,
+                poste: null
+            };
+
+            console.log('Envoi participation :', participationBody);
+
+            let partResp = await fetch('https://drafteamapi.lespi.fr/Participation/index.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(participationBody)
+            });
+
+            if (!partResp.ok) {
+                const errorData = await partResp.json().catch(() => ({}));
+                const errorMsg = errorData.status_message || `Erreur HTTP lors de l'ajout de la participation (code ${partResp.status})`;
+                throw new Error(errorMsg);
+            }
+        }
+
+        // Tout s'est bien passé, on redirige
         window.location.href = '../Vue/GestionMatchs.html';
 
     } catch (error) {
-        console.error('Erreur lors de l\'ajout du match :', error);
-        alert(error.message || 'Erreur lors de l\'ajout du match.');
+        console.error('Erreur lors de l’ajout du match ou des participations :', error);
+        alert(error.message || 'Erreur lors de l’ajout du match/participations.');
     }
 }
 
 /**
- * Au chargement de la page :
- *  - On ajoute par défaut un bloc de participation vide
- *  - (Optionnel) On pourrait charger d'autres infos si besoin
+ * Au chargement : ajouter un premier bloc de participation
  */
 document.addEventListener('DOMContentLoaded', () => {
     ajouterParticipation();
