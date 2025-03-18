@@ -79,12 +79,18 @@
           </div>
         </div>
         <div class="card-buttons">
-          <a href="../Vue/ModifierMatch.html" class="btn-modifier">Feuille de match</a>
+          <a href="../Vue/ModifierMatch.html?dateMatch=${encodeURIComponent(match.dateMatch)}&heure=${encodeURIComponent(match.heure)}" class="btn-modifier">
+            Feuille de match
+          </a>
           <button onclick="supprimerMatch(this)" class="btn-supprimer">
             Supprimer
           </button>
         </div>
       </div>
     </template>
+
+    <form id="modifierMatchForm" class="match-form" onsubmit="return modifierMatch(event)">
+      <!-- Your form fields here -->
+    </form>
   </body>
 </html>
