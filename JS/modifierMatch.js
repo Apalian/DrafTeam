@@ -21,9 +21,11 @@ async function loadMatchDetails(dateMatch, heure) {
             return;
         }
 
+        console.log('Loading match details for:', dateMatch, heure); // Debug log
+
         const response = await fetch(`https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             }
         });
 
@@ -32,28 +34,44 @@ async function loadMatchDetails(dateMatch, heure) {
         }
 
         const data = await response.json();
-        const match = data.data[0];
+        console.log('Match data:', data); // Debug log
 
-        document.getElementById('dateMatch').value = match.dateMatch;
-        document.getElementById('heure').value = match.heure;
-        document.getElementById('nomEquipeAdverse').value = match.nomEquipeAdverse;
-        document.getElementById('lieuRencontre').value = match.LieuRencontre;
-        document.getElementById('scoreEquipeDomicile').value = match.scoreEquipeDomicile;
-        document.getElementById('scoreEquipeExterne').value = match.scoreEquipeExterne;
+        if (data.data && data.data.length > 0) {
+            const match = data.data[0];
 
-        // Load participations
-        loadParticipations(dateMatch, heure);
+            // Fill in the form with match details
+            document.getElementById('dateMatch').value = match.dateMatch;
+            document.getElementById('heure').value = match.heure;
+            document.getElementById('nomEquipeAdverse').value = match.nomEquipeAdverse;
+            document.getElementById('lieuRencontre').value = match.LieuRencontre;
+            document.getElementById('scoreEquipeDomicile').value = match.scoreEquipeDomicile;
+            document.getElementById('scoreEquipeExterne').value = match.scoreEquipeExterne;
+
+            // After loading match details, load participations
+            await loadParticipations(dateMatch, heure);
+        } else {
+            throw new Error('Match not found');
+        }
     } catch (error) {
         console.error('Erreur lors du chargement des détails du match :', error);
         alert('Erreur lors du chargement des détails du match.');
+        window.location.href = './GestionMatchs.html';
     }
 }
 
 async function loadParticipations(dateMatch, heure) {
     try {
         const token = localStorage.getItem('token');
-        // Use the correct API endpoint
-        const response = await fetch(`https://drafteamapi.lespi.fr/Participation/index.php`, {
+        if (!token) {
+            window.location.href = '../Vue/Login.html';
+            return;
+        }
+
+        // Add query parameters to the URL
+        const url = `https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`;
+        console.log('Fetching participations from:', url); // Debug log
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -62,28 +80,33 @@ async function loadParticipations(dateMatch, heure) {
         });
 
         if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error('API Response:', errorData); // Debug log
             throw new Error(`Erreur HTTP! statut: ${response.status}`);
         }
 
         const data = await response.json();
-        
-        // Filter participations for this specific match
-        const matchParticipations = data.data.filter(p => 
-            p.dateMatch === dateMatch && p.heure === heure
-        );
+        console.log('Participations data:', data); // Debug log
 
         // Clear existing participations
         const container = document.getElementById('participations-container');
         container.innerHTML = '';
 
-        // Add each participation
-        matchParticipations.forEach(participation => {
-            ajouterParticipation(participation);
-        });
+        if (data.data && Array.isArray(data.data)) {
+            // Add each participation
+            data.data.forEach(participation => {
+                ajouterParticipation(participation);
+            });
+        } else {
+            console.log('No participations found for this match');
+        }
 
     } catch (error) {
         console.error('Erreur lors du chargement des participations :', error);
-        alert('Erreur lors du chargement des participations.');
+        // Don't stop the whole process if participations fail to load
+        // Just show an error message
+        const container = document.getElementById('participations-container');
+        container.innerHTML = '<p class="error-message">Erreur lors du chargement des participations.</p>';
     }
 }
 
