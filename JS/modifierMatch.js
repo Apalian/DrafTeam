@@ -24,8 +24,7 @@ async function loadMatchDetails(dateMatch, heure) {
             return;
         }
 
-        // Debug log the parameters
-        console.log('Loading match details with params:', { dateMatch, heure });
+        console.log('Loading match details for:', { dateMatch, heure });
 
         const response = await fetch(`https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`, {
             headers: {
@@ -43,20 +42,33 @@ async function loadMatchDetails(dateMatch, heure) {
         if (data.data && data.data.length > 0) {
             const match = data.data[0];
 
-            // Store original values
-            document.getElementById('originalDateMatch').value = match.dateMatch;
-            document.getElementById('originalHeure').value = match.heure;
+            // Check if elements exist before setting values
+            const elements = {
+                dateMatch: document.getElementById('dateMatch'),
+                heure: document.getElementById('heure'),
+                nomEquipeAdverse: document.getElementById('nomEquipeAdverse'),
+                lieuRencontre: document.getElementById('lieuRencontre'),
+                scoreEquipeDomicile: document.getElementById('scoreEquipeDomicile'),
+                scoreEquipeExterne: document.getElementById('scoreEquipeExterne')
+            };
 
-            // Fill in the form
-            document.getElementById('dateMatch').value = match.dateMatch;
-            document.getElementById('heure').value = match.heure;
-            document.getElementById('nomEquipeAdverse').value = match.nomEquipeAdverse;
-            document.getElementById('lieuRencontre').value = match.LieuRencontre;
-            document.getElementById('scoreEquipeDomicile').value = match.scoreEquipeDomicile;
-            document.getElementById('scoreEquipeExterne').value = match.scoreEquipeExterne;
+            // Log which elements were not found
+            Object.entries(elements).forEach(([key, element]) => {
+                if (!element) {
+                    console.error(`Element not found: ${key}`);
+                }
+            });
 
-            // Use the match data's date and time for loading participations
-            await loadParticipations(match.dateMatch, match.heure);
+            // Only set values for elements that exist
+            if (elements.dateMatch) elements.dateMatch.value = match.dateMatch;
+            if (elements.heure) elements.heure.value = match.heure;
+            if (elements.nomEquipeAdverse) elements.nomEquipeAdverse.value = match.nomEquipeAdverse;
+            if (elements.lieuRencontre) elements.lieuRencontre.value = match.lieuRencontre;
+            if (elements.scoreEquipeDomicile) elements.scoreEquipeDomicile.value = match.scoreEquipeDomicile;
+            if (elements.scoreEquipeExterne) elements.scoreEquipeExterne.value = match.scoreEquipeExterne;
+
+            // Load participations after match details are loaded
+            await loadParticipations(dateMatch, heure);
         } else {
             throw new Error('Match not found');
         }
