@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (dateMatch && heure) {
         loadMatchDetails(dateMatch, heure);
+    } else {
+        alert('Paramètres manquants pour charger le match');
+        window.location.href = './GestionMatchs.html';
     }
 
     ajouterParticipation(); // Add an initial participation block
@@ -49,9 +52,12 @@ async function loadMatchDetails(dateMatch, heure) {
 async function loadParticipations(dateMatch, heure) {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`, {
+        // Use the correct API endpoint
+        const response = await fetch(`https://drafteamapi.lespi.fr/Participation/index.php`, {
+            method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             }
         });
 
@@ -60,11 +66,21 @@ async function loadParticipations(dateMatch, heure) {
         }
 
         const data = await response.json();
-        const participations = data.data;
+        
+        // Filter participations for this specific match
+        const matchParticipations = data.data.filter(p => 
+            p.dateMatch === dateMatch && p.heure === heure
+        );
 
-        participations.forEach(participation => {
+        // Clear existing participations
+        const container = document.getElementById('participations-container');
+        container.innerHTML = '';
+
+        // Add each participation
+        matchParticipations.forEach(participation => {
             ajouterParticipation(participation);
         });
+
     } catch (error) {
         console.error('Erreur lors du chargement des participations :', error);
         alert('Erreur lors du chargement des participations.');

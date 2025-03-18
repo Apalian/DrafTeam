@@ -75,8 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       // Stocker les données dans le bouton de modification
       const btnModifier = clone.querySelector(".btn-modifier");
-      btnModifier.dataset.dateMatch = match.dateMatch;
-      btnModifier.dataset.heure = match.heure;
+      btnModifier.href = `../Vue/ModifierMatch.html?dateMatch=${encodeURIComponent(match.dateMatch)}&heure=${encodeURIComponent(match.heure)}`;
   
       matchsList.appendChild(clone);
     });
@@ -136,13 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Erreur lors de la suppression du match:', error);
         alert(error.message || 'Erreur lors de la suppression du match.');
     }
-  }
-  
-  // Fonction pour modifier un match (redirection vers la page de modification)
-  function modifierMatch(button) {
-    const dateMatch = button.dataset.dateMatch;
-    const heure = button.dataset.heure;
-    window.location.href = `../Vue/ModifierMatch.html?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`;
   }
   
   // Fonction pour lancer la recherche des matchs
