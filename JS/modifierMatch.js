@@ -43,6 +43,10 @@ async function loadMatchDetails(dateMatch, heure) {
         if (data.data && data.data.length > 0) {
             const match = data.data[0];
 
+            // Store original values
+            document.getElementById('originalDateMatch').value = match.dateMatch;
+            document.getElementById('originalHeure').value = match.heure;
+
             // Fill in the form
             document.getElementById('dateMatch').value = match.dateMatch;
             document.getElementById('heure').value = match.heure;
@@ -184,30 +188,36 @@ async function modifierMatch(event) {
         const token = localStorage.getItem('token');
         if (!token) {
             window.location.href = '../Vue/Login.html';
-            return;
+            return false;
         }
 
-        const dateMatch = document.getElementById('dateMatch').value;
-        const heure = document.getElementById('heure').value;
-        const nomEquipeAdverse = document.getElementById('nomEquipeAdverse').value.trim();
-        const LieuRencontre = document.getElementById('lieuRencontre').value;
-        const scoreEquipeDomicile = document.getElementById('scoreEquipeDomicile').value || null;
-        const scoreEquipeExterne = document.getElementById('scoreEquipeExterne').value || null;
+        // Get the original match details from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const originalDateMatch = urlParams.get('dateMatch');
+        const originalHeure = urlParams.get('heure');
 
+        if (!originalDateMatch || !originalHeure) {
+            throw new Error('Paramètres originaux du match manquants');
+        }
+
+        // Get current form values
         const matchData = {
-            dateMatch,
-            heure,
-            nomEquipeAdverse,
-            LieuRencontre,
-            scoreEquipeDomicile,
-            scoreEquipeExterne
+            dateMatch: originalDateMatch,  // Use original date
+            heure: originalHeure,         // Use original time
+            nomEquipeAdverse: document.getElementById('nomEquipeAdverse').value.trim(),
+            LieuRencontre: document.getElementById('lieuRencontre').value,
+            scoreEquipeDomicile: document.getElementById('scoreEquipeDomicile').value || null,
+            scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null
         };
 
+        console.log('Sending match update:', matchData);
+
+        // Update match
         const response = await fetch('https://drafteamapi.lespi.fr/Match/index.php', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(matchData)
         });
@@ -221,14 +231,25 @@ async function modifierMatch(event) {
         const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
         const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
 
+        // Delete existing participations first
+        await fetch(`https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(originalDateMatch)}&heure=${encodeURIComponent(originalHeure)}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        // Add new participations
         for (let i = 0; i < joueursSelects.length; i++) {
             const numLicense = joueursSelects[i].value;
             const estTitulaire = statutsSelects[i].value === 'Titulaire' ? 1 : 0;
 
+            if (!numLicense) continue; // Skip empty selections
+
             const participationData = {
                 numLicense,
-                dateMatch,
-                heure,
+                dateMatch: originalDateMatch,
+                heure: originalHeure,
                 estTitulaire,
                 endurance: 0,
                 vitesse: 0,
@@ -238,24 +259,30 @@ async function modifierMatch(event) {
                 poste: null
             };
 
+            console.log('Sending participation:', participationData);
+
             const partResp = await fetch('https://drafteamapi.lespi.fr/Participation/index.php', {
-                method: 'PATCH',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(participationData)
             });
 
             if (!partResp.ok) {
                 const errorData = await partResp.json();
-                throw new Error(errorData.status_message || `Erreur HTTP lors de la modification de la participation (code ${partResp.status})`);
+                throw new Error(errorData.status_message || `Erreur HTTP lors de l'ajout de la participation (code ${partResp.status})`);
             }
         }
 
+        // Redirect on success
         window.location.href = '../Vue/GestionMatchs.html';
+        return false;
+
     } catch (error) {
         console.error('Erreur lors de la modification du match ou des participations :', error);
         alert(error.message || 'Erreur lors de la modification du match/participations.');
+        return false;
     }
 }
