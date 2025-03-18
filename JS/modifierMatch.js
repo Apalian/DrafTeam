@@ -3,9 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateMatch = urlParams.get('dateMatch');
     const heure = urlParams.get('heure');
 
+    console.log('URL Parameters:', { dateMatch, heure });
+
     if (dateMatch && heure) {
         loadMatchDetails(dateMatch, heure);
     } else {
+        console.error('Missing required parameters');
         alert('Paramètres manquants pour charger le match');
         window.location.href = './GestionMatchs.html';
     }
@@ -21,7 +24,8 @@ async function loadMatchDetails(dateMatch, heure) {
             return;
         }
 
-        console.log('Loading match details for:', dateMatch, heure); // Debug log
+        // Debug log the parameters
+        console.log('Loading match details with params:', { dateMatch, heure });
 
         const response = await fetch(`https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`, {
             headers: {
@@ -34,12 +38,12 @@ async function loadMatchDetails(dateMatch, heure) {
         }
 
         const data = await response.json();
-        console.log('Match data:', data); // Debug log
+        console.log('Match data received:', data);
 
         if (data.data && data.data.length > 0) {
             const match = data.data[0];
 
-            // Fill in the form with match details
+            // Fill in the form
             document.getElementById('dateMatch').value = match.dateMatch;
             document.getElementById('heure').value = match.heure;
             document.getElementById('nomEquipeAdverse').value = match.nomEquipeAdverse;
@@ -47,15 +51,14 @@ async function loadMatchDetails(dateMatch, heure) {
             document.getElementById('scoreEquipeDomicile').value = match.scoreEquipeDomicile;
             document.getElementById('scoreEquipeExterne').value = match.scoreEquipeExterne;
 
-            // After loading match details, load participations
-            await loadParticipations(dateMatch, heure);
+            // Use the match data's date and time for loading participations
+            await loadParticipations(match.dateMatch, match.heure);
         } else {
             throw new Error('Match not found');
         }
     } catch (error) {
-        console.error('Erreur lors du chargement des détails du match :', error);
+        console.error('Erreur lors du chargement des détails du match:', error);
         alert('Erreur lors du chargement des détails du match.');
-        window.location.href = './GestionMatchs.html';
     }
 }
 
@@ -67,29 +70,37 @@ async function loadParticipations(dateMatch, heure) {
             return;
         }
 
-        // Fix: Use the correct endpoint URL with capital 'P' in 'Participation'
-        const url = `https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`;
-        console.log('Attempting to fetch participations from:', url); // Debug log
+        // Debug logs
+        console.log('Loading participations for:', { dateMatch, heure });
+
+        // Construct URL with both required parameters
+        const url = new URL('https://drafteamapi.lespi.fr/Participation/index.php');
+        url.searchParams.append('dateMatch', dateMatch);
+        url.searchParams.append('heure', heure);
+
+        console.log('Requesting URL:', url.toString());
 
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
             }
         });
 
-        // Log the response status and URL for debugging
+        // Log response details for debugging
         console.log('Response status:', response.status);
-        console.log('Response URL:', response.url);
 
         if (!response.ok) {
-            const errorText = await response.text(); // Get the raw response text
-            console.log('Error response:', errorText); // Log the error response
+            // Try to get error details from response
+            const errorText = await response.text();
+            console.log('Error response:', errorText);
             throw new Error(`Erreur HTTP! statut: ${response.status}`);
         }
 
         const data = await response.json();
-        
+        console.log('Received data:', data);
+
         // Clear existing participations
         const container = document.getElementById('participations-container');
         container.innerHTML = '';
@@ -99,12 +110,11 @@ async function loadParticipations(dateMatch, heure) {
                 ajouterParticipation(participation);
             });
         } else {
-            // If no participations found, show a message but don't treat it as an error
             container.innerHTML = '<p>Aucune participation trouvée pour ce match.</p>';
         }
 
     } catch (error) {
-        console.error('Erreur lors du chargement des participations :', error);
+        console.error('Erreur détaillée:', error);
         const container = document.getElementById('participations-container');
         container.innerHTML = '<p class="error-message">Erreur lors du chargement des participations.</p>';
     }
