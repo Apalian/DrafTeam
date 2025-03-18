@@ -67,44 +67,44 @@ async function loadParticipations(dateMatch, heure) {
             return;
         }
 
-        // Add query parameters to the URL
+        // Fix: Use the correct endpoint URL with capital 'P' in 'Participation'
         const url = `https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`;
-        console.log('Fetching participations from:', url); // Debug log
+        console.log('Attempting to fetch participations from:', url); // Debug log
 
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Authorization': `Bearer ${token}`
             }
         });
 
+        // Log the response status and URL for debugging
+        console.log('Response status:', response.status);
+        console.log('Response URL:', response.url);
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            console.error('API Response:', errorData); // Debug log
+            const errorText = await response.text(); // Get the raw response text
+            console.log('Error response:', errorText); // Log the error response
             throw new Error(`Erreur HTTP! statut: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('Participations data:', data); // Debug log
-
+        
         // Clear existing participations
         const container = document.getElementById('participations-container');
         container.innerHTML = '';
 
         if (data.data && Array.isArray(data.data)) {
-            // Add each participation
             data.data.forEach(participation => {
                 ajouterParticipation(participation);
             });
         } else {
-            console.log('No participations found for this match');
+            // If no participations found, show a message but don't treat it as an error
+            container.innerHTML = '<p>Aucune participation trouvée pour ce match.</p>';
         }
 
     } catch (error) {
         console.error('Erreur lors du chargement des participations :', error);
-        // Don't stop the whole process if participations fail to load
-        // Just show an error message
         const container = document.getElementById('participations-container');
         container.innerHTML = '<p class="error-message">Erreur lors du chargement des participations.</p>';
     }
