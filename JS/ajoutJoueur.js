@@ -2,8 +2,8 @@ async function ajouterJoueur(event) {
   event.preventDefault(); // Empêche le rechargement de la page
 
   const token = localStorage.getItem("token");
+  const numLicense = document.getElementById("numLicense").value;
   const joueurData = {
-    numLicense: document.getElementById("numLicense").value,
     nom: document.getElementById("nom").value,
     prenom: document.getElementById("prenom").value,
     dateNaissance: document.getElementById("dateNaissance").value,
@@ -12,22 +12,24 @@ async function ajouterJoueur(event) {
     taille: document.getElementById("taille").value,
     poids: document.getElementById("poids").value,
   };
-  console.log(joueurData);
   try {
-    const response = await fetch("https://drafteamapi.lespi.fr/Joueur/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(joueurData),
-    });
+    const response = await fetch(
+      `https://drafteamapi.lespi.fr/Joueur/index.php?numLicense=${numLicense}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(joueurData),
+      }
+    );
     console.log(response);
     if (!response.ok) {
       throw new Error("Erreur lors de l'ajout du joueur");
     }
     // Rediriger ou afficher un message de succès
-    //window.location.href = "./GestionJoueurs.html";
+    window.location.href = "./GestionJoueurs.html";
     return false; // Empêche la soumission par défaut
   } catch (error) {
     console.error("Erreur:", error);

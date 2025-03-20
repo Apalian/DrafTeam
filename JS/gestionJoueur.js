@@ -79,11 +79,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.confirmDelete = function (numLicense) {
+  window.confirmDelete = async function (numLicense) {
     if (confirm("Êtes-vous sûr de vouloir supprimer ce joueur ?")) {
-      console.log(
-        `Suppression du joueur avec le numéro de licence: ${numLicense}`
-      );
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `https://drafteamapi.lespi.fr/Joueur/index.php?numLicense=${numLicense}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 403) {
+            alert(data.status_message);
+            return;
+          }
+          throw new Error(
+            data.status_message || "Erreur lors de la suppression du joueur"
+          );
+        }
+
+        // Recharger la page pour mettre à jour la liste
+        window.location.reload();
+      } catch (error) {
+        console.error("Erreur:", error);
+        alert("Une erreur est survenue lors de la suppression du joueur");
+      }
     }
   };
 
