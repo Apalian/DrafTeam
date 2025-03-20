@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       if (!response.ok) {
+        if (response.status === 401) {
+          logout();
+        }
         console.error("Erreur HTTP:", response.status, response.statusText);
         displayJoueurs([]); // Afficher un message d'erreur dans la liste
         return;
@@ -97,6 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
 
         if (!response.ok) {
+          if (response.status === 401) {
+            logout();
+          }
           if (response.status === 403) {
             alert(data.status_message);
             return;

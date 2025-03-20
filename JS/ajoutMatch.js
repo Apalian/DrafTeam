@@ -49,7 +49,7 @@ async function chargerJoueurs(selectElement) {
       return;
     }
 
-    const response = await fetchWithAuth(
+    const response = await fetch(
       "https://drafteamapi.lespi.fr/Joueur/index.php",
       {
         headers: {
@@ -59,12 +59,15 @@ async function chargerJoueurs(selectElement) {
     );
 
     if (!response.ok) {
+      if (response.status === 401) {
+        logout();
+      }
       throw new Error(`Erreur HTTP! statut: ${response.status}`);
     }
 
     const data = await response.json();
     if (!data.data || !Array.isArray(data.data)) {
-      throw new Error("Réponse inattendue de l'API Joueur");
+      throw new Error("Réponse inattendue de l’API Joueur");
     }
 
     // Remplir le <select> avec la liste des joueurs
@@ -126,17 +129,14 @@ async function ajouterMatch(event) {
     // 1) -- APPEL API POUR CRÉER LE MATCH --
     console.log("Envoi du match :", matchData);
 
-    let response = await fetchWithAuth(
-      "https://drafteamapi.lespi.fr/Match/index.php",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(matchData),
-      }
-    );
+    let response = await fetch("https://drafteamapi.lespi.fr/Match/index.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(matchData),
+    });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -160,7 +160,7 @@ async function ajouterMatch(event) {
       const numLicense = joueursSelects[i].value;
       const statut = statutsSelects[i].value; // "Titulaire" ou "Remplaçant"
 
-      // Si le champ joueur n'est pas sélectionné
+      // Si le champ joueur n’est pas sélectionné
       if (!numLicense) {
         alert("Veuillez sélectionner un joueur pour chaque participation.");
         return;
@@ -169,7 +169,7 @@ async function ajouterMatch(event) {
       // Convertir ce statut en un int non-vide (1 ou 2) pour contourner empty(0) en PHP
       const estTitulaire = statut === "Titulaire" ? 1 : 0;
 
-      // On n'a pas d'autres champs (endurance, vitesse, etc.) => on met 0 ou null
+      // On n’a pas d’autres champs (endurance, vitesse, etc.) => on met 0 ou null
       const participationBody = {
         numLicense,
         dateMatch,
@@ -185,7 +185,7 @@ async function ajouterMatch(event) {
 
       console.log("Envoi participation :", participationBody);
 
-      let partResp = await fetchWithAuth(
+      let partResp = await fetch(
         "https://drafteamapi.lespi.fr/Participation/index.php",
         {
           method: "POST",
@@ -207,10 +207,10 @@ async function ajouterMatch(event) {
     }
   } catch (error) {
     console.error(
-      "Erreur lors de l'ajout du match ou des participations :",
+      "Erreur lors de l’ajout du match ou des participations :",
       error
     );
-    alert(error.message || "Erreur lors de l'ajout du match/participations.");
+    alert(error.message || "Erreur lors de l’ajout du match/participations.");
   }
 }
 
