@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const response = await fetch(
+    const response = await fetchWithAuth(
       `https://drafteamapi.lespi.fr/Joueur/?numLicense=${numLicense}`,
       {
         method: "GET",
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? "PUT"
         : "PATCH"; // Choisir la méthode
 
-      const response = await fetch(
+      const response = await fetchWithAuth(
         `https://drafteamapi.lespi.fr/Joueur/?numLicense=${numLicense}`,
         {
           method: method,

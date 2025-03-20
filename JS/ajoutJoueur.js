@@ -13,7 +13,7 @@ async function ajouterJoueur(event) {
     poids: document.getElementById("poids").value,
   };
   try {
-    const response = await fetch(
+    const response = await fetchWithAuth(
       `https://drafteamapi.lespi.fr/Joueur/index.php?numLicense=${numLicense}`,
       {
         method: "POST",

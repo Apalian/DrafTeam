@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="../styles.css" />
     <title>Gestion des Matchs</title>
     <script src="../JS/auth.js"></script>
-    <script src="../JS/script.js"></script>
-    <script src="../JS/gestionMatchs.js"></script>
+    <script src="../JS/utils.js"></script>
+    <script src="../JS/gestionMatchs.js" defer></script>
     <script>
       checkAuth();
     </script>
@@ -79,7 +79,10 @@
           </div>
         </div>
         <div class="card-buttons">
-          <a href="../Vue/ModifierMatch.html?dateMatch=${encodeURIComponent(match.dateMatch)}&heure=${encodeURIComponent(match.heure)}" class="btn-modifier">
+          <a
+            href="../Vue/ModifierMatch.html?dateMatch=${encodeURIComponent(match.dateMatch)}&heure=${encodeURIComponent(match.heure)}"
+            class="btn-modifier"
+          >
             Feuille de match
           </a>
           <button onclick="supprimerMatch(this)" class="btn-supprimer">
@@ -89,7 +92,11 @@
       </div>
     </template>
 
-    <form id="modifierMatchForm" class="match-form" onsubmit="return modifierMatch(event)">
+    <form
+      id="modifierMatchForm"
+      class="match-form"
+      onsubmit="return modifierMatch(event)"
+    >
       <!-- Your form fields here -->
     </form>
   </body>

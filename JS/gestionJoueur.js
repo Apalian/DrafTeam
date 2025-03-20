@@ -9,12 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const response = await fetch(`https://drafteamapi.lespi.fr/Joueur/`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetchWithAuth(
+        `https://drafteamapi.lespi.fr/Joueur/`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         console.error("Erreur HTTP:", response.status, response.statusText);
@@ -81,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (confirm("Êtes-vous sûr de vouloir supprimer ce joueur ?")) {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(
+        const response = await fetchWithAuth(
           `https://drafteamapi.lespi.fr/Joueur/index.php?numLicense=${numLicense}`,
           {
             method: "DELETE",
