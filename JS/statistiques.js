@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Fonction pour charger les statistiques des matchs
   async function loadMatchStats() {
     try {
-      const response = await fetchWithAuth(
+      const response = await fetch(
         "https://drafteamapi.lespi.fr/Statistiques/index.php",
         {
           method: "GET",
@@ -68,15 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Fonction pour charger la liste des joueurs
   async function loadJoueurs() {
     try {
-      const response = await fetchWithAuth(
-        "https://drafteamapi.lespi.fr/Joueur/",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch("https://drafteamapi.lespi.fr/Joueur/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
@@ -108,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!numLicense) return;
 
     try {
-      const response = await fetchWithAuth(
+      const response = await fetch(
         `https://drafteamapi.lespi.fr/Statistiques/index.php?numLicense=${numLicense}`,
         {
           method: "GET",
