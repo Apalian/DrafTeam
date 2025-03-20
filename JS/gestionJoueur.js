@@ -1,5 +1,3 @@
-import { API_CONFIG, fetchWithAuth } from "./common.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const joueursList = document.getElementById("joueurs-list");
   const searchForm = document.getElementById("search-form");
@@ -7,12 +5,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchJoueurs() {
     try {
-      const response = await fetchWithAuth(`${API_CONFIG.BASE_URL}/Joueur/`);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("Token manquant. Veuillez vous reconnecter.");
+        return;
+      }
+
+      const response = await fetch(`https://drafteamapi.lespi.fr/Joueur/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Erreur HTTP:", response.status, response.statusText);
+        displayJoueurs([]); // Afficher un message d'erreur dans la liste
+        return;
+      }
+
       const data = await response.json();
       displayJoueurs(data.data);
     } catch (error) {
       console.error("Erreur lors de la récupération des joueurs:", error);
-      displayJoueurs([]);
+      displayJoueurs([]); // Afficher un message d'erreur dans la liste
     }
   }
 

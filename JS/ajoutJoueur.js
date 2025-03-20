@@ -1,8 +1,7 @@
-import { API_CONFIG, fetchWithAuth } from "./common.js";
-
 async function ajouterJoueur(event) {
   event.preventDefault(); // Empêche le rechargement de la page
 
+  const token = localStorage.getItem("token");
   const joueurData = {
     numLicense: document.getElementById("numLicense").value,
     nom: document.getElementById("nom").value,
@@ -14,8 +13,12 @@ async function ajouterJoueur(event) {
     poids: document.getElementById("poids").value,
   };
   try {
-    const response = await fetchWithAuth(`${API_CONFIG.BASE_URL}/Joueur/`, {
+    const response = await fetch("https://drafteamapi.lespi.fr/Joueur/", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(joueurData),
     });
     console.log(response);
@@ -31,6 +34,3 @@ async function ajouterJoueur(event) {
     return false; // Empêche la soumission en cas d'erreur
   }
 }
-
-// Exporter la fonction
-export { ajouterJoueur };

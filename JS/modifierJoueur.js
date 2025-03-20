@@ -1,5 +1,3 @@
-import { API_CONFIG, fetchWithAuth } from "./common.js";
-
 document.addEventListener("DOMContentLoaded", async () => {
   const form = document.querySelector(".player-form");
   const numLicense = new URLSearchParams(window.location.search).get(
@@ -10,9 +8,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Récupérer les données du joueur
   try {
-    const response = await fetchWithAuth(
-      `${API_CONFIG.BASE_URL}/Joueur/?numLicense=${numLicense}`
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "../Vue/Login.html";
+      return;
+    }
+
+    const response = await fetch(
+      `https://drafteamapi.lespi.fr/Joueur/?numLicense=${numLicense}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
+
+    if (!response.ok) {
+      console.error("Erreur HTTP:", response.status, response.statusText);
+      return;
+    }
     const jsonData = await response.json();
     initialData = jsonData.data[0]; // Stocker les données initiales
     // Remplir les champs du formulaire avec les données du joueur
@@ -51,20 +66,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "../Vue/Login.html";
+        return;
+      }
+
       const method = Object.values(data).every((value) => value !== "")
         ? "PUT"
         : "PATCH"; // Choisir la méthode
 
-      const response = await fetchWithAuth(
-        `${API_CONFIG.BASE_URL}/Joueur/?numLicense=${numLicense}`,
+      const response = await fetch(
+        `https://drafteamapi.lespi.fr/Joueur/?numLicense=${numLicense}`,
         {
           method: method,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(data),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Erreur HTTP: ${response.status}`);
+        console.error("Erreur HTTP:", response.status, response.statusText);
+        return;
       }
 
       alert("Joueur modifié avec succès !");
