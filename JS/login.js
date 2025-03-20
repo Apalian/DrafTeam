@@ -32,5 +32,5 @@ async function login(event) {
   }
 }
 
-// Exporter la fonction login
-export { login };
+// Exporter la fonction login par défaut
+export default login;
