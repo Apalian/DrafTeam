@@ -27,7 +27,7 @@ async function ajouterJoueur(event) {
       throw new Error("Erreur lors de l'ajout du joueur");
     }
     // Rediriger ou afficher un message de succès
-    window.location.href = "./GestionJoueurs.html";
+    //window.location.href = "./GestionJoueurs.html";
     return false; // Empêche la soumission par défaut
   } catch (error) {
     console.error("Erreur:", error);
