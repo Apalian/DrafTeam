@@ -5,13 +5,16 @@ async function login(event) {
   const password = document.getElementById("password").value;
 
   try {
-    const response = await fetch(`${API_CONFIG.AUTH_URL}/authentication.php`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ login: username, password: password }),
-    });
+    const response = await fetch(
+      `https://drafteamauthentication.lespi.fr/authentication.php`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ login: username, password: password }),
+      }
+    );
 
     const data = await response.json();
 
