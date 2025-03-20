@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles.css">
     <title>Authentification - DrafTeam</title>
-    <script src="../JS/login.js"></script>
+    <script type="module">
+        import { login } from '../JS/login.js';
+        
+        // Exposer la fonction login globalement
+        window.login = login;
+    </script>
 </head>
 <body>
 <div class="login">

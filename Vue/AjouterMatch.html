@@ -1,73 +1,128 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles.css" />
     <title>Ajouter un Match</title>
-    <script src="../JS/auth.js"></script>
-    <script src="../JS/ajoutMatch.js" defer></script>
-    <script>
-        checkAuth();
+    <script type="module">
+      import { checkAuth, logout } from "../JS/common.js";
+      import { ajouterMatch, ajouterParticipation } from "../JS/ajoutMatch.js";
+
+      // Vérifier l'authentification au chargement
+      checkAuth();
+
+      // Exposer les fonctions globalement
+      window.ajouterMatch = ajouterMatch;
+      window.ajouterParticipation = ajouterParticipation;
+      window.logout = logout;
     </script>
-</head>
-<body>
-<nav class="navbar">
-    <div class="navbar-logo"><a href="../index.html" class="nav-link">DrafTeam</a></div>
-    <div class="navbar-links">
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-logo">
+        <a href="../index.html" class="nav-link">DrafTeam</a>
+      </div>
+      <div class="navbar-links">
         <a href="../Vue/GestionJoueurs.html" class="nav-link">Joueurs</a>
         <a href="../Vue/GestionMatchs.html" class="nav-link">Matchs</a>
-        <a href="javascript:void(0)" onclick="logout()" class="nav-link logout">Déconnexion</a>
-    </div>
-</nav>
+        <a href="javascript:void(0)" onclick="logout()" class="nav-link logout"
+          >Déconnexion</a
+        >
+      </div>
+    </nav>
 
-<div class="container">
-    <h1 class="form-title">Ajouter un Nouveau Match</h1>
-    <form id="ajoutMatchForm" class="match-form" onsubmit="return ajouterMatch(event)">
+    <div class="container">
+      <h1 class="form-title">Ajouter un Nouveau Match</h1>
+      <form
+        id="ajoutMatchForm"
+        class="match-form"
+        onsubmit="return ajouterMatch(event)"
+      >
         <div class="form-group">
-            <label for="dateMatch">Date du Match :</label>
-            <input type="date" id="dateMatch" name="dateMatch" class="form-input" required>
+          <label for="dateMatch">Date du Match :</label>
+          <input
+            type="date"
+            id="dateMatch"
+            name="dateMatch"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="heure">Heure :</label>
-            <input type="time" id="heure" name="heure" class="form-input" required>
+          <label for="heure">Heure :</label>
+          <input
+            type="time"
+            id="heure"
+            name="heure"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="nomEquipeAdverse">Nom de l'Équipe Adverse :</label>
-            <input type="text" id="nomEquipeAdverse" name="nomEquipeAdverse" class="form-input" required>
+          <label for="nomEquipeAdverse">Nom de l'Équipe Adverse :</label>
+          <input
+            type="text"
+            id="nomEquipeAdverse"
+            name="nomEquipeAdverse"
+            class="form-input"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="lieuRencontre">Lieu de la Rencontre :</label>
-            <select id="lieuRencontre" name="lieuRencontre" class="form-input" required>
-                <option value="Domicile">Domicile</option>
-                <option value="Extérieur">Extérieur</option>
-            </select>
+          <label for="lieuRencontre">Lieu de la Rencontre :</label>
+          <select
+            id="lieuRencontre"
+            name="lieuRencontre"
+            class="form-input"
+            required
+          >
+            <option value="Domicile">Domicile</option>
+            <option value="Extérieur">Extérieur</option>
+          </select>
         </div>
 
         <div class="form-group">
-            <label for="scoreEquipeDomicile">Score Équipe Domicile :</label>
-            <input type="number" id="scoreEquipeDomicile" name="scoreEquipeDomicile" class="form-input">
+          <label for="scoreEquipeDomicile">Score Équipe Domicile :</label>
+          <input
+            type="number"
+            id="scoreEquipeDomicile"
+            name="scoreEquipeDomicile"
+            class="form-input"
+          />
         </div>
 
         <div class="form-group">
-            <label for="scoreEquipeExterne">Score Équipe Externe :</label>
-            <input type="number" id="scoreEquipeExterne" name="scoreEquipeExterne" class="form-input">
+          <label for="scoreEquipeExterne">Score Équipe Externe :</label>
+          <input
+            type="number"
+            id="scoreEquipeExterne"
+            name="scoreEquipeExterne"
+            class="form-input"
+          />
         </div>
 
         <div class="form-group">
-            <h2>Ajouter des Participations</h2>
-            <div id="participations-container"></div>
-            <button type="button" id="add-participation" class="btn-secondary" onclick="ajouterParticipation()">Ajouter une Participation</button>
+          <h2>Ajouter des Participations</h2>
+          <div id="participations-container"></div>
+          <button
+            type="button"
+            id="add-participation"
+            class="btn-secondary"
+            onclick="ajouterParticipation()"
+          >
+            Ajouter une Participation
+          </button>
         </div>
 
         <div class="form-buttons">
-            <button type="submit" class="btn-submit">Ajouter</button>
-            <a href="../Vue/GestionMatchs.html" class="btn-cancel">Annuler</a>
+          <button type="submit" class="btn-submit">Ajouter</button>
+          <a href="../Vue/GestionMatchs.html" class="btn-cancel">Annuler</a>
         </div>
-    </form>
-</div>
-</body>
-</html> 
+      </form>
+    </div>
+  </body>
+</html>
