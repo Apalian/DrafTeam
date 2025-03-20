@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const joueursList = document.getElementById("joueurs-list");
-  const searchForm = document.getElementById("search-form");
-  const searchInput = document.getElementById("search-input");
 
   async function fetchJoueurs() {
     try {
