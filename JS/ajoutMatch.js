@@ -49,7 +49,7 @@ async function chargerJoueurs(selectElement) {
       return;
     }
 
-    const response = await fetch(
+    const response = await fetchWithAuth(
       "https://drafteamapi.lespi.fr/Joueur/index.php",
       {
         headers: {
@@ -59,9 +59,6 @@ async function chargerJoueurs(selectElement) {
     );
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       throw new Error(`Erreur HTTP! statut: ${response.status}`);
     }
 
@@ -129,14 +126,17 @@ async function ajouterMatch(event) {
     // 1) -- APPEL API POUR CRÉER LE MATCH --
     console.log("Envoi du match :", matchData);
 
-    let response = await fetch("https://drafteamapi.lespi.fr/Match/index.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(matchData),
-    });
+    let response = await fetchWithAuth(
+      "https://drafteamapi.lespi.fr/Match/index.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(matchData),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -185,7 +185,7 @@ async function ajouterMatch(event) {
 
       console.log("Envoi participation :", participationBody);
 
-      let partResp = await fetch(
+      let partResp = await fetchWithAuth(
         "https://drafteamapi.lespi.fr/Participation/index.php",
         {
           method: "POST",

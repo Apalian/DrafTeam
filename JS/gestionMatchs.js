@@ -14,7 +14,7 @@ async function loadMatchs() {
     // Construction de l'URL de l'API pour les matchs
     let url = `https://drafteamapi.lespi.fr/Match/index.php`;
 
-    const response = await fetch(url, {
+    const response = await fetchWithAuth(url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -22,9 +22,6 @@ async function loadMatchs() {
     });
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       throw new Error(`Erreur HTTP! statut: ${response.status}`);
     }
 
@@ -142,7 +139,7 @@ async function supprimerMatch(button) {
       return;
     }
 
-    const response = await fetch(
+    const response = await fetchWithAuth(
       `https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(
         dateMatch
       )}&heure=${encodeURIComponent(heure)}`,
@@ -155,9 +152,6 @@ async function supprimerMatch(button) {
     );
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       const errorData = await response.json();
       throw new Error(
         errorData.status_message || `HTTP error! status: ${response.status}`

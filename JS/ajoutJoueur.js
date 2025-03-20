@@ -25,9 +25,6 @@ async function ajouterJoueur(event) {
       }
     );
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       throw new Error("Erreur lors de l'ajout du joueur");
     }
     // Rediriger ou afficher un message de succès

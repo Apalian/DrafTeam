@@ -33,7 +33,7 @@ async function loadMatchDetails(dateMatch, heure) {
     console.log("Loading match details for:", { dateMatch, heure });
 
     // Récupération du match (en GET)
-    const response = await fetch(
+    const response = await fetchWithAuth(
       `https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(
         dateMatch
       )}&heure=${encodeURIComponent(heure)}`,
@@ -43,9 +43,6 @@ async function loadMatchDetails(dateMatch, heure) {
     );
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       throw new Error(`Erreur HTTP! statut: ${response.status}`);
     }
 
@@ -113,7 +110,7 @@ async function loadParticipations(dateMatch, heure) {
 
     console.log("Requesting URL:", url.toString());
 
-    const response = await fetch(url, {
+    const response = await fetchWithAuth(url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -124,9 +121,6 @@ async function loadParticipations(dateMatch, heure) {
     console.log("Response status:", response.status);
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       const errorText = await response.text();
       console.log("Error response:", errorText);
       throw new Error(`Erreur HTTP! statut: ${response.status}`);
@@ -206,7 +200,7 @@ function ajouterParticipation(participation = {}) {
 async function chargerJoueurs(selectElement, selectedLicense = null) {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(
+    const response = await fetchWithAuth(
       "https://drafteamapi.lespi.fr/Joueur/index.php",
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -214,9 +208,6 @@ async function chargerJoueurs(selectElement, selectedLicense = null) {
     );
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       throw new Error(`Erreur HTTP! statut: ${response.status}`);
     }
 
@@ -275,7 +266,7 @@ async function modifierMatch(event) {
 
     console.log("Sending match update (PATCH):", matchData);
 
-    const response = await fetch(
+    const response = await fetchWithAuth(
       `https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(
         dateMatch
       )}&heure=${encodeURIComponent(heure)}`,
@@ -290,9 +281,6 @@ async function modifierMatch(event) {
     );
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       const errorData = await response.json();
       throw new Error(
         errorData.status_message ||
@@ -343,7 +331,7 @@ async function modifierMatch(event) {
         };
         console.log("Creating participation (POST):", participationData);
 
-        const partResponse = await fetch(
+        const partResponse = await fetchWithAuth(
           "https://drafteamapi.lespi.fr/Participation/index.php",
           {
             method: "POST",
@@ -356,9 +344,6 @@ async function modifierMatch(event) {
         );
 
         if (!partResponse.ok) {
-          if (response.status === 401) {
-            logout();
-          }
           const errorData = await partResponse.json();
           console.error("Error adding participation:", errorData);
           throw new Error(
@@ -380,7 +365,7 @@ async function modifierMatch(event) {
             patchData
           );
 
-          const patchResp = await fetch(
+          const patchResp = await fetchWithAuth(
             `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(
               newPart.numLicense
             )}&dateMatch=${encodeURIComponent(
@@ -397,9 +382,6 @@ async function modifierMatch(event) {
           );
 
           if (!patchResp.ok) {
-            if (response.status === 401) {
-              logout();
-            }
             const errorData = await patchResp.json();
             console.error("Error patching participation:", errorData);
             throw new Error(
@@ -418,7 +400,7 @@ async function modifierMatch(event) {
     for (const [numLicense, oldPart] of existingMap.entries()) {
       console.log("Deleting participation (DELETE) numLicense=", numLicense);
 
-      const deleteResp = await fetch(
+      const deleteResp = await fetchWithAuth(
         `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(
           numLicense
         )}&dateMatch=${encodeURIComponent(
@@ -433,9 +415,6 @@ async function modifierMatch(event) {
       );
 
       if (!deleteResp.ok) {
-        if (response.status === 401) {
-          logout();
-        }
         const errorData = await deleteResp.json();
         console.error("Error deleting participation:", errorData);
         // Selon votre logique, vous pouvez lever une erreur ou simplement continuer
