@@ -12,6 +12,7 @@ async function ajouterJoueur(event) {
     taille: document.getElementById("taille").value,
     poids: document.getElementById("poids").value,
   };
+  console.log(joueurData);
   try {
     const response = await fetch("https://drafteamapi.lespi.fr/Joueur/", {
       method: "POST",
@@ -25,7 +26,6 @@ async function ajouterJoueur(event) {
     if (!response.ok) {
       throw new Error("Erreur lors de l'ajout du joueur");
     }
-    console.log("success");
     // Rediriger ou afficher un message de succès
     window.location.href = "./GestionJoueurs.html";
     return false; // Empêche la soumission par défaut
