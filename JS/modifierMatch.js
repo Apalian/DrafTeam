@@ -307,6 +307,7 @@ async function modifierMatch(event) {
   
       // Ajout des nouvelles participations
       // Ajout des nouvelles participations
+// Ajout des nouvelles participations
 for (const participation of participationsToAdd) {
     const participationBody = {
       numLicense: participation.numLicense,
@@ -320,6 +321,8 @@ for (const participation of participationsToAdd) {
       passes: 0,
       poste: null
     };
+  
+    console.log("Vérification participationBody avant POST :", participationBody);
   
     const response = await fetch('https://drafteamapi.lespi.fr/Participation/index.php', {
       method: 'POST',
@@ -336,6 +339,7 @@ for (const participation of participationsToAdd) {
       alert(`Erreur API: ${errorDetails.status_message}`);
     }
   }
+  
   
   
       // Modification des participations existantes changées
