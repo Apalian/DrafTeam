@@ -238,7 +238,7 @@ async function modifierMatch(event) {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        window.location.href = '../Vue/Login.html';
+        alert('Token manquant, veuillez vous reconnecter.');
         return;
       }
   
@@ -342,10 +342,9 @@ async function modifierMatch(event) {
         });
       }
   
-      window.location.href = '../Vue/GestionMatchs.html';
+      console.log('Modification terminée avec succès.');
     } catch (error) {
       console.error('Erreur lors de la modification :', error);
       alert(error.message);
     }
   }
-  
