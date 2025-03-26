@@ -1,5 +1,9 @@
 let existingParticipations = [];
 
+// Store original match details
+let originalDateMatch = null;
+let originalHeure = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const dateMatch = urlParams.get("dateMatch");
@@ -8,6 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("URL Parameters:", { dateMatch, heure });
 
   if (dateMatch && heure) {
+    // Store original values
+    originalDateMatch = dateMatch;
+    originalHeure = heure;
     loadMatchDetails(dateMatch, heure);
   } else {
     console.error("Missing required parameters");
@@ -235,207 +242,104 @@ async function modifierMatch(event) {
   event.preventDefault();
 
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (!token) {
-      window.location.href = "../Vue/Login.html";
-      return false;
+        window.location.href = '../Vue/Login.html';
+        return false;
     }
 
-    // Récupère les paramètres d'identification du match
+    // Get the original match details from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const dateMatch = urlParams.get("dateMatch");
-    const heure = urlParams.get("heure");
+    const dateMatch = urlParams.get('dateMatch');
+    const heure = urlParams.get('heure');
 
     if (!dateMatch || !heure) {
-      throw new Error("Paramètres dateMatch et heure manquants dans l'URL");
+        throw new Error('Paramètres dateMatch et heure manquants dans l\'URL');
     }
 
-    // 1) Mettre à jour le match (PATCH)
+    // Update match data first
     const matchData = {
-      dateMatch: dateMatch, // inaltéré
-      heure: heure, // inaltéré
-      nomEquipeAdverse: document
-        .getElementById("nomEquipeAdverse")
-        .value.trim(),
-      LieuRencontre: document.getElementById("lieuRencontre").value,
-      scoreEquipeDomicile:
-        document.getElementById("scoreEquipeDomicile").value || null,
-      scoreEquipeExterne:
-        document.getElementById("scoreEquipeExterne").value || null,
+        dateMatch: dateMatch,
+        heure: heure,
+        nomEquipeAdverse: document.getElementById('nomEquipeAdverse').value.trim(),
+        LieuRencontre: document.getElementById('lieuRencontre').value,
+        scoreEquipeDomicile: document.getElementById('scoreEquipeDomicile').value || null,
+        scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null
     };
 
-    console.log("Sending match update (PATCH):", matchData);
-
-    const response = await fetchWithAuth(
-      `https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(
-        dateMatch
-      )}&heure=${encodeURIComponent(heure)}`,
-      {
-        method: "PATCH",
+    // Update match
+    const response = await fetch(`https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`, {
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(matchData),
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.status_message ||
-          `Erreur HTTP lors de la modification du match (code ${response.status})`
-      );
-    }
-
-    // 2) Récupérer les participations du formulaire
-    const joueursSelects = document.querySelectorAll(
-      'select[name="joueurs[]"]'
-    );
-    const statutsSelects = document.querySelectorAll(
-      'select[name="statuts[]"]'
-    );
-
-    // Tableau des nouvelles participations côté front
-    const newParticipations = [];
-    for (let i = 0; i < joueursSelects.length; i++) {
-      const numLicense = joueursSelects[i].value;
-      if (!numLicense) continue; // Ignore les sélections vides
-
-      newParticipations.push({
-        numLicense: numLicense,
-        estTitulaire: statutsSelects[i].value === "Titulaire" ? 1 : 0,
-      });
-    }
-
-    // 3) Préparer une map pour les participations existantes
-    //    Clé = numLicense, Valeur = { estTitulaire, ... }
-    const existingMap = new Map();
-    existingParticipations.forEach((p) => {
-      existingMap.set(p.numLicense, p);
-      // p contient { numLicense, dateMatch, heure, estTitulaire, ... }
+        body: JSON.stringify(matchData)
     });
 
-    // 4) Pour chaque participation du formulaire, faire un POST si nouvelle
-    //    ou un PATCH si déjà existante mais différente
-    for (const newPart of newParticipations) {
-      const oldPart = existingMap.get(newPart.numLicense);
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.status_message || `Erreur HTTP lors de la modification du match (code ${response.status})`);
+    }
 
-      // Cas a) la participation n'existe pas en base -> POST
-      if (!oldPart) {
-        const participationData = {
-          numLicense: newPart.numLicense,
-          dateMatch: dateMatch,
-          heure: heure,
-          estTitulaire: newPart.estTitulaire,
-        };
-        console.log("Creating participation (POST):", participationData);
+    // Get current participations from the form
+    const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
+    const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
 
-        const partResponse = await fetchWithAuth(
-          "https://drafteamapi.lespi.fr/Participation/index.php",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(participationData),
-          }
+    // First, delete all existing participations
+    for (const participation of existingParticipations) {
+        const deleteResponse = await fetch(
+            `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(participation.numLicense)}&dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
         );
+
+        if (!deleteResponse.ok) {
+            console.error('Error deleting participation:', await deleteResponse.json());
+        }
+    }
+
+    // Then, add new participations
+    for (let i = 0; i < joueursSelects.length; i++) {
+        const numLicense = joueursSelects[i].value;
+        if (!numLicense) continue; // Skip empty selections
+
+        const participationData = {
+            numLicense: numLicense,
+            dateMatch: dateMatch,
+            heure: heure,
+            estTitulaire: statutsSelects[i].value === 'Titulaire' ? 1 : 0
+        };
+
+        console.log('Adding participation:', participationData);
+
+        const partResponse = await fetch('https://drafteamapi.lespi.fr/Participation/index.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(participationData)
+        });
 
         if (!partResponse.ok) {
-          const errorData = await partResponse.json();
-          console.error("Error adding participation:", errorData);
-          throw new Error(
-            errorData.status_message ||
-              `Erreur lors de l'ajout de la participation`
-          );
+            const errorData = await partResponse.json();
+            console.error('Error adding participation:', errorData);
+            throw new Error(errorData.status_message || `Erreur lors de l'ajout de la participation`);
         }
-      }
-      // Cas b) la participation existe déjà -> vérifier si le statut a changé
-      else {
-        if (oldPart.estTitulaire !== newPart.estTitulaire) {
-          // On fait un PATCH
-          const patchData = {
-            estTitulaire: newPart.estTitulaire,
-          };
-          console.log(
-            "Patching participation (PATCH) numLicense=",
-            newPart.numLicense,
-            patchData
-          );
-
-          const patchResp = await fetchWithAuth(
-            `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(
-              newPart.numLicense
-            )}&dateMatch=${encodeURIComponent(
-              dateMatch
-            )}&heure=${encodeURIComponent(heure)}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify(patchData),
-            }
-          );
-
-          if (!patchResp.ok) {
-            const errorData = await patchResp.json();
-            console.error("Error patching participation:", errorData);
-            throw new Error(
-              errorData.status_message ||
-                `Erreur lors de la modification de la participation`
-            );
-          }
-        }
-      }
-
-      // Dans tous les cas, on retire la clé de la map pour marquer qu'elle est "traitée"
-      existingMap.delete(newPart.numLicense);
     }
 
-    // 5) Toute participation restant dans existingMap => supprimée côté front => DELETE
-    for (const [numLicense, oldPart] of existingMap.entries()) {
-      console.log("Deleting participation (DELETE) numLicense=", numLicense);
-
-      const deleteResp = await fetchWithAuth(
-        `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(
-          numLicense
-        )}&dateMatch=${encodeURIComponent(
-          dateMatch
-        )}&heure=${encodeURIComponent(heure)}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!deleteResp.ok) {
-        const errorData = await deleteResp.json();
-        console.error("Error deleting participation:", errorData);
-        // Selon votre logique, vous pouvez lever une erreur ou simplement continuer
-        throw new Error(
-          errorData.status_message ||
-            `Erreur lors de la suppression de la participation`
-        );
-      }
-    }
-
-    // 6) Si tout s'est bien passé, on redirige vers la page de gestion
-    window.location.href = "../Vue/GestionMatchs.html";
+    // If everything succeeded, redirect back to the matches list
+    window.location.href = '../Vue/GestionMatchs.html';
     return false;
+
   } catch (error) {
-    console.error(
-      "Erreur lors de la modification du match ou des participations :",
-      error
-    );
-    alert(
-      error.message || "Erreur lors de la modification du match/participations."
-    );
+    console.error('Erreur lors de la modification du match ou des participations :', error);
+    alert(error.message || 'Erreur lors de la modification du match/participations.');
     return false;
   }
 }
