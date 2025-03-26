@@ -272,12 +272,26 @@ async function modifierMatch(event) {
         throw new Error('Erreur lors de la mise à jour du match');
       }
   
-      // Obtenir les participations actuelles
-      const formParticipations = Array.from(document.querySelectorAll('.participation-group'));
-      const updatedParticipations = formParticipations.map(group => ({
-        numLicense: group.querySelector('select[name="joueurs[]"]').value,
-        estTitulaire: group.querySelector('select[name="statuts[]"]').value === 'Titulaire' ? 1 : 0
-      }));
+      // Récupération des sélections de joueurs et statuts
+      const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
+      const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
+  
+      const updatedParticipations = [];
+  
+      for (let i = 0; i < joueursSelects.length; i++) {
+        const numLicense = joueursSelects[i].value;
+        const statut = statutsSelects[i].value;
+  
+        if (!numLicense) {
+          alert("Veuillez sélectionner un joueur pour chaque participation.");
+          return;
+        }
+  
+        updatedParticipations.push({
+          numLicense,
+          estTitulaire: statut === 'Titulaire' ? 1 : 0
+        });
+      }
   
       const participationsToDelete = existingParticipations.filter(ep => !updatedParticipations.some(up => up.numLicense === ep.numLicense));
       const participationsToAdd = updatedParticipations.filter(up => !existingParticipations.some(ep => ep.numLicense === up.numLicense));
@@ -293,18 +307,26 @@ async function modifierMatch(event) {
   
       // Ajout des nouvelles participations
       for (const participation of participationsToAdd) {
+        const participationBody = {
+          numLicense: participation.numLicense,
+          dateMatch: currentDateMatch,
+          heure: currentHeure,
+          estTitulaire: participation.estTitulaire,
+          endurance: 0,
+          vitesse: 0,
+          defense: 0,
+          tirs: 0,
+          passes: 0,
+          poste: null
+        };
+  
         await fetch('https://drafteamapi.lespi.fr/Participation/index.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({
-            numLicense: participation.numLicense,
-            dateMatch: currentDateMatch,
-            heure: currentHeure,
-            estTitulaire: participation.estTitulaire
-          })
+          body: JSON.stringify(participationBody)
         });
       }
   
@@ -325,5 +347,5 @@ async function modifierMatch(event) {
       console.error('Erreur lors de la modification :', error);
       alert(error.message);
     }
+  }
   
-}
