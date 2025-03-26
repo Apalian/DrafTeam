@@ -248,27 +248,27 @@ async function modifierMatch(event) {
         return false;
     }
 
-    // Get the original match details from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const dateMatch = urlParams.get('dateMatch');
-    const heure = urlParams.get('heure');
-
-    if (!dateMatch || !heure) {
-        throw new Error('Paramètres dateMatch et heure manquants dans l\'URL');
+    // Use the stored original values
+    if (!originalDateMatch || !originalHeure) {
+        throw new Error('Paramètres dateMatch et heure manquants');
     }
+
+    // Get current values from form
+    const currentDateMatch = document.getElementById('dateMatch').value;
+    const currentHeure = document.getElementById('heure').value;
 
     // Update match data first
     const matchData = {
-        dateMatch: dateMatch,
-        heure: heure,
+        dateMatch: currentDateMatch,
+        heure: currentHeure,
         nomEquipeAdverse: document.getElementById('nomEquipeAdverse').value.trim(),
-        LieuRencontre: document.getElementById('lieuRencontre').value,
+        lieuRencontre: document.getElementById('lieuRencontre').value,
         scoreEquipeDomicile: document.getElementById('scoreEquipeDomicile').value || null,
         scoreEquipeExterne: document.getElementById('scoreEquipeExterne').value || null
     };
 
-    // Update match
-    const response = await fetch(`https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`, {
+    // Update match using original values in URL
+    const response = await fetch(`https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(originalDateMatch)}&heure=${encodeURIComponent(originalHeure)}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -286,10 +286,10 @@ async function modifierMatch(event) {
     const joueursSelects = document.querySelectorAll('select[name="joueurs[]"]');
     const statutsSelects = document.querySelectorAll('select[name="statuts[]"]');
 
-    // First, delete all existing participations
+    // First, delete all existing participations using original values
     for (const participation of existingParticipations) {
         const deleteResponse = await fetch(
-            `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(participation.numLicense)}&dateMatch=${encodeURIComponent(dateMatch)}&heure=${encodeURIComponent(heure)}`,
+            `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(participation.numLicense)}&dateMatch=${encodeURIComponent(originalDateMatch)}&heure=${encodeURIComponent(originalHeure)}`,
             {
                 method: 'DELETE',
                 headers: {
@@ -303,15 +303,15 @@ async function modifierMatch(event) {
         }
     }
 
-    // Then, add new participations
+    // Then, add new participations with current values
     for (let i = 0; i < joueursSelects.length; i++) {
         const numLicense = joueursSelects[i].value;
         if (!numLicense) continue; // Skip empty selections
 
         const participationData = {
             numLicense: numLicense,
-            dateMatch: dateMatch,
-            heure: heure,
+            dateMatch: currentDateMatch,
+            heure: currentHeure,
             estTitulaire: statutsSelects[i].value === 'Titulaire' ? 1 : 0
         };
 
