@@ -101,64 +101,58 @@ async function loadMatchDetails(dateMatch, heure) {
  * Charge les participations du match et les affiche
  */
 async function loadParticipations(dateMatch, heure) {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "../Vue/Login.html";
-      return;
-    }
-
-    console.log("Loading participations for:", { dateMatch, heure });
-
-    // Construct URL with both required parameters
-    const url = new URL("https://drafteamapi.lespi.fr/Participation/index.php");
-    url.searchParams.append("dateMatch", dateMatch);
-    url.searchParams.append("heure", heure);
-
-    console.log("Requesting URL:", url.toString());
-
-    const response = await fetchWithAuth(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-    });
-
-    console.log("Response status:", response.status);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.log("Error response:", errorText);
-      throw new Error(`Erreur HTTP! statut: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log("Received data:", data);
-
-    // Vider le container
-    const container = document.getElementById("participations-container");
-    container.innerHTML = "";
-
-    // CHANGEMENT : on stocke les participations existantes globalement
-    existingParticipations = Array.isArray(data.data) ? data.data : [];
-
-    if (existingParticipations.length > 0) {
-      existingParticipations.forEach((participation) => {
-        ajouterParticipation(participation);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "../Vue/Login.html";
+        return;
+      }
+  
+      const url = new URL("https://drafteamapi.lespi.fr/Participation/index.php");
+      url.searchParams.append("dateMatch", dateMatch);
+      url.searchParams.append("heure", heure);
+  
+      const response = await fetchWithAuth(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
       });
-    } else {
+  
+      const container = document.getElementById("participations-container");
+      container.innerHTML = "";
+  
+      if (response.status === 404) {
+        container.innerHTML = "<p>Aucune participation trouvée pour ce match.</p>";
+        existingParticipations = [];
+        return; // Ne pas lancer d'erreur, gérer simplement ce cas
+      }
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Erreur HTTP! statut: ${response.status}, détail: ${errorText}`);
+      }
+  
+      const data = await response.json();
+  
+      existingParticipations = Array.isArray(data.data) ? data.data : [];
+  
+      if (existingParticipations.length > 0) {
+        existingParticipations.forEach((participation) => {
+          ajouterParticipation(participation);
+        });
+      } else {
+        container.innerHTML = "<p>Aucune participation trouvée pour ce match.</p>";
+      }
+    } catch (error) {
+      console.error("Erreur détaillée:", error);
+      const container = document.getElementById("participations-container");
       container.innerHTML =
-        "<p>Aucune participation trouvée pour ce match.</p>";
+        '<p class="error-message">Erreur lors du chargement des participations.</p>';
     }
-  } catch (error) {
-    console.error("Erreur détaillée:", error);
-    const container = document.getElementById("participations-container");
-    container.innerHTML =
-      '<p class="error-message">Erreur lors du chargement des participations.</p>';
   }
-}
-
+  
 /**
  * Ajoute un bloc de participation dans le DOM
  * @param {*} participation (facultatif) données existantes (numLicense, estTitulaire, etc.)
