@@ -306,29 +306,37 @@ async function modifierMatch(event) {
       }
   
       // Ajout des nouvelles participations
-      for (const participation of participationsToAdd) {
-        const participationBody = {
-          numLicense: participation.numLicense,
-          dateMatch: currentDateMatch,
-          heure: currentHeure,
-          estTitulaire: participation.estTitulaire,
-          endurance: 0,
-          vitesse: 0,
-          defense: 0,
-          tirs: 0,
-          passes: 0,
-          poste: null
-        };
+      // Ajout des nouvelles participations
+for (const participation of participationsToAdd) {
+    const participationBody = {
+      numLicense: participation.numLicense,
+      dateMatch: currentDateMatch,
+      heure: currentHeure,
+      estTitulaire: participation.estTitulaire,
+      endurance: 0,
+      vitesse: 0,
+      defense: 0,
+      tirs: 0,
+      passes: 0,
+      poste: null
+    };
   
-        await fetch('https://drafteamapi.lespi.fr/Participation/index.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(participationBody)
-        });
-      }
+    const response = await fetch('https://drafteamapi.lespi.fr/Participation/index.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(participationBody)
+    });
+  
+    if (!response.ok) {
+      const errorDetails = await response.json();
+      console.error('Détails erreur API Participation:', errorDetails);
+      alert(`Erreur API: ${errorDetails.status_message}`);
+    }
+  }
+  
   
       // Modification des participations existantes changées
       for (const participation of participationsToUpdate) {
