@@ -115,8 +115,6 @@ async function ajouterMatch(event) {
 
     // Construire l'objet "match" à envoyer
     const matchData = {
-      dateMatch,
-      heure,
       nomEquipeAdverse,
       LieuRencontre,
       scoreEquipeDomicile,
@@ -127,7 +125,7 @@ async function ajouterMatch(event) {
     console.log("Envoi du match :", matchData);
 
     let response = await fetchWithAuth(
-      "https://drafteamapi.lespi.fr/Match/index.php",
+      `https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${dateMatch}&heure=${heure}`,
       {
         method: "POST",
         headers: {
@@ -171,9 +169,6 @@ async function ajouterMatch(event) {
 
       // On n’a pas d’autres champs (endurance, vitesse, etc.) => on met 0 ou null
       const participationBody = {
-        numLicense,
-        dateMatch,
-        heure,
         estTitulaire,
         endurance: 0,
         vitesse: 0,
@@ -186,7 +181,11 @@ async function ajouterMatch(event) {
       console.log("Envoi participation :", participationBody);
 
       let partResp = await fetchWithAuth(
-        "https://drafteamapi.lespi.fr/Participation/index.php",
+        `https://drafteamapi.lespi.fr/Participation/index.php?numLicense=${encodeURIComponent(
+          numLicense
+        )}&dateMatch=${encodeURIComponent(
+          dateMatch
+        )}&heure=${encodeURIComponent(heure)}`,
         {
           method: "POST",
           headers: {

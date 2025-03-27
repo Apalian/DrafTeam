@@ -25,9 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
 
     if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-      }
       console.error("Erreur HTTP:", response.status, response.statusText);
       return;
     }
@@ -92,9 +89,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
       if (!response.ok) {
-        if (response.status === 401) {
-          logout();
-        }
         console.error("Erreur HTTP:", response.status, response.statusText);
         return;
       }
