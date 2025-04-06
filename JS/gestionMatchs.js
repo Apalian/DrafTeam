@@ -140,24 +140,28 @@ async function supprimerMatch(button) {
     }
 
     // Étape 1 : supprimer les participations liées au match
-    const deleteParticipationsResponse = await fetchWithAuth(
-      `https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(
-        dateMatch
-      )}&heure=${encodeURIComponent(heure)}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    // Étape 1 : supprimer les participations liées au match
+const deleteParticipationsResponse = await fetchWithAuth(
+  `https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(
+    dateMatch
+  )}&heure=${encodeURIComponent(heure)}`,
+  {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
-    if (!deleteParticipationsResponse.ok) {
-      const errorData = await deleteParticipationsResponse.json();
-      throw new Error(
-        `Échec lors de la suppression des participations : ${errorData.status_message}`
-      );
-    }
+// On continue même si aucune participation n'existe (cas normal)
+if (!deleteParticipationsResponse.ok && deleteParticipationsResponse.status !== 404) {
+  const errorData = await deleteParticipationsResponse.json().catch(() => ({}));
+  throw new Error(
+    errorData.status_message ||
+    `Erreur lors de la suppression des participations (code ${deleteParticipationsResponse.status})`
+  );
+}
+
 
     // Étape 2 : supprimer le match maintenant que les participations sont supprimées
     const deleteMatchResponse = await fetchWithAuth(
