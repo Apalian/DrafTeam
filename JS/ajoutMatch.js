@@ -206,7 +206,7 @@ async function ajouterMatch(event) {
     }
     // Rediriger
     alert("Ajout du match et des participations réussis");
-    window.location.href = "./GestionMatch.html";
+    window.location.href = "../Vue/GestionMatchs.html";
   } catch (error) {
     console.error(
       "Erreur lors de l’ajout du match ou des participations :",
