@@ -139,7 +139,28 @@ async function supprimerMatch(button) {
       return;
     }
 
-    const response = await fetchWithAuth(
+    // Étape 1 : supprimer les participations liées au match
+    const deleteParticipationsResponse = await fetchWithAuth(
+      `https://drafteamapi.lespi.fr/Participation/index.php?dateMatch=${encodeURIComponent(
+        dateMatch
+      )}&heure=${encodeURIComponent(heure)}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!deleteParticipationsResponse.ok) {
+      const errorData = await deleteParticipationsResponse.json();
+      throw new Error(
+        `Échec lors de la suppression des participations : ${errorData.status_message}`
+      );
+    }
+
+    // Étape 2 : supprimer le match maintenant que les participations sont supprimées
+    const deleteMatchResponse = await fetchWithAuth(
       `https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(
         dateMatch
       )}&heure=${encodeURIComponent(heure)}`,
@@ -151,23 +172,19 @@ async function supprimerMatch(button) {
       }
     );
 
-    if (!response.ok) {
-      const errorData = await response.json();
+    if (!deleteMatchResponse.ok) {
+      const errorData = await deleteMatchResponse.json();
       throw new Error(
-        errorData.status_message || `HTTP error! status: ${response.status}`
+        `Échec lors de la suppression du match : ${errorData.status_message}`
       );
     }
 
-    // Refresh the match list after deletion
+    // Actualiser la liste des matchs
     loadMatchs(document.getElementById("searchInput").value);
+
   } catch (error) {
-    console.error("Erreur lors de la suppression du match:", error);
+    console.error("Erreur lors de la suppression :", error);
     alert(error.message || "Erreur lors de la suppression du match.");
   }
 }
 
-// Fonction pour lancer la recherche des matchs
-function searchMatches() {
-  const searchQuery = document.getElementById("searchInput").value;
-  loadMatchs(searchQuery);
-}
