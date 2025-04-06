@@ -15,13 +15,13 @@ function ajouterParticipation() {
   participationDiv.innerHTML = `
         <div class="form-group">
             <label>Joueur :</label>
-            <select name="joueurs[]" class="form-input" required>
+            <select name="joueurs[]" class="form-input" >
                 <option value="">Sélectionner un joueur</option>
             </select>
         </div>
         <div class="form-group">
             <label>Statut :</label>
-            <select name="statuts[]" class="form-input" required>
+            <select name="statuts[]" class="form-input" >
                 <option value="Titulaire">Titulaire</option>
                 <option value="Remplaçant">Remplaçant</option>
             </select>
