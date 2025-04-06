@@ -11,8 +11,7 @@ async function loadMatchs() {
       return;
     }
 
-    // Construction de l'URL de l'API pour les matchs
-    let url = `https://drafteamapi.lespi.fr/Match/index.php`;
+    const url = `https://drafteamapi.lespi.fr/Match/index.php`;
 
     const response = await fetchWithAuth(url, {
       method: "GET",
@@ -89,11 +88,13 @@ function displayMatchs(matchs) {
     btnSupprimer.dataset.dateMatch = match.dateMatch;
     btnSupprimer.dataset.heure = match.heure;
 
-    // Stocker les données dans le bouton de modification
+    // Gestion du bouton feuille de match (stockage dans localStorage)
     const btnModifier = clone.querySelector(".btn-modifier");
-    btnModifier.href = `../Vue/ModifierMatch.html?dateMatch=${encodeURIComponent(
-      match.dateMatch
-    )}&heure=${encodeURIComponent(match.heure)}`;
+    btnModifier.addEventListener("click", () => {
+      localStorage.setItem("dateMatch", match.dateMatch);
+      localStorage.setItem("heure", match.heure);
+      window.location.href = "../Vue/ModifierMatch.html";
+    });
 
     matchsList.appendChild(clone);
   });
@@ -159,7 +160,7 @@ async function supprimerMatch(button) {
       );
     }
 
-    // Étape 2 : supprimer le match maintenant que les participations sont supprimées
+    // Étape 2 : supprimer le match
     const deleteMatchResponse = await fetchWithAuth(
       `https://drafteamapi.lespi.fr/Match/index.php?dateMatch=${encodeURIComponent(
         dateMatch
@@ -179,12 +180,9 @@ async function supprimerMatch(button) {
       );
     }
 
-    // Actualiser la liste des matchs
     loadMatchs(document.getElementById("searchInput").value);
-
   } catch (error) {
     console.error("Erreur lors de la suppression :", error);
     alert(error.message || "Erreur lors de la suppression du match.");
   }
 }
-

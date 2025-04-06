@@ -5,26 +5,28 @@ let originalDateMatch = null;
 let originalHeure = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const dateMatch = urlParams.get("dateMatch");
-  const heure = urlParams.get("heure");
+  const dateMatch = localStorage.getItem("dateMatch");
+  const heure = localStorage.getItem("heure");
 
-  console.log("URL Parameters:", { dateMatch, heure });
+  // Nettoyage pour éviter de polluer le localStorage
+  localStorage.removeItem("dateMatch");
+  localStorage.removeItem("heure");
+
+  console.log("Paramètres récupérés depuis localStorage:", { dateMatch, heure });
 
   if (dateMatch && heure) {
-    // Store original values
     originalDateMatch = dateMatch;
     originalHeure = heure;
     loadMatchDetails(dateMatch, heure);
   } else {
-    console.error("Missing required parameters");
+    console.error("Paramètres manquants pour charger le match");
     alert("Paramètres manquants pour charger le match");
     window.location.href = "./GestionMatchs.html";
   }
 
-  // Ajoute un premier bloc vide
   ajouterParticipation();
 });
+
 
 /**
  * Charge les détails d'un match et ses participations
